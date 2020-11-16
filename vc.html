@@ -219,6 +219,7 @@
             $('#chatField').val("");
         }
         //////////////////////////////////////
+*/loadPartyIDs
         var myHeaders = new Headers();
         // add content type header to object
         myHeaders.append("Content-Type", "application/json");
@@ -228,7 +229,7 @@
         var urlParams="";
         var playerDataAr=[];
         var maxMembers=10;
-*/
+
 
 //initial test values and data names
 t={
@@ -254,53 +255,29 @@ t={
   "RESULT": "result",
   "GATHER": "gather"
 }
-    const chatURL = "wss://h86xupi032.execute-api.us-east-2.amazonaws.com/dev/";
+        function sendChatText(_message,_id){
+            console.log(this);
+            let outgoingMessage = _message;
+            socket.send(outgoingMessage);
+            console.log(_message+" -  sent")
+            return false;        
+        }
 
-    
-    //const WebSocket = require('ws');
-    //const readline = require('readline');
-    //const ws = new WebSocket(url);
-    //console.log(ws);
-
-    //const WebSocket = require('ws');
-
-/*
-    const connections = {};
-    const send = (connectionId, data) => {
-    const connection = connections[connectionId];
-    connection.send(data);
-    }
-
-    ws.on('open', () => console.log('connected'));
-    ws.on('message', data => console.log(`From server: ${data}`));
-    ws.on('close', () => {
-        console.log('disconnected');
-        process.exit();
-    });
-
-    readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    }).on('line', data => {
-        const message = JSON.stringify({action: 'echo', data: input});
-        ws.send(data);
-    });
-*/
-        var testMessage={"action" : "onMessage" , "message" : "Hello everyone from http"};
+        const chatURL = "wss://h86xupi032.execute-api.us-east-2.amazonaws.com/dev/";
         let socket = new WebSocket(chatURL);
         console.log(socket);
-        socket.onopen = function(e) {
-            alert("[open] Connection established");
-            alert("Sending to server");
-            socket.send(testMessage);
-        };
+        // send message from the form
+
+        // message received - show the message in div#messages
         socket.onmessage = function(event) {
-            alert(`[message] Data received from server: ${event.data}`);
-        };
+        let message = event.data;
 
-        function sendChatText(_userid,_chatText) {
-
+        let messageElem = document.createElement('div');
+        messageElem.textContent = message;
+        document.getElementById('messages').prepend(messageElem);
         }
+
+ 
     //////////////
     </script>
 
@@ -311,7 +288,8 @@ t={
         <label>PLAYER DISPLAY :</label><input type="text" size="10" id="idField" onchange="readPlayerData($('#idField').val())"></input>
         <label>Name :</label><input type="text" size="10" id="nameField"></input><br><br>
         <!-- set button onClick method to call function we defined passing input values as parameters -->
-        <textarea rows="6" cols="40" id="chatTextBox" readonly></textarea>
+        <!--<textarea rows="6" cols="40" id="chatTextBox" readonly></textarea>
+        -->
         <br>
         <label>Chat :</label><input type="text" size="40" id="chatField"></label>
         <button type="button" onclick="sendChatText($('#chatField').val()),$('#idField').val()">Send</button></input>
@@ -320,6 +298,7 @@ t={
         <button type="button" onclick="readPlayerData($('#idField').val())">Update player display stats</button>
         <br><br><br>
     </form>
-
+    <!-- div with messages -->
+    <div id="messages"></div>
 </body>
 </html>
