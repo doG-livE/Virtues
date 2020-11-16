@@ -256,9 +256,10 @@ t={
   "GATHER": "gather"
 }
         function sendChatText(_message,_id){
-            // format message as {"action" : "onMessage" , "message" : "Message Text"}
+            // format message as {"action" : "onMessage" , "message" : "Message"}
             console.log(this);
-            let outgoingMessage = _message;
+            //let outgoingMessage = _message;
+            let outgoingMessage = '{"action" : "onMessage" , "message" : "' + _message + '"}';
             socket.send(outgoingMessage);
             console.log(_message+" -  sent")
             return false;        
