@@ -1,0 +1,157 @@
+
+    /*body, divs, etc. My own custom ones.*/
+
+    .box-Background {
+        background-color: black;
+        font: 20px 'Candara', serif;
+        color: white;
+        padding: 3px;
+    }
+
+    .initial {
+        background-color: white;
+        color: black;
+        border: 1px dotted black;
+        min-height: 50px;
+        justify-content: center;
+    }
+
+    .sidebar-Color-Div {
+        color: white;
+    }
+
+    .cardTitleClass {
+        font: bold 28px Arial, serif;
+        margin-top: 25px;
+        margin-left: 20px;
+        margin-right: 10px;
+        width: 30px;
+        letter-spacing: 20px;
+        word-wrap: break-word;
+    }
+
+    .radio-row {
+        padding-left: 5px;
+        padding-top: 8px;
+    }
+
+    .rainbow-text {
+        background-image: linear-gradient(to right, salmon, crimson, #FF5733, orange, darkseagreen, teal, steelblue, lightskyblue, blue);
+        /*violet, indigo, blue, green, yellow, orange, red;*/
+        -webkit-background-clip: text;
+        color: transparent;
+        background-clip: text;
+        /* for compatability */
+    }
+
+
+
+    /* tab styling. Copied from online and tweaked.*/
+    ul.lg-tabs {
+        margin: 0px;
+        padding: 0px;
+        list-style: none;
+    }
+
+    ul.lg-tabs li {
+        background: none;
+        color: #222;
+        display: inline-block;
+        padding: 10px 15px;
+        cursor: pointer;
+    }
+
+    ul.lg-tabs li.current {
+        background: #ededed;
+        color: #222;
+    }
+
+    .tab-lg-link {
+        border: 1px dotted lightgray;
+    }
+
+    .lg-tab-content {
+        display: none;
+        background: #000033;
+        color: #e6ffe6;
+        padding: 15px;
+        font: 12px 'Helvetica', serif;
+    }
+
+    .lg-tab-content.current {
+        display: inherit;
+    }
+
+
+    ul.buy-tabs {
+        margin: 0px;
+        padding: 0px;
+        list-style: none;
+    }
+
+    ul.buy-tabs li {
+        background: none;
+        color: #222;
+        display: inline-block;
+        padding: 10px 15px;
+        cursor: pointer;
+        background-color: white;
+    }
+
+    ul.buy-tabs li.current {
+        background: #ededed;
+        color: #222;
+    }
+
+    .tab-buy-link {
+        border: 1px dotted lightgray;
+    }
+
+    .buy-tab-content {
+        display: none;
+        background: darkslateblue;
+        color: #e6ffe6;
+        padding: 15px;
+        font: 12px 'Helvetica', serif;
+    }
+
+    .buy-tab-content.current {
+        display: inherit;
+    }
+
+
+    ul.tabs {
+        margin: 0px;
+        padding: 0px;
+        list-style: none;
+    }
+
+    ul.tabs li {
+        background: white;
+        color: #222;
+        display: inline-block;
+        padding: 10px 15px;
+        cursor: pointer;
+    }
+
+    ul.tabs li.current {
+        background: #ededed;
+        color: #222;
+    }
+
+    .tab-link {
+        border: 1px dotted lightgray;
+    }
+
+    .tab-content {
+        display: none;
+        background: darkslateblue;
+        color: #e6ffe6;
+        padding: 15px;
+        font: 12px 'Helvetica', serif;
+    }
+
+    .tab-content.current {
+        display: inherit;
+    }
+

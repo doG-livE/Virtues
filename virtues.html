@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--jQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!--Font Awesome-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Flexbox-->
+    <link rel="stylesheet" href="css/flexbox.min.css" type="text/css">
+
+    <!-- virtues libraries -->
+    <script src="rules_json.js"></script>
+    <script src="virtues_json.js"></script>
+    <script src="alphebetize.js"></script>
+    <script src="buy_and_sell.js"></script>
+    <script src="canvas_generation.js"></script>
+    <script src="event_triggers.js"></script>
+    <script src="fetch.js"></script>
+    <script src="populate.js"></script>
+    <script src="save_load.js"></script>
+    <script src="inspiration_table.js"></script>
+    <script src="update_character_sheet.js"></script>
+    <link rel="stylesheet" href="v_bootstrap_style.css">
+    <link rel="stylesheet" href="v_style.css">
+
+    <title>Virtues Basic Builder</title>
+</head>
+
+
+<script>  //global variables
+    /* All the global variables, except the json information.*/
+    var primaryVirtue = "";     
+    var charName = "";
+    var primaryVirtue = "";
+    var secondaryVirtue = "";
+
+    var primaryReason = "Click me to set a Reason for your primary Virtue choice.";     //used to hold the strings shown for the player's calling reasons.
+    var secondaryReason = "Click me to set a Reason for your secondary Virtue choice."; //used to hold the strings shown for the player's calling reasons.
+
+    var focusLevel = [1, 1, 1];  //Courage,Clever,Compassion. I've been thinking it would be better to have three separate variables though.
+    var focusMinimum = [1, 1, 1];  //Eventually, I plan to use these to ensure player never re-trains spent Focus points below their minimum value for their Calling.
+
+    var selectedTechniques = [];
+    var selectedBearings = [];
+
+    var whiteVar = "hsl(360, 100%, 100%)";      //used when creating card canvases 
+    var blackVar = '#000000';                   //used when creating card canvases 
+    var divCount = 0;                           //could be used for keeping track of divs, but I don't have a need yet
+
+    var inspirationEarned = 0;                  //eventually these two variables will help keep track of how much  has been spent, and tell players when they don't have enough Insp to buy something
+    var inspirationSpent = 0;
+    var purchaseHistory = "";       //A string containing the purchases and refunds the character has made
+
+    var cardsForImagesArray = []; // list of cards to make images for printing / saving
+    var bearingsKnown = [];                      //not used
+    var techsKnown = [];
+    var loadData = true;
+
+    var techValAdjust=-3;
+
+    var canvasArray = [];                       //Will hold a canvas for every card in sorted virtuesJson
+
+    var forceBonus = 0;                         //Base of character, from bearings
+    var composureBonus = 0;                     //These three variables are meant to be shown in divs that are only visible if bonus != 0
+    var maxMoraleBonus = 0;                     //These three variables are currently not used, yet
+
+    var fileSaveAs = "Outlook"; // outlooks are loaded by default, the save as is used for image names for the deck export makeSingleImages()
+    //const rulesJson = require('./rules_json.json');
+    //console.log(rulesJson);
+    //const virtuesJson = require('./virtues_json.js');
+    // storing the ".json" data as a variable in a .js file. This makes it easier to test as a local file.
+    
+ 
+</script>
+
+<script>  // onload: alphabetizing, creating canvases, loadurl, etc
+
+    function onloadCreation() {  //This one runs on page load, calls a lot of other functions
+        "use strict";
+        alphabetizeJson();  //an array of the indexes of the techs and bearings after they're alphabetized
+        alphabetizeRulesDropdown();                    //alphabetizes rulesJson and populates its dropdown box in compendium
+        loadURLData();
+        createCanvases();
+    }
+
+
+
+</script>
+
+<script>    //miscellaneous functions
+
+    function displayRule(ruleIndex) {           //writes the text of the rules in the correct div. Simple
+        document.getElementById("initialRulesContainer").innerHTML = rulesJson[ruleIndex].rulesBody;
+    }
+
+</script>
+
+
+<body onload=onloadCreation()>
+
+    <div class="container">
+        <!--Holds everything. I think it was for formatting reasons.-->
+        <ul class="lg-tabs">
+            <!--These are the tabs for dashboard / builder / compendium-->
+            <li class="tab-lg-link current" data-tab="lg-tab-dashboard">Dashboard</li>
+            <li class="tab-lg-link" data-tab="lg-tab-builder">Builder</li>
+            <li class="tab-lg-link" data-tab="lg-tab-comp">Compendium</li>
+        </ul>
+    </div>
+
+    <div class="container lg-tab-content current" id="lg-tab-dashboard">
+        <div class="container">
+            <div class="row" id="rainbowHeaderDiv">
+                <h1 class="prompt-replace rainbow-text text-center font-weight-bold" id="rainbowHeader"
+                    data-prompt="What is your character's name?">
+                    Virtues: Basic Character Builder</h1>
+                <!--prompt-replace Class means that this text can be changed if user clicks it-->
+            </div>
+
+            <div class="row">
+                <select id="callingDropDownPrimary" class="callingDropDown" data-span="callingPrimarySpan">
+                    <option value="Courage">Courage</option>
+                    <option value="Clever">Clever</option>
+                    <option value="Compassion">Compassion</option>
+                </select>
+                &nbsp<span class="prompt-replace" id="callingPrimarySpan"
+                    data-prompt="Why is this Virtue so important to your character?" onchange="updateInspirationTable()">
+                    <--Choose primary Calling here. &nbsp<strong>Click here to explain Calling motivation.
+                        </strong>
+                </span>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <select id="callingDropDownSecondary" class="callingDropDown" data-span="callingSecondarySpan">
+                    <option value="Courage">Courage</option>
+                    <option value="Clever">Clever</option>
+                    <option value="Compassion">Compassion</option>
+                </select>
+                &nbsp<span class="prompt-replace" id="callingSecondarySpan"
+                    data-prompt="Why is this Virtue so important to your character?">
+                    <--Choose secondary Calling here. &nbsp<strong>Click here to explain Calling motivation.
+                        </strong>
+                </span>
+            </div>
+
+            <br>
+
+            <div class="row" style="color:red">Courage Level: &nbsp<span class="focusBuy">1 (click here to level
+                    up)</span>
+            </div>
+            <div class="row radio-row" style="background-color:red">
+                Current Focus: &nbsp
+                <form>
+                    <!-- These radio buttons serve to let the user change their current values if they wish to use the program during play. Nothing references their values.-->
+                    <!-- <input type="radio" id="courageV0" name="courageValue" value="0" onclick="updateInspirationTable()"><label for="courageV1" style="color:white">0</label> -->
+                    <input type="radio" id="courageV1" name="courageValue" value="1" onclick="updateInspirationTable()"><label for="courageV1"
+                        style="color:white">1</label>
+                    <input type="radio" id="courageV2" name="courageValue" value="2" onclick="updateInspirationTable()"><label for="courageV1"
+                        style="color:white">2</label>
+                    <input type="radio" id="courageV3" name="courageValue" value="3" onclick="updateInspirationTable()"><label for="courageV1"
+                        style="color:white">3</label>
+                    <input type="radio" id="courageV4" name="courageValue" value="4" onclick="updateInspirationTable()"><label for="courageV1"
+                        style="color:white">4</label>
+                    <input type="radio" id="courageV5" name="courageValue" value="5" onclick="updateInspirationTable()"><label for="courageV1"
+                        style="color:white">5</label>
+                    <input type="radio" id="courageV6" name="courageValue" value="6" onclick="updateInspirationTable()"><label for="courageV1"
+                        style="color:white">6</label>
+                    <input type="radio" id="courageV7" name="courageValue" value="7" onclick="updateInspirationTable()"><label for="courageV1"
+                        style="color:white">7</label>
+                    <input type="radio" id="courageV8" name="courageValue" value="8" onclick="updateInspirationTable()"><label for="courageV1"
+                        style="color:white">8</label>
+                    <input type="radio" id="courageV9" name="courageValue" value="9" onclick="updateInspirationTable()"><label for="courageV1"
+                        style="color:white">9</label>
+                    <input type="radio" id="courageV10" name="courageValue" value="10" onclick="updateInspirationTable()"><label for="courageV1"
+                        style="color:white">10</label>
+                </form>
+            </div>
+
+            <br>
+
+            <div class="row" style="color: dodgerblue">Clever Level: &nbsp<span class="focusBuy">1 (click here to
+                    level up)</span>
+            </div>
+            <div class="row radio-row" style="background-color: dodgerblue">
+                Current Focus: &nbsp
+                <form>
+                    <!-- These radio buttons serve to let the user change their current values if they wish to use the program during play. Nothing references their values.-->
+                    <!-- <input type="radio" id="cleverV0" name="cleverValue" value="0" onclick="updateInspirationTable()"><label for="cleverV0">0</label>-->
+                    <input type="radio" id="cleverV1" name="cleverValue" value="1" onclick="updateInspirationTable()"><label for="cleverV1">1</label>
+                    <input type="radio" id="cleverV2" name="cleverValue" value="2" onclick="updateInspirationTable()"><label for="cleverV2">2</label>
+                    <input type="radio" id="cleverV3" name="cleverValue" value="3" onclick="updateInspirationTable()"><label for="cleverV3">3</label>
+                    <input type="radio" id="cleverV4" name="cleverValue" value="4" onclick="updateInspirationTable()"><label for="cleverV4">4</label>
+                    <input type="radio" id="cleverV5" name="cleverValue" value="5" onclick="updateInspirationTable()"><label for="cleverV5">5</label>
+                    <input type="radio" id="cleverV6" name="cleverValue" value="6" onclick="updateInspirationTable()"><label for="cleverV6">6</label>
+                    <input type="radio" id="cleverV7" name="cleverValue" value="7" onclick="updateInspirationTable()"><label for="cleverV7">7</label>
+                    <input type="radio" id="cleverV8" name="cleverValue" value="8" onclick="updateInspirationTable()"><label for="cleverV8">8</label>
+                    <input type="radio" id="cleverV9" name="cleverValue" value="9" onclick="updateInspirationTable()"><label for="cleverV9">9</label>
+                    <input type="radio" id="cleverV10" name="cleverValue" value="10" onclick="updateInspirationTable()"><label for="cleverV10">10</label>
+                </form>
+            </div>
+
+            <br>
+
+            <div class="row" style="color:green">Compassion Level: &nbsp<span class="focusBuy">1 (click here to level
+                    up)</span>
+            </div>
+            <div class="row radio-row" style="background-color:green">
+                Current Focus: &nbsp
+                <form>
+                    <!-- These radio buttons to let the user change their current values if they wish to use the program during play. Nothing references their values.-->
+                    <!-- <input type="radio" id="compassionV0" name="compassionValue" value="0" onclick="updateInspirationTable()"><label for="compassionV0">0</label> -->
+                    <input type="radio" id="compassionV1" name="compassionValue" value="1" onclick="updateInspirationTable()"><label
+                        for="compassionV1">1</label>
+                    <input type="radio" id="compassionV2" name="compassionValue" value="2" onclick="updateInspirationTable()"><label
+                        for="compassionV2">2</label>
+                    <input type="radio" id="compassionV3" name="compassionValue" value="3" onclick="updateInspirationTable()"><label
+                        for="compassionV3">3</label>
+                    <input type="radio" id="compassionV4" name="compassionValue" value="4" onclick="updateInspirationTable()"><label
+                        for="compassionV4">4</label>
+                    <input type="radio" id="compassionV5" name="compassionValue" value="5" onclick="updateInspirationTable()"><label
+                        for="compassionV5">5</label>
+                    <input type="radio" id="compassionV6" name="compassionValue" value="6" onclick="updateInspirationTable()"><label
+                        for="compassionV6">6</label>
+                    <input type="radio" id="compassionV7" name="compassionValue" value="7" onclick="updateInspirationTable()"><label
+                        for="compassionV7">7</label>
+                    <input type="radio" id="compassionV8" name="compassionValue" value="8" onclick="updateInspirationTable()"><label
+                        for="compassionV8">8</label>
+                    <input type="radio" id="compassionV9" name="compassionValue" value="9" onclick="updateInspirationTable()"><label
+                        for="compassionV9">9</label>
+                    <input type="radio" id="compassionV10" name="compassionValue" value="10" onclick="updateInspirationTable()"><label
+                        for="compassionV10">10</label>
+                </form>
+            </div>
+
+            <div class="row">
+                Morale:
+            </div>
+            <div class="row radio-row">
+                <form>
+                    <!-- These radio buttons serve to let the user change their current values if they wish to use the program during play. Nothing references their values.-->
+                    <input type="radio" id="moraleV0" name="moraleValue" value="0"><label for="moraleV0">0</label>
+                    <input type="radio" id="moraleV1" name="moraleValue" value="1"><label for="moraleV1">1</label>
+                    <input type="radio" id="moraleV2" name="moraleValue" value="2"><label for="moraleV2">2</label>
+                    <input type="radio" id="moraleV3" name="moraleValue" value="3"><label for="moraleV3">3</label>
+                    <input type="radio" id="moraleV4" name="moraleValue" value="4"><label for="moraleV4">4</label>
+                    <input type="radio" id="moraleV5" name="moraleValue" value="5"><label for="moraleV5">5</label>
+                    <input type="radio" id="moraleV6" name="moraleValue" value="6"><label for="moraleV6">6</label>
+                    <input type="radio" id="moraleV7" name="moraleValue" value="7"><label
+                        for="moraleV7">7</label>
+                    <input type="radio" id="moraleV8" name="moraleValue" value="8"><label for="moraleV8"
+                        style="color:gray">8</label>
+                    <input type="radio" id="moraleV9" name="moraleValue" value="9"><label for="moraleV9"
+                        style="color:gray">9</label>
+                </form>
+
+            </div>
+
+            <div class="row">
+                Hope:
+            </div>
+            <div class="row radio-row">
+                <!-- These radio buttons to let the user change their current values if they wish to use the program during play. Nothing references their values.-->
+                <input type="radio" id="hopeV0" name="hopeValue" value="0"><label for="hopeV1">0</label>
+                <input type="radio" id="hopeV1" name="hopeValue" value="1"><label for="hopeV1">1</label>
+                <input type="radio" id="hopeV2" name="hopeValue" value="2"><label for="hopeV2">2</label>
+                <input type="radio" id="hopeV3" name="hopeValue" value="3"><label for="hopeV3">3</label>
+            </div>
+        </div>
+
+        <br><br>
+        <p>Inspiration Earned: <input type="text" id="inspirationEarnedField" value="5" size="3" onchange="updateInspirationTable()"></input></p>
+        <p>Total Inspiration Spent: <input type="text" id="inspirationSpentField" value="0" size="3" readonly></input>Inspiration Remaining: <input type="text" id="inspirationRemainingField" value="0" size="3" readonly></input></p>
+        <p>Inspiration Bearings: <input type="text" id="inspirationBearingSpentField" value="0" size="3" readonly></input></p>
+        <p>Inspiration Techniques: <input type="text" id="inspirationTechSpentField" value="0" size="3" readonly></input>One "free" tech from each Virtue</p>
+        <p>Inspiration Courage: <input type="text" id="inspirationCourageSpentField" value="0" size="3" readonly></input>
+            Inspiration Clever: <input type="text" id="inspirationCleverSpentField" value="0" size="3" readonly></input>
+            Inspiration Compassion: <input type="text" id="inspirationCompassionSpentField" value="0" size="3" readonly></input>
+            Start with 4/1/1 or 3/2/1, select manually based on Callings
+        </p>
+
+
+        Your Calling abilities display here:
+        <div class="initial container" id="initialCallingContainer">
+            <!--The Calling powers should autopopulate here when the dropdowns change, thanks to jquery on-change events-->
+        </div>
+
+        <br><br>
+
+        Your Bearings display here:
+        <div class="initial container" id="initialBearingsKnownContainer">
+            <!--When you purchase Bearings, this is where they display-->
+        </div>
+
+        <br><br>
+
+        Your known Techniques display here:
+        <div class="initial container" id="initialTechsKnownContainer">
+            <!--When you purchase Techs, this is where they display-->
+        </div>
+
+        <br><br>
+        <button class="btn btn-success" onclick="makeImages()"> 
+            Save cards on dashboard (for photo printing)
+        </button> 
+
+        <div class="row justify-content-center">
+            <button class="btn btn-success" onclick="saveURLData()">
+                Open in new tab (bookmark to save)
+            </button>
+            <p>UserID: <input type="text" id="useridField" value="" size="10"></input>
+            <button onclick="saveAWSData()">
+                Save data to cloud (for the given userid)
+            </button></p>           
+        </div>
+    
+<!-- commented out for general use, using this to build the descks for TableTop Simulator -->
+<!--
+        <button id="buyAllCardsButton" onclick="buyAllCards()"> 
+            Buy all the technique and bearing cards (for printing)
+        </button>
+        seect cards deck
+        <select id="buyAllCardsPulldown" onchange="buyAllCards()">
+            <option value="">Select from list</option>
+            <option value="Courage">Courage</option>
+            <option value="Clever">Clever</option>
+            <option value="Compassion">Compassion</option>
+            <option value="M">Main action</option>
+            <option value="H">Hasten action</option>
+            <option value="P">Prep action</option>
+            <option value="A">Support action</option>
+            <option value="Calling">Calling powers</option>
+
+            <option value="Bold">Bold</option>
+            <option value="Direct">Direct</option>
+            <option value="Guarded">Guarded</option>
+            <option value="Pugilist">Pugilist</option>
+            <option value="Resourceful">Resourceful</option>
+            <option value="Subtle">Subtle</option>
+        </select>
+
+        <button class="makeSingleImagesButton" onclick="makeSingleImages()"> 
+            save as single images (for tabletop sim decks)
+        </button> 
+-->
+
+        <br>
+        <p>
+        <p>Background 1:<input type="text" id="background1" size="100" onChange="updateCharacterSheet()"></input></p>
+        <p>Background 2:<input type="text" id="background2" size="100" onChange="updateCharacterSheet()"></input></p>
+        <p>Background 3:<input type="text" id="background3" size="100" onChange="updateCharacterSheet()"></input></p>
+
+    </div>
+
+    <div class="container lg-tab-content current" id="lg-tab-builder">
+        <div class="container">
+            <ul class="buy-tabs">
+                <li class="tab-buy-link current" data-tab="buy-tab-techniques">Techniques</li>
+                <li class="tab-buy-link" data-tab="buy-tab-bearings">Bearings</li>
+                <!--               <li class="tab-buy-link" data-tab="buy-tab-virtues">Virtues</li>   
+                    This tab was meant to be used to change user's current Focus levels, but I haven't created it yet so it is commented out for now-->
+            </ul>
+        </div>
+
+        <div class="container buy-tab-content current" id="buy-tab-techniques">
+            <div class="row">
+                &nbsp &nbsp &nbsp &nbsp Select from the dropdown to see a group of techniques at a time. Click on one
+                individual technique to purchase it for your character.
+            </div>
+
+            <br><br>
+            <div class="row">
+                &nbsp &nbsp &nbsp &nbsp
+
+                <select id="techPurchaseDropDown" class="cardDropDown" data-targetdiv="initialTechPurchaseContainer">
+                    <!-- A jquery on-change event is bound to this id-->
+                    <option value="All">Display All</option>
+                    <option value="Courage">Courage</option>
+                    <option value="Clever">Clever</option>
+                    <option value="Compassion">Compassion</option>
+                    <option value="M">Main action</option>
+                    <option value="H">Hasten action</option>
+                    <option value="P">Prep action</option>
+                    <option value="A">Support action</option>
+                </select>
+                &nbsp &nbsp &nbsp &nbsp
+                Enter text to search Bearings: 
+                <input type="text" id="techniqueSearchField" value="" size="15" class="searchTechniques" data-targetdiv="initialTechPurchaseContainer"></input>
+            </div>
+
+            <br><br>
+
+            <div class="initial container" id="initialTechPurchaseContainer">
+            </div>
+        </div>
+
+
+
+        <div class="container buy-tab-content" id="buy-tab-bearings">
+            <div class="row">
+                <h3> Choose a Bearing path from the dropdown to see the options from that Bearing. Click a Bearing level
+                    to add it. <h3>
+                        <br>
+
+                        <!--This fat ugly wall of text is here because 
+                            A: I don't have the information explained well anywhere else
+                            B: There's no code keeping the user from making illegal purchases right now.
+                            I'd love to remedy both those two issues and remove this ugly text dump.
+                        Again: time crunch happened-->
+
+                        The system will not know if you are buying legally, so remember the following rules: <br><br>
+                        If buying any except Bold or Resourceful: <br>
+                        -You cannot buy levels in more than one Bearing <br>
+                        -You must buy a level 1 before buying a level 2 before buying level 3, etc <br>
+                        -You can't buy both the A and B of any level, must choose one or the other <br>
+                        -If buying Direct, there is no A or B, so just buy up each number<br>
+                        -No matter what path you are buying, even Bold/Resourceful, you can't have more than 5 Bearing
+                        levels <br>
+                        -Bold and Resourceful follow special rules: <br><br>
+                        If buying Bold: <br>
+                        -Each time you level, choose A or B. <br>
+                        -If buying A, buy the appropriate level. <br>
+                        -If buying B, then you can instead buy any of the optionals marked with an o. <br>
+                        -Optionals are only given numbers for ease of keeping track; you can buy optionals out of order.
+                        <br>
+                        -Buying an optional still counts as buying a level; so if you've bought an A and a B option, and
+                        you buy another A, you must buy 3A. <br>
+                        -All the optionals in Bold apply to your 'threatening mark', which is something you can do once
+                        on your turn if you have any options for it. <br>
+                        -Threatening Mark costs no action and applies to one enemy. The enemy suffers all the optional
+                        effects you've purchased <br><br>
+                        If buying Resourceful: <br>
+                        -Resourceful has no A or B paths <br>
+                        -The first four times you buy a level, buy any standard option (with an o).
+                        -The fifth time you buy a level, you must buy a Supreme option (with an s).
+            </div>
+
+            <br><br>
+
+            <div class="row">
+                &nbsp &nbsp &nbsp &nbsp
+                <select id="bearingPurchaseDropDown" class="cardDropDown"
+                    data-targetdiv="initialBearingPurchaseContainer">
+                    <!-- A jquery on-change event is bound to this id-->
+                    <option value="Bold">Bold</option>
+                    <option value="Direct">Direct</option>
+                    <option value="Guarded">Guarded</option>
+                    <option value="Pugilist">Pugilist</option>
+                    <option value="Resourceful">Resourceful</option>
+                    <option value="Subtle">Subtle</option>
+                </select>
+                &nbsp &nbsp &nbsp &nbsp
+                Enter text to search Bearings: 
+                <input type="text" id="bearingSearchField" value="" size="15" class="searchBearings" data-targetdiv="initialBearingPurchaseContainer"></input>
+            </div>
+            <br> <br>
+            <div class="initial container" id="initialBearingPurchaseContainer">
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container lg-tab-content" id="lg-tab-comp">
+        <ul class="tabs">
+            <!-- The tabs for the compendium.-->
+            <li class="tab-link current" data-tab="tab-rules">Rules</li>
+            <li class="tab-link" data-tab="tab-techs">Techniques</li>
+            <li class="tab-link" data-tab="tab-bearings">Bearings</li>
+            <li class="tab-link" data-tab="tab-printable">Printable</li>
+        </ul>
+
+        <div id="tab-rules" class="container tab-content current">
+            <div class="row">
+                &nbsp &nbsp &nbsp &nbsp This is a list of rules and terms. Use the dropdown to find what you're looking
+                for.
+            </div>
+
+            <br><br>
+
+            <div class="row">
+                &nbsp &nbsp &nbsp &nbsp
+                <select id="rulesDropDown">
+                    <!-- A jquery on-change event is bound to this id, and also, this dropdown is populated dynamically during onload function-->
+                </select>
+            </div>
+
+            <br><br>
+
+            <div class="initial container" id="initialRulesContainer"
+                style="font-size:1.5em; background-color:white; color:black">
+            </div>
+        </div>
+
+        <div id="tab-techs" class="container tab-content">
+            <div class="row">
+                &nbsp &nbsp &nbsp &nbsp Use the dropdown to view groups of techniques. You cannot purchase techniques
+                from this page, it is for reference only.
+            </div>
+
+            <br><br>
+
+            <div class="row">
+                &nbsp &nbsp &nbsp &nbsp
+                <select id="techDropDown" class="cardDropDown" data-targetdiv="initialTechContainer">
+                    <!-- A jquery on-change event is bound to this id-->
+                    <option value="All">Display All</option>
+                    <option value="Courage">Courage</option>
+                    <option value="Clever">Clever</option>
+                    <option value="Compassion">Compassion</option>
+                    <option value="M">Main action</option>
+                    <option value="H">Hasten action</option>
+                    <option value="P">Prep action</option>
+                    <option value="A">Support action</option>
+                    <option value="Calling">Calling powers</option>
+                </select>
+            </div>
+
+            <br><br>
+
+            <div class="initial container" id="initialTechContainer"
+                style="font-size:1.5em; background-color:white; color:black">
+            </div>
+        </div>
+
+        <div id="tab-bearings" class="container tab-content">
+            <div class="row">
+                &nbsp &nbsp &nbsp &nbsp Choose a Bearing path from the dropdown to see all cards from that Bearing.
+            </div>
+
+            <br><br>
+
+            <div class="row">
+                &nbsp &nbsp &nbsp &nbsp
+                <select id="bearingDropDown" class="cardDropDown" data-targetdiv="initialBearingContainer">
+                    <!-- A jquery on-change event is bound to this id-->
+                    <option value="Bold">Bold</option>
+                    <option value="Direct">Direct</option>
+                    <option value="Guarded">Guarded</option>
+                    <option value="Pugilist">Pugilist</option>
+                    <option value="Resourceful">Resourceful</option>
+                    <option value="Subtle">Subtle</option>
+                </select>
+            </div>
+
+            <br> <br>
+
+            <div class="initial container" id="initialBearingContainer"
+                style="font-size:1.5em; background-color:white; color:black">
+            </div>
+        </div>
+
+
+        <div id="tab-printable" class="container tab-content">
+            <div class="row">
+                &nbsp &nbsp &nbsp &nbsp This will allow users to download a 4x6 image by clicking on it, but it is not
+                yet complete. <br>
+                Will need to implement the create4x6 function and the download4by6 function.
+            </div>
+
+            <div class="row">
+                &nbsp &nbsp &nbsp &nbsp
+                <select id="printableDropDown" data-targetdiv="initialPrintableContainer">
+                    <!-- A jquery on-change event is bound to this id-->
+                    <option value="Courage">Courage</option>
+                    <option value="Clever">Clever</option>
+                    <option value="Compassion">Compassion</option>
+                    <option value="M">Main action</option>
+                    <option value="H">Hasten action</option>
+                    <option value="P">Prep action</option>
+                    <option value="A">Support action</option>
+                    <option value="Calling">Calling powers</option>
+
+                    <option value="Bold">Bold</option>
+                    <option value="Direct">Direct</option>
+                    <option value="Guarded">Guarded</option>
+                    <option value="Pugilist">Pugilist</option>
+                    <option value="Resourceful">Resourceful</option>
+                    <option value="Subtle">Subtle</option>
+                </select>
+            </div>
+
+            <br><br>
+
+            <div class="initial container" id="initialPrintableContainer"
+                style="font-size:1.5em; background-color:white; color:black">
+            </div>
+        </div>
+
+    </div>
+
+    <br><br>
+
+    </div>
+</body>
+
+</html>
