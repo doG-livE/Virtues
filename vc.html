@@ -192,7 +192,8 @@
             });
             
         }
-        
+
+        /*
         function sendChatText(_userid,_chatText) {
             // save a user text chat
             var myHeaders = new Headers();
@@ -227,7 +228,7 @@
         var urlParams="";
         var playerDataAr=[];
         var maxMembers=10;
-
+*/
 
 //initial test values and data names
 t={
@@ -253,6 +254,54 @@ t={
   "RESULT": "result",
   "GATHER": "gather"
 }
+    const chatURL = "wss://h86xupi032.execute-api.us-east-2.amazonaws.com/dev/";
+
+    
+    //const WebSocket = require('ws');
+    //const readline = require('readline');
+    //const ws = new WebSocket(url);
+    //console.log(ws);
+
+    //const WebSocket = require('ws');
+
+/*
+    const connections = {};
+    const send = (connectionId, data) => {
+    const connection = connections[connectionId];
+    connection.send(data);
+    }
+
+    ws.on('open', () => console.log('connected'));
+    ws.on('message', data => console.log(`From server: ${data}`));
+    ws.on('close', () => {
+        console.log('disconnected');
+        process.exit();
+    });
+
+    readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    }).on('line', data => {
+        const message = JSON.stringify({action: 'echo', data: input});
+        ws.send(data);
+    });
+*/
+        var testMessage={"action" : "onMessage" , "message" : "Hello everyone from http"};
+        let socket = new WebSocket(chatURL);
+        console.log(socket);
+        socket.onopen = function(e) {
+            alert("[open] Connection established");
+            alert("Sending to server");
+            socket.send(testMessage);
+        };
+        socket.onmessage = function(event) {
+            alert(`[message] Data received from server: ${event.data}`);
+        };
+
+        function sendChatText(_userid,_chatText) {
+
+        }
+    //////////////
     </script>
 
 </head>
