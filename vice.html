@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!--jQuery and other libraries-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="chat.js"></script>
+    <script src="readWriteDynamo.js"></script>
+
+
+    <title>VICE development</title>
+    <!-- Add some CSS to change client UI -->
+    <style>
+    body {
+        background-color: #6f7750;
+        }
+    label, button {
+        color: #00ff22;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        margin-left: 28px;
+        }
+     input {
+        color: #a39799;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        margin-left: 14px;
+        }
+    </style>
+
+    <script>
+ 
+        const chatURL = "wss://h86xupi032.execute-api.us-east-2.amazonaws.com/dev/";
+        let socket = new WebSocket(chatURL);
+        //console.log(socket);
+        // message received - show the message in div#messages
+        socket.onmessage = function(event) {
+        let message = event.data;
+
+        let messageElem = document.createElement('div');
+        messageElem.textContent = message;
+        document.getElementById('messages').prepend(messageElem);
+        }
+
+/////////////
+
+        
+    </script>
+
+</head>
+<body>
+    <script>
+        var myHeaders = new Headers();
+        // add content type header to object
+        myHeaders.append("Content-Type", "application/json");
+        //var results=[];
+        var save1="";
+        var getStr="";
+        var urlParams="";
+        var playerDataAr=[];
+        var maxMembers=10;
+
+    </script>
+    <form>
+        <label>PLAYER 0 ID :</label><input type="text" size="10" id="idField0" onchange="updateUser($('#idField0').val(),'0')"></input>
+        <label>NAME :</label><input type="text" readonly size="10" id="nameField0"></input>
+        <br><br>
+        <label>PLAYER 1 ID :</label><input type="text" size="10" id="idField1" onchange="updateUser($('#idField1').val(),'1')"></input>
+        <label>NAME :</label><input type="text" readonly size="10" id="nameField1"></input>
+        <br><br>
+        <label>PLAYER 2 ID :</label><input type="text" size="10" id="idField2" onchange="updateUser($('#idField2').val(),'2')"></input>
+        <label>NAME :</label><input type="text" readonly size="10" id="nameField2"></input>
+        <br><br>
+        <label>PLAYER 3 ID :</label><input type="text" size="10" id="idField3" onchange="updateUser($('#idField3').val(),'3')"></input>
+        <label>NAME :</label><input type="text" readonly size="10" id="nameField3"></input>
+        <br><br>
+        <label>PLAYER 4 ID :</label><input type="text" size="10" id="idField4" onchange="updateUser($('#idField4').val(),'4')"></input>
+        <label>NAME :</label><input type="text" readonly size="10" id="nameField4"></input>
+        <br><br>
+        <button type="button" onclick="loadPartyIDs($('#partyIDField').val())">Load party ID</button><nbsp;>     </nbsp>
+        <button type="button" onclick="savePartyIDs()">Save party</button><br><br>
+        <label>Party ID :</label><input type="text" size="10" id="partyIDField"></input><br><br><br><br>
+        <label>Total inspiration :</label><input type="text" size="10" id="totalInspirationField" readonly></input>(watch to be sure data is added for the playerID)
+        <br><br><br>
+        <label>PLAYER DISPLAY :</label><input type="text" size="10" id="idField" onchange="readPlayerData($('#idField').val())"></input>check values for a given player ID
+        <br><br>
+        <label>Name :</label><input type="text" size="10" id="nameField"></input><br><br>
+        <label>Morale :</label><input type="text" size="10" id="moraleField"><br><br>
+        <label>Hope :</label><input type="text" size="10" id="hopeField"><br><br>
+        <label>Courage :</label><input type="text" size="10" id="courageField"><br><br>
+        <label>Clever :</label><input type="text" size="10" id="cleverField"><br><br>
+        <label>Compassion :</label><input type="text" size="10" id="compassionField"><br><br>
+        <!-- set button onClick method to call function we defined passing input values as parameters -->
+        <button type="button" onclick="readPlayerData($('#idField').val())">Update player display stats</button><br><br><br>
+        
+    </form>
+    
+    <form>
+         <br><br>
+        <label>ID for Chat :</label><input type="text" size="10" id="chatIdField" onchange="readPlayerChatData($('#chatIdField').val())"></input>
+        <label>Name :</label><input type="text" size="10" id="chatNameField"></input><br><br>
+        <!-- set button onClick method to call function we defined passing input values as parameters -->
+        <!--<textarea rows="6" cols="40" id="chatTextBox" readonly></textarea>
+        -->
+
+        <br>
+        <label>Chat :</label><input type="text" size="40" id="chatField"></label>
+        <button type="button" onclick="sendChatText($('#chatField').val(),$('#chatIdField').val(),$('#chatNameField').val())">Send</button></input>
+        <br>
+        <!--
+        <button type="button" onclick="readPlayerChatData($('#chatIdField').val())">Update player display stats</button>
+        <br><br><br>
+        -->
+    </form>
+    <div id="messages">Chat messages go here, newest at top</div>
+       <!-- div with messages -->
+    
+</body>
+</html>

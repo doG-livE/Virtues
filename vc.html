@@ -5,6 +5,7 @@
     <!--jQuery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="chat.js"></script>
+    <script src="readWriteDynamo.js"></script>
     <title>VICE development</title>
     <!-- Add some CSS to change client UI -->
     <style>
@@ -26,91 +27,10 @@
     </style>
 
     <script>
-        function readPlayerData(_ID) {
-            var raw = JSON.stringify({"KEY":"ID","VALUE":_ID,"TABLE_NAME":"VIRTUES_SAVES"});
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
-            const fetchPromise = fetch("https://3u99pwarzl.execute-api.us-east-2.amazonaws.com/Virtues_dev/", requestOptions);
-            fetchPromise.then(response => {
-                save1=response.json();
-                return save1;
-            }).then(result => {
-                save1=result.body
-                //console.log(save1);
-                //console.log(JSON.parse(save1).GET_DATA);
-                getStr="?"+JSON.parse(save1).GET_DATA
-                //console.log(getStr);
-                urlParams = new URLSearchParams(getStr);
-                //console.log(urlParams);
-                //console.log("l1: "+urlParams.get('l1'));
-                $(document).ready(() => {
-                    $('#courageField').val(urlParams.get('l1'));
-                    $('#compassionField').val(urlParams.get('l2'));
-                    $('#cleverField').val(urlParams.get('l3'));
-                    $('#moraleField').val(urlParams.get('m'));
-                    $('#hopeField').val(urlParams.get('h'));
-                    $('#nameField').val(urlParams.get('title'));
-                    return save1;
-                });
-            });
-        }
-
-        function updateUser(_ID,_num) {
-            var raw = JSON.stringify({"KEY":"ID","VALUE":_ID,"TABLE_NAME":"VIRTUES_SAVES"});
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
-            const fetchPromise = fetch("https://3u99pwarzl.execute-api.us-east-2.amazonaws.com/Virtues_dev/", requestOptions);
-            fetchPromise.then(response => {
-                save1=response.json();
-                return save1;
-            }).then(result => {
-                save1=result.body
-                //console.log(save1);
-                getStr="?"+JSON.parse(save1).GET_DATA
-                urlParams = new URLSearchParams(getStr);
-                var _IDJSON=JSON.parse(save1);
-                $(document).ready(() => {
-                    // Add the values for the given player number
-                    playerDataAr[_num]=
-                        {"courage":urlParams.get('l1'),
-                        "compassion":urlParams.get('l2'),
-                        "clever":urlParams.get('l3'),
-                        "hope":urlParams.get('h'),
-                        "morale":urlParams.get('m'),
-                        "name":urlParams.get('title'),
-                        "inspiration":urlParams.get('IE'),
-                        "id":_IDJSON.ID
-                    };
-                    //console.log(playerDataAr[_num]);
-                    // setting the name field
-                    $('#idField'+_num).val(playerDataAr[_num].id);
-                    $('#nameField'+_num).val(playerDataAr[_num].name);
-                    // calculate total inspration
-                    var _total=0;
-                    for(playerData in playerDataAr) {
-                        _total+=parseInt(playerDataAr[playerData].inspiration)
-                        //console.log(_total)
-                    }
-                    $('#totalInspirationField').val(_total);
-                    return save1;
-                });
-            });
-        }
-
-
+ 
         const chatURL = "wss://h86xupi032.execute-api.us-east-2.amazonaws.com/dev/";
         let socket = new WebSocket(chatURL);
         //console.log(socket);
-        // send message from the form
-
         // message received - show the message in div#messages
         socket.onmessage = function(event) {
         let message = event.data;
