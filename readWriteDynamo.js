@@ -139,9 +139,12 @@ function loadPartyIDs(_partyID) {
         if ($('#currentMoraleField'+_i).val()) {
             $('#currentMoraleField'+_i).val("");
         }
-//        if ($('#currentFocusField'+_i).val()) {
- //           $('#currentFocusField'+_i).val("");
- //       }
+        if ($('#currentFocusField'+_i).val()) {
+            $('#currentFocusField'+_i).val("");
+        }
+        if ($('#moraleField'+_i).val()) {
+            $('#moraleField'+_i).val("");
+        }
         $('#totalInspirationField'+_i).val("")
     }
     var requestOptions = {
