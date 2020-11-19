@@ -17,7 +17,8 @@
             canvas {
                       image-rendering: optimizeSpeed;
                       -webkit-interpolation-mode: nearest-neighbor;
-                      -ms-touch-action: none;
+                      -ms-touch-action: auto;
+                      -touch-action: auto;
                       margin: 0px;
                       padding: 0px;
                       border: 0px;
@@ -74,5 +75,8 @@
         <!-- Run the game code -->
         <script type="text/javascript" src="html5game/test-3.js?HODAC=1943993568"></script>
         <script>window.onload = GameMaker_Init;</script>
+    </body>
+    <body>
+        <label>NAME :</label><input type="text" readonly size="10" id="nameField4"></input>
     </body>
 </html>

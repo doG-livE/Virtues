@@ -18,6 +18,7 @@
                     image-rendering: optimizeSpeed;
                     -webkit-interpolation-mode: nearest-neighbor;
                     -ms-touch-action: none;
+                    -touch-action: auto;
                     margin: 0px;
                     padding: 0px;
                     border: 0px;
@@ -119,7 +120,11 @@
                  <p>Your browser doesn't support HTML5 canvas.</p>
         </canvas>
     </div>
-
+    <script>
+    //    $('input[type="text"]').livequery('focus', function() { 
+     //       alert('a text input has been focused');
+     //   });
+    </script>
     <!-- Run the game code -->
     <script type="text/javascript" src="html5game/test-3.js?HODAC=1943993568"></script>
     <script>window.onload = GameMaker_Init;</script>
