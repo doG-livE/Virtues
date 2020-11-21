@@ -24,10 +24,10 @@ function readPlayerData(_ID) {
         save1=response.json();
         return save1;
     }).then(result => {
-        save1=result.body
+        save1=result.body;
         //console.log(save1);
         //console.log(JSON.parse(save1).GET_DATA);
-        getStr="?"+JSON.parse(save1).GET_DATA
+        getStr="?"+JSON.parse(save1).GET_DATA;
         //console.log(getStr);
         urlParams = new URLSearchParams(getStr);
         //console.log(urlParams);
