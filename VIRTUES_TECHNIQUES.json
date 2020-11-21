@@ -1,0 +1,259 @@
+{
+    "VIRTUES_TECHNIQUES": [
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Relentless"},
+       "VIRTUE_NAME": {"S":"Technique"},
+       "CARD_ID": {"S":"Courage"},
+       "DISPLAY_NUMBER": {"S":"40"},
+       "ACTION_TYPE_NAME": {"S":"2"},
+       "SYNERGY_BEFORE": {"S":"Main"},
+       "CARD_TIP": {"S":"Engage. You gain +3 if you have engaged the target since the start of your last turn. <br> <br> After engaging: You gain +3 to the next engagement you make against the target before the end of your next turn."},
+       "BUY_COST": {"S":"Engage. +3 if you engaged them last turn. +3 if you engage them next turn."},
+       "CARD_TYPE_NAME": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Scrutinize"},
+       "VIRTUE_NAME": {"S":"Technique"},
+       "CARD_ID": {"S":"Clever"},
+       "DISPLAY_NUMBER": {"S":"41"},
+       "ACTION_TYPE_NAME": {"S":"0"},
+       "SYNERGY_BEFORE": {"S":"Encounter"},
+       "CARD_TIP": {"S":"[Primary Clever] <br> <br> (Calling ability: OPE, No Action) <br> <br> Use this ability when you would be able to use a prep action. <br> <br> Choose and learn any one trait of a foe."},
+       "BUY_COST": {"S":"Learn a trait for free."},
+       "CARD_TYPE_NAME": {"S":"0"},
+       "CALLING_TYPE_NAME": {"S":"Primary"},
+       "CALLING_PRIMARY_NAME": {"S":"Clever"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Sleight"},
+       "VIRTUE_NAME": {"S":"Technique"},
+       "CARD_ID": {"S":"Clever"},
+       "DISPLAY_NUMBER": {"S":"42"},
+       "ACTION_TYPE_NAME": {"S":"2"},
+       "SYNERGY_BEFORE": {"S":"Main"},
+       "CARD_TIP": {"S":"Engage with +1 <strong> range. </strong> <br> <br> After engaging: <strong> Hustle </strong> the target."},
+       "BUY_COST": {"S":"Engage with +1 range, and <strong> Hustle </strong> the target."},
+       "CARD_TYPE_NAME": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Spontaneity"},
+       "VIRTUE_NAME": {"S":"Technique"},
+       "CARD_ID": {"S":"Courage"},
+       "DISPLAY_NUMBER": {"S":"43"},
+       "ACTION_TYPE_NAME": {"S":"1"},
+       "SYNERGY_BEFORE": {"S":"Hasten"},
+       "CARD_TIP": {"S":" <strong> Jab </strong> a foe. <br> <br> (This technique counts as a <strong> Jab, </strong> so it cannot be <strong> Surged </strong> or <strong> Combined </strong> unless an effect specifically allows you to <strong> Surge </strong> or <strong> Combine </strong> your <strong> Jabs. </strong>"},
+       "BUY_COST": {"S":"<strong>Jab.</strong>"},
+       "CARD_TYPE_NAME": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Triage"},
+       "VIRTUE_NAME": {"S":"Technique"},
+       "CARD_ID": {"S":"Clever"},
+       "DISPLAY_NUMBER": {"S":"44"},
+       "ACTION_TYPE_NAME": {"S":"1"},
+       "SYNERGY_BEFORE": {"S":"Aid"},
+       "CARD_TIP": {"S":"Choose either <strong> Force </strong> or <strong> Composure, </strong> and choose an ally. The ally gains +2 to the chosen stat until the start of your next turn. <br> <br> <strong> Heal. </strong>"},
+       "BUY_COST": {"S":"<strong>Heal </strong> one ally. They gain either +2 <strong> Force </strong> or +2 <strong> Composure.</strong>"},
+       "CARD_TYPE_NAME": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Spur"},
+       "VIRTUE_NAME": {"S":"Technique"},
+       "CARD_ID": {"S":"Courage"},
+       "DISPLAY_NUMBER": {"S":"45"},
+       "ACTION_TYPE_NAME": {"S":"1"},
+       "SYNERGY_BEFORE": {"S":"Aid"},
+       "CARD_TIP": {"S":"<strong> Heal </strong> an ally. <strong> Hustle </strong> that ally unless they have already been <strong> Hustled </strong> this round."},
+       "BUY_COST": {"S":"<strong>Heal </strong> an ally. <strong> Hustle </strong> them unless they've been <strong> Hustled </strong> this round."},
+       "CARD_TYPE_NAME": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Stir"},
+       "VIRTUE_NAME": {"S":"Technique"},
+       "CARD_ID": {"S":"Compassion"},
+       "DISPLAY_NUMBER": {"S":"46"},
+       "ACTION_TYPE_NAME": {"S":"2/0"},
+       "SYNERGY_BEFORE": {"S":"Main"},
+       "CARD_TIP": {"S":"[Compassion/Clever Calling] <br> <br> Make a <strong> Gentle </strong> engagement. <br> <br> After engaging, choose a hero, and choose a foe. The chosen hero gains a Force bonus to their first engagement before the start of your next turn, and the chosen foe takes a Force penalty to their first engagement before the start of your next turn, equal to 4 times your <strong> Gentled </strong> damage."},
+       "BUY_COST": {"S":"Engage <strong> Gentle. </strong> Hero gains +4 <strong> Force </strong> per gentled, foe gets -4 <strong> Force </strong> per gentled."},
+       "CARD_TYPE_NAME": {"S":"0"},
+       "CALLING_TYPE_NAME": {"S":"Supreme"},
+       "CALLING_PRIMARY_NAME": {"S":"Compassion"},
+       "CALLING_SECONDAY_NAME": {"S":"Clever"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Strengthen"},
+       "VIRTUE_NAME": {"S":"Technique"},
+       "CARD_ID": {"S":"Courage"},
+       "DISPLAY_NUMBER": {"S":"47"},
+       "ACTION_TYPE_NAME": {"S":"1"},
+       "SYNERGY_BEFORE": {"S":"Aid"},
+       "CARD_TIP": {"S":"Choose an ally. That ally gains +3 <strong> Force </strong> to the next engagement they make before your next turn. <br> <br> <strong> Heal. </strong>"},
+       "BUY_COST": {"S":"<strong>Heal </strong> an ally. They gain +3 to their next engagement."},
+       "CARD_TYPE_NAME": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Strive"},
+       "VIRTUE_NAME": {"S":"Technique"},
+       "CARD_ID": {"S":"Courage"},
+       "DISPLAY_NUMBER": {"S":"48"},
+       "ACTION_TYPE_NAME": {"S":"2/0"},
+       "SYNERGY_BEFORE": {"S":"Main"},
+       "CARD_TIP": {"S":"[Courage/Compassion Calling] <br> <br> Before engaging, you may spend any amount of Morale, up to your current amount. <br> <br> Engage with +2 for each Morale spent."},
+       "BUY_COST": {"S":"Engage. You may spend <strong> Morale </strong> to gain +2 per."},
+       "CARD_TYPE_NAME": {"S":"0"},
+       "CALLING_TYPE_NAME": {"S":"Supreme"},
+       "CALLING_PRIMARY_NAME": {"S":"Courage"},
+       "CALLING_SECONDAY_NAME": {"S":"Compassion"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Ward"},
+       "VIRTUE_NAME": {"S":"Technique"},
+       "CARD_ID": {"S":"Compassion"},
+       "DISPLAY_NUMBER": {"S":"49"},
+       "ACTION_TYPE_NAME": {"S":"2/0"},
+       "SYNERGY_BEFORE": {"S":"Main"},
+       "CARD_TIP": {"S":"[Compassion/Courage Calling ] <br> <br> Engage. After engaging, you gain this Aura effect until the end of your next turn: When a foe makes an engagement while in your zone, the target of their engagement may <strong> Jab </strong> that foe."},
+       "BUY_COST": {"S":"Engage and gain Aura: If ally in your zone is engaged, ally may <strong> Jab </strong> engaging foe."},
+       "CARD_TYPE_NAME": {"S":"0"},
+       "CALLING_TYPE_NAME": {"S":"Supreme"},
+       "CALLING_PRIMARY_NAME": {"S":"Compassion"},
+       "CALLING_SECONDAY_NAME": {"S":"Courage"},
+       "EMPOWERABLE_BOOL": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Watchful"},
+       "VIRTUE_NAME": {"S":"Technique"},
+       "CARD_ID": {"S":"Compassion"},
+       "DISPLAY_NUMBER": {"S":"50"},
+       "ACTION_TYPE_NAME": {"S":"1"},
+       "SYNERGY_BEFORE": {"S":"Prep"},
+       "CARD_TIP": {"S":"Prep this action: When another hero you can sense is engaged, you may grant them +2 <strong> Composure </strong> against that engagement."},
+       "BUY_COST": {"S":"Prep: Give engaged ally +2 <strong> Composure </strong> once."},
+       "CARD_TYPE_NAME": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Courageous Outlook"},
+       "VIRTUE_NAME": {"S":"Outlook"},
+       "CARD_ID": {"S":"Courage"},
+       "DISPLAY_NUMBER": {"S":"51"},
+       "ACTION_TYPE_NAME": {"S":"1"},
+       "SYNERGY_BEFORE": {"S":"Outlook"},
+       "CARD_TIP": {"S":"You choose one <strong> Outlook </strong> at the beginning of each encounter, and gain its benefits until the encounter ends. <br> <br> Each time you roll Gathering, gain 1 extra <strong> Courage </strong> focus."},
+       "BUY_COST": {"S":"Choose 1 Outlook each encounter. <br> You gain +1 Courage focus each Gathering."},
+       "CARD_TYPE_NAME": {"S":"0"},
+       "EMPOWERABLE_BOOL": {"S":"false"},
+       "DEFAULT_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Compassion Outlook"},
+       "VIRTUE_NAME": {"S":"Outlook"},
+       "CARD_ID": {"S":"Compassion"},
+       "DISPLAY_NUMBER": {"S":"52"},
+       "ACTION_TYPE_NAME": {"S":"1"},
+       "SYNERGY_BEFORE": {"S":"Outlook"},
+       "CARD_TIP": {"S":"You choose one <strong> Outlook </strong> at the beginning of each encounter, and gain its benefits until the encounter ends. <br> <br> Each time you roll Gathering, gain 1 extra <strong> Compassion </strong> focus."},
+       "BUY_COST": {"S":"Choose 1 Outlook each encounter. <br> You gain +1 Clever focus each Gathering."},
+       "CARD_TYPE_NAME": {"S":"0"},
+       "EMPOWERABLE_BOOL": {"S":"false"},
+       "DEFAULT_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Clever Outlook"},
+       "VIRTUE_NAME": {"S":"Outlook"},
+       "CARD_ID": {"S":"Clever"},
+       "DISPLAY_NUMBER": {"S":"53"},
+       "ACTION_TYPE_NAME": {"S":"1"},
+       "SYNERGY_BEFORE": {"S":"Outlook"},
+       "CARD_TIP": {"S":"You choose one <strong> Outlook </strong> at the beginning of each encounter, and gain its benefits until the encounter ends. <br> <br> Each time you roll Gathering, gain 1 extra <strong> Clever </strong> focus."},
+       "BUY_COST": {"S":"Choose 1 Outlook each encounter. <br> You gain +1 Clever focus each Gathering."},
+       "CARD_TYPE_NAME": {"S":"0"},
+       "EMPOWERABLE_BOOL": {"S":"false"},
+       "DEFAULT_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Hopeful Outlook"},
+       "VIRTUE_NAME": {"S":"Outlook"},
+       "CARD_ID": {"S":"Neutral"},
+       "DISPLAY_NUMBER": {"S":"54"},
+       "ACTION_TYPE_NAME": {"S":"1"},
+       "SYNERGY_BEFORE": {"S":"Outlook"},
+       "CARD_TIP": {"S":"You choose one <strong> Outlook </strong> at the beginning of each encounter, and gain its benefits until the encounter ends. <br> <br> If you lost any Hope last encounter, then you must choose Hopeful Outlook this encounter. <br> <br> Hopeful Outlook provides no benefit."},
+       "BUY_COST": {"S":"Choose this Outlook if you lost Hope last encounter. <br> This outlook gives no bonus."},
+       "CARD_TYPE_NAME": {"S":"0"},
+       "EMPOWERABLE_BOOL": {"S":"false"},
+       "DEFAULT_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Character Sheet"},
+       "VIRTUE_NAME": {"S":"Stats"},
+       "CARD_ID": {"S":"Neutral"},
+       "DISPLAY_NUMBER": {"S":"55"},
+       "ACTION_TYPE_NAME": {"S":"1"},
+       "SYNERGY_BEFORE": {"S":"Sheet"},
+       "CARD_TIP": {"S":"Character sheet will be updated on the printed images automatically."},
+       "BUY_COST": {"S":"Character sheet, populated when printing"},
+       "CARD_TYPE_NAME": {"S":"0"},
+       "EMPOWERABLE_BOOL": {"S":"false"},
+       "DEFAULT_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Stats Sheet"},
+       "VIRTUE_NAME": {"S":"Stats"},
+       "CARD_ID": {"S":"Neutral"},
+       "DISPLAY_NUMBER": {"S":"56"},
+       "ACTION_TYPE_NAME": {"S":"1"},
+       "SYNERGY_BEFORE": {"S":"Sheet"},
+       "CARD_TIP": {"S":"Character sheet will be updated on the printed images automatically."},
+       "BUY_COST": {"S":"Character sheet, populated when printing"},
+       "CARD_TYPE_NAME": {"S":"0"},
+       "EMPOWERABLE_BOOL": {"S":"false"},
+       "DEFAULT_BOOL": {"S":"true"}
+  }}}
+]
+}

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,11 +15,17 @@
 
         <!-- Set the background colour of the document -->
         <style>
+            body {
+              background: #0;
+              color:#cccccc;
+              margin: 0px;
+              padding: 0px;
+              border: 0px;
+            }
             canvas {
                       image-rendering: optimizeSpeed;
                       -webkit-interpolation-mode: nearest-neighbor;
-                      -ms-touch-action: auto;
-                      -touch-action: auto;
+                      -ms-touch-action: none;
                       margin: 0px;
                       padding: 0px;
                       border: 0px;
@@ -67,16 +74,13 @@
     <body>
         <div class="gm4html5_div_class" id="gm4html5_div_id">
             <!-- Create the canvas element the game draws to -->
-            <canvas id="canvas" width="600" height="400"  style="position: absolute; top: 250px; right: 3px" >
+            <canvas id="canvas" width="600" height="400"  style="position: absolute; top: 50%; left: 50%; bottom: -50%; right: -50%; transform: translate(-50%, -50%);" >
                      <p>Your browser doesn't support HTML5 canvas.</p>
             </canvas>
         </div>
 
         <!-- Run the game code -->
-        <script type="text/javascript" src="html5game/test-3.js?HODAC=1943993568"></script>
+        <script type="text/javascript" src="html5game/test-3.js?DSNZB=349364925"></script>
         <script>window.onload = GameMaker_Init;</script>
-    </body>
-    <body>
-        <label>NAME :</label><input type="text" readonly size="10" id="nameField4"></input>
     </body>
 </html>
