@@ -61,8 +61,9 @@
         var urlParams="";
         var playerDataAr=[];
         var maxMembers=10;
-
+        var PCNameFontSize=20;
         //console.log(virtuesJson);
+        
 
     </script>
     
@@ -115,13 +116,29 @@
         top: 0, left: 100, width: 50, height: 70, fill: 'blue' });
         var green = new fabric.Rect({
         top: 100, left: 100, width: 60, height: 60, fill: 'green' });
+
         fabric.Object.prototype.transparentCorners = false;
         scene0.add(red, blue, green)
+        
 
+        function addPlayerNames() {
+            textHeight=100;
+            for (_i = 0; _i < maxMembers; _i++) {
+                console.log(_i);
+                console.log($('#nameField'+_i).val());
+                if ($('#nameField'+_i).val()) {
+                    var PCNameText = new fabric.Text($('#nameField'+_i).val(), { left: 30, top: textHeight, fontSize: PCNameFontSize });
+                    // add player banes to canvas, move down for next one.
+                    scene0.add(PCNameText);
+                    textHeight+=PCNameFontSize+10;
+                }   
+            }
+
+        }
         function addBox() {
-            var red = new fabric.Rect({
+            var newBox = new fabric.Rect({
             top: 30, left: 30, width: 80, height: 50, fill: 'yellow' });
-            scene0.add(red, blue, green);
+            scene0.add(newBox);
         }
         var freeDrawBool=0;
         
@@ -142,6 +159,7 @@
     <form>
         <button type="button" onclick="addBox()">Add box</button>
         <button type="button" onclick="freeDrawToggle()">Free Draw Toggle</button>
+        <button type="button" onclick="addPlayerNames()">Add party names</button>
     </form>
     <br><br><br>
     <form>
