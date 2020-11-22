@@ -7,8 +7,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="chat.js"></script>
     <script src="readWriteDynamo.js"></script>
-
     <script src="virtues_json.js"></script>
+    <script src="fabric.min.js">// see http://fabricjs.com/</script>
     
 
 
@@ -39,12 +39,20 @@
         //console.log(socket);
         // message received - show the message in div#messages
         socket.onmessage = function(event) {
-        let message = event.data;
+            let message = event.data;
 
-        let messageElem = document.createElement('div');
-        messageElem.textContent = message;
-        document.getElementById('messages').prepend(messageElem);
-        
+            let messageElem = document.createElement('div');
+            messageElem.textContent = message;
+            document.getElementById('messages').prepend(messageElem);
+            // check for scene update, if a scene update, get the new scene data and load into the graphics.
+            //var test=toString(message);
+            //console.log(message)
+            if (message.includes("NOTIFY: Player updated scene")) {
+                console.log("scene update detected\n--loading the latest available scene--")
+                // grab the latest scene from the chat log, update the canvas
+                // track scene with the partyID.
+                getLatestScene()
+            }
         }
 
     </script>
@@ -61,10 +69,12 @@
         var urlParams="";
         var playerDataAr=[];
         var maxMembers=10;
-
-        console.log(virtuesJson);
+        var PCNameFontSize=20;
+        //console.log(virtuesJson);
+        
 
     </script>
+    
     <form>
         <label>PLAYER 0 ID :</label><input type="text" size="10" id="idField0" onchange="updateUser($('#idField0').val(),'0')"></input>
         <label>NAME :</label><input type="text" readonly size="10" id="nameField0"></input>
@@ -101,6 +111,85 @@
         <label>Party ID :</label><input type="text" size="10" id="partyIDField"></input><br><br><br><br>
         <label>Total inspiration :</label><input type="text" size="10" id="totalInspirationField" readonly></input>(watch to be sure data is added for the playerID)
         <br><br><br>
+    </form>
+
+    <!-- draw the scene graphics -->
+    <canvas id="sceneCanvas" width="450" height="450" style="border:1px solid #aaa"></canvas>  
+    <script>
+        // add a few shapes
+        var scene0 = this.__canvas = new fabric.Canvas('sceneCanvas');
+        var red = new fabric.Rect({
+        top: 100, left: 0, width: 80, height: 50, fill: 'red' });
+        var blue = new fabric.Rect({
+        top: 0, left: 100, width: 50, height: 70, fill: 'blue' });
+        var green = new fabric.Rect({
+        top: 100, left: 100, width: 60, height: 60, fill: 'green' });
+
+        fabric.Object.prototype.transparentCorners = false;
+        scene0.add(red, blue, green)
+        
+
+        function addPlayerNames() {
+            textHeight=100;
+            for (_i = 0; _i < maxMembers; _i++) {
+                //console.log(_i);
+                //console.log($('#nameField'+_i).val());
+                if ($('#nameField'+_i).val()) {
+                    var PCNameText = new fabric.Text($('#nameField'+_i).val(), { left: 30, top: textHeight, fontSize: PCNameFontSize, fontWeight: "bold", linethrough: false });
+                    // add player banes to canvas, move down for next one.
+                    scene0.add(PCNameText);
+                    textHeight+=PCNameFontSize+10;
+                }   
+            }
+        }
+        function addBox() {
+            var newBox = new fabric.Rect({
+            top: 30, left: 30, width: 120, height: 80, fill: 'yellow' });
+            scene0.add(newBox);
+        }
+        var freeDrawBool=0;
+        
+        function freeDrawToggle() {
+            if (freeDrawBool) {
+                //turn off
+                freeDrawBool=0;
+            }
+            else {
+                freeDrawBool=1;
+            }
+            scene0.freeDrawingBrush.color="orange";
+            scene0.freeDrawingBrush.width="10";
+            scene0.isDrawingMode=freeDrawBool;
+        }
+
+        function updateClients() {
+            // use the chat socket to send the scene updates to the clients.
+            // they should redraw the scene with the new canvas data.
+            //fabric.Canvas#toObject()
+
+            // get the data, can be either as object or as string.
+            var sceneJSON0=JSON.stringify(scene0);
+            var sceneObject0=scene0.toObject();
+            //console.log(sceneJSON0);
+            //console.log(sceneObject0);
+
+            // send to clients as message
+            // (will need to update for new route "onScene" to get out of the chat logging and into the scene logging)
+            // sending a scene update doesn't trigger sending to client, though it is stored in the default chat message log.
+            sendChatText(sceneJSON0,$('#chatIdField').val(),$('#chatNameField').val());
+            sendChatText("NOTIFY: Player updated scene",$('#chatIdField').val(),$('#chatNameField').val());
+
+        }
+
+    </script>
+    <form>
+        <button type="button" onclick="addBox()">Add box</button>
+        <button type="button" onclick="freeDrawToggle()">Free Draw Toggle</button>
+        <button type="button" onclick="addPlayerNames()">Add party names</button>
+        <button type="button" onclick="updateClients()">Update Clients</button>
+    </form>
+    <br><br><br>
+    <form>
         <label>PLAYER DISPLAY :</label><input type="text" size="10" id="idField" onchange="readPlayerData($('#idField').val())"></input>check values for a given player ID
         <br><br>
         <label>Name :</label><input type="text" size="10" id="nameField"></input><br><br>
@@ -113,7 +202,6 @@
         <button type="button" onclick="readPlayerData($('#idField').val())">Update player display stats</button><br><br><br>
         
     </form>
-
     
     <form>
          <br><br>
