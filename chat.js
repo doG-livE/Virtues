@@ -48,7 +48,7 @@ function sendChatText(_message,_id,_sourceName){
     //console.log(this);
     let outgoingMessage = '{"action" : "onMessage" , "message" : "' + _message + '", "sourceName":"'+_sourceName+'"}';
     socket.send(outgoingMessage);
-    console.log(_message+" -  sent")
+    //console.log(_message+" -  sent")
     
     // update the log message (should be initialized in the chat.js file)
     playerChatLogNames.MESSAGE=_message;
@@ -68,7 +68,7 @@ function saveLogMessage(_data) {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     var _dataJSON = JSON.stringify(_data);
-    console.log(_dataJSON);
+    //console.log(_dataJSON);
     var requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -78,7 +78,7 @@ function saveLogMessage(_data) {
     // make API call with parameters and use promises to get response
     fetch("https://oefy7ib51f.execute-api.us-east-2.amazonaws.com/dev/", requestOptions)
     .then(response => response.text())
-    .then(result => console.log(JSON.parse(result).body))
+//    .then(result => console.log(JSON.parse(result).body))
     .catch(error => console.log('error', error));        
 }
 
