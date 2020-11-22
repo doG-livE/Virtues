@@ -7,8 +7,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="chat.js"></script>
     <script src="readWriteDynamo.js"></script>
-
     <script src="virtues_json.js"></script>
+    <script src="fabric.min.js">// see http://fabricjs.com/</script>
     
 
 
@@ -62,9 +62,10 @@
         var playerDataAr=[];
         var maxMembers=10;
 
-        console.log(virtuesJson);
+        //console.log(virtuesJson);
 
     </script>
+    
     <form>
         <label>PLAYER 0 ID :</label><input type="text" size="10" id="idField0" onchange="updateUser($('#idField0').val(),'0')"></input>
         <label>NAME :</label><input type="text" readonly size="10" id="nameField0"></input>
@@ -101,6 +102,49 @@
         <label>Party ID :</label><input type="text" size="10" id="partyIDField"></input><br><br><br><br>
         <label>Total inspiration :</label><input type="text" size="10" id="totalInspirationField" readonly></input>(watch to be sure data is added for the playerID)
         <br><br><br>
+    </form>
+
+    <!-- draw the scene graphics -->
+    <canvas id="sceneCanvas" width="450" height="450" style="border:1px solid #aaa"></canvas>  
+    <script>
+        // add a few shapes
+        var scene0 = this.__canvas = new fabric.Canvas('sceneCanvas');
+        var red = new fabric.Rect({
+        top: 100, left: 0, width: 80, height: 50, fill: 'red' });
+        var blue = new fabric.Rect({
+        top: 0, left: 100, width: 50, height: 70, fill: 'blue' });
+        var green = new fabric.Rect({
+        top: 100, left: 100, width: 60, height: 60, fill: 'green' });
+        fabric.Object.prototype.transparentCorners = false;
+        scene0.add(red, blue, green)
+
+        function addBox() {
+            var red = new fabric.Rect({
+            top: 30, left: 30, width: 80, height: 50, fill: 'yellow' });
+            scene0.add(red, blue, green);
+        }
+        var freeDrawBool=0;
+        
+        function freeDrawToggle() {
+            if (freeDrawBool) {
+                //turn off
+                freeDrawBool=0;
+            }
+            else {
+                freeDrawBool=1;
+            }
+            scene0.freeDrawingBrush.color="orange";
+            scene0.freeDrawingBrush.width="10";
+            scene0.isDrawingMode=freeDrawBool;
+        }
+
+    </script>
+    <form>
+        <button type="button" onclick="addBox()">Add box</button>
+        <button type="button" onclick="freeDrawToggle()">Free Draw Toggle</button>
+    </form>
+    <br><br><br>
+    <form>
         <label>PLAYER DISPLAY :</label><input type="text" size="10" id="idField" onchange="readPlayerData($('#idField').val())"></input>check values for a given player ID
         <br><br>
         <label>Name :</label><input type="text" size="10" id="nameField"></input><br><br>
@@ -113,7 +157,6 @@
         <button type="button" onclick="readPlayerData($('#idField').val())">Update player display stats</button><br><br><br>
         
     </form>
-
     
     <form>
          <br><br>
