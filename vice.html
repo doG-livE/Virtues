@@ -78,30 +78,35 @@
         <label>MORALE :</label><input type="text" size="2" id="currentMoraleField0"></input>
         <label>Base MORALE :</label><input type="text" readonly size="2" id="moraleField0"></input>
         <label>Focus(R-G-B) :</label><input type="text" size="2" id="currentFocusField0"></input>
+        <label>ROOM :</label><input type="text" size="2" id="currentRoomField0"></input>
         <br><br>
         <label>PLAYER 1 ID :</label><input type="text" size="10" id="idField1" onchange="updateUser($('#idField1').val(),'1')"></input>
         <label>NAME :</label><input type="text" readonly size="10" id="nameField1"></input>
         <label>MORALE :</label><input type="text" size="2" id="currentMoraleField1"></input>
         <label>Base MORALE :</label><input type="text" readonly size="2" id="moraleField1"></input>
         <label>Focus(R-G-B) :</label><input type="text" size="2" id="currentFocusField1"></input>
+        <label>ROOM :</label><input type="text" size="2" id="currentRoomField1"></input>
         <br><br>
         <label>PLAYER 2 ID :</label><input type="text" size="10" id="idField2" onchange="updateUser($('#idField2').val(),'2')"></input>
         <label>NAME :</label><input type="text" readonly size="10" id="nameField2"></input>
         <label>MORALE :</label><input type="text" size="2" id="currentMoraleField2"></input>
         <label>Base MORALE :</label><input type="text" readonly size="2" id="moraleField2"></input>
         <label>Focus(R-G-B) :</label><input type="text" size="2" id="currentFocusField2"></input>
+        <label>ROOM :</label><input type="text" size="2" id="currentRoomField2"></input>
         <br><br>
         <label>PLAYER 3 ID :</label><input type="text" size="10" id="idField3" onchange="updateUser($('#idField3').val(),'3')"></input>
         <label>NAME :</label><input type="text" readonly size="10" id="nameField3"></input>
         <label>MORALE :</label><input type="text" size="2" id="currentMoraleField3"></input>
         <label>Base MORALE :</label><input type="text" readonly size="2" id="moraleField3"></input>
         <label>Focus(R-G-B) :</label><input type="text" size="2" id="currentFocusField3"></input>
+        <label>ROOM :</label><input type="text" size="2" id="currentRoomField3"></input>
         <br><br>
         <label>PLAYER 4 ID :</label><input type="text" size="10" id="idField4" onchange="updateUser($('#idField4').val(),'4')"></input>
         <label>NAME :</label><input type="text" readonly size="10" id="nameField4"></input>
         <label>MORALE :</label><input type="text" size="2" id="currentMoraleField4"></input>
         <label>Base MORALE :</label><input type="text" readonly size="2" id="moraleField4"></input>
         <label>Focus(R-G-B) :</label><input type="text" size="2" id="currentFocusField4"></input>
+        <label>ROOM :</label><input type="text" size="2" id="currentRoomField4"></input>
         <br><br>
         <button type="button" onclick="loadPartyIDs($('#partyIDField').val())">Load party ID</button><nbsp;>     </nbsp>
         <button type="button" onclick="savePartyIDs()">Save party</button><br><br>
@@ -113,17 +118,60 @@
     <!-- draw the scene graphics -->
     <canvas id="sceneCanvas" width="450" height="450" style="border:1px solid #aaa"></canvas>  
     <script>
-        // add a few shapes
-        var scene0 = this.__canvas = new fabric.Canvas('sceneCanvas');
-        var red = new fabric.Rect({
-        top: 100, left: 0, width: 80, height: 50, fill: 'red' });
-        var blue = new fabric.Rect({
-        top: 0, left: 100, width: 50, height: 70, fill: 'blue' });
-        var green = new fabric.Rect({
-        top: 100, left: 100, width: 60, height: 60, fill: 'green' });
+       // for more detail http://fabricjs.com/fabric-intro-part-3
+        // create a special class LabeledRect for the room to have a name.
+        // also update the functions for loading and saving.
+        fabric.LabeledRect = fabric.util.createClass(fabric.Rect, {
+        type: 'LabeledRect',
+        // initialize can be of type function(options) or function(property, options), like for text.
+        // no other signatures allowed.
+        initialize: function(options) {
+        options || (options = { });
+        this.callSuper('initialize', options);
+        this.set('label', options.label || '');
+        }, 
+        toObject: function() {
+            return fabric.util.object.extend(this.callSuper('toObject'), {
+                label: this.get('label')
+            });
+        },
+            _render: function(ctx) {
+                this.callSuper('_render', ctx);
+                ctx.font = '20px Helvetica';
+                ctx.fillStyle = '#333';
+                ctx.fillText(this.label, -this.width/2, -this.height/2 + 20);
+            }
+        });
 
-        fabric.Object.prototype.transparentCorners = false;
-        scene0.add(red, blue, green)
+        // standard options type:
+        // argument + options type:
+        // in this example aProp is the property in the object that contains the value
+        // that goes in someValue in `new fabric.MyClass(someValue, options)`
+        fabric.LabeledRect.fromObject = function(object, callback, forceAsync) {
+            return fabric.Object._fromObject('LabeledRect', object, callback, forceAsync, 'label');
+        };
+    
+
+
+
+</script>
+
+    <script>
+        // add a few shapes
+        var LabeledRect = fabric.LabeledRect;
+        var scene0 = this.__canvas = new fabric.Canvas('sceneCanvas');
+        //var red = new fabric.Rect({
+        var red = new LabeledRect({
+            top: 100, left: 0, width: 80, height: 50, fill: 'red', label: 'Room1', rx:10, ry:10});
+        var blue = new LabeledRect({
+            top: 0, left: 100, width: 50, height: 70, fill: 'blue', label: 'Entry', rx:10, ry:10 });
+        var green = new LabeledRect({
+            top: 100, left: 100, width: 60, height: 60, fill: 'green', label: '1', rx:10, ry:10 });
+        var test = new LabeledRect({
+            width: 100,height: 50,left: 100,top: 100,label: 'test',fill: '#faa', rx:10, ry:10 });
+        //fabric.Object.prototype.transparentCorners = true;
+
+        scene0.add(red, blue, green, test)
         
 
         function addPlayerNames() {
@@ -179,7 +227,7 @@
         <button type="button" onclick="addBox()">Add box</button>
         <button type="button" onclick="freeDrawToggle()">Free Draw Toggle</button>
         <button type="button" onclick="addPlayerNames()">Add party names</button>
-        <button type="button" onclick="updateClients()">Update Clients</button>
+        <button type="button" onclick="updateClients()">Update Scene</button>
     </form>
     <br><br><br>
     <form>

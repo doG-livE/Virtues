@@ -8,6 +8,7 @@ var currentStatusNames = {
     "MORALE": "",
     "HOPE": "",
     "FORCE_MOD":"",
+    "ROOM_NAME":"",
 }
 
 
@@ -132,6 +133,9 @@ function loadPartyIDs(_partyID) {
         if ($('#moraleField'+_i).val()) {
             $('#moraleField'+_i).val("");
         }
+        if ($('#currentRoomField'+_i).val()) {
+            $('#currentRoomField'+_i).val("");
+        }
         $('#totalInspirationField'+_i).val("")
     }
     var requestOptions = {
@@ -170,8 +174,6 @@ function loadPartyIDs(_partyID) {
 }
 function savePartyIDs() {
     var _str="";
-    var _moraleStr="";
-    var _focusStr="";
     // up to 10 members in party ... does not preserve party orders ref maxMembers global var
     for(_i = 0; _i < maxMembers; _i++) {
         if ($('#idField'+_i).val()) {
@@ -194,6 +196,7 @@ function savePartyIDs() {
                 _data.MORALE=$('#currentMoraleField'+_i).val();
                 _data.HOPE=$('#currentHopeField'+_i).val();
                 _data.FORCE_MOD=$('#force'+_i).val();
+                _data.ROOM_NAME=$('#currentRoomField'+_i).val();
                 // update for each player
                 console.log(_data);
 
@@ -243,6 +246,7 @@ function getCurrentPlayerStats(_userid,_partyid,_num) {
             var _name=_currentJSON.NAME;
             $('#currentMoraleField'+_num).val(_currentJSON.MORALE);
             $('#currentFocusField'+_num).val(_currentJSON.FOCUS);
+            $('#currentRoomField'+_num).val(_currentJSON.ROOM_NAME);
             //console.log(_currentJSON);
         });
         
@@ -267,6 +271,7 @@ function postCurrentPlayerStats(_currentData) {
         "IN_HAND": _currentData.IN_HAND,
         "ON_COOLDOWN": _currentData.ON_COOLDOWN,
         "READY": _currentData.READY,
+        "ROOM_NAME": _currentData.ROOM_NAME,
     }
     var _dataJSON = JSON.stringify(_data);
     var requestOptions = {
