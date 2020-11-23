@@ -25,13 +25,8 @@ function readPlayerData(_ID) {
         return save1;
     }).then(result => {
         save1=result.body;
-        //console.log(save1);
-        //console.log(JSON.parse(save1).GET_DATA);
         getStr="?"+JSON.parse(save1).GET_DATA
-        //console.log(getStr);
         urlParams = new URLSearchParams(getStr);
-        //console.log(urlParams);
-        //console.log("l1: "+urlParams.get('l1'));
         $(document).ready(() => {
             $('#courageField').val(urlParams.get('l1'));
             $('#compassionField').val(urlParams.get('l2'));
@@ -58,7 +53,6 @@ function updateUser(_ID,_num) {
         return save1;
     }).then(result => {
         save1=result.body
-        //console.log(save1);
         getStr="?"+JSON.parse(save1).GET_DATA;
         urlParams = new URLSearchParams(getStr);
         var _IDJSON=JSON.parse(save1);
@@ -74,8 +68,6 @@ function updateUser(_ID,_num) {
                 "inspiration":urlParams.get('IE'),
                 "id":_IDJSON.ID
             };
-            //console.log(_num);
-            //console.log(playerDataAr[_num]);
             // setting the name field
             $('#idField'+_num).val(playerDataAr[_num].id);
             $('#nameField'+_num).val(playerDataAr[_num].name);
@@ -84,7 +76,6 @@ function updateUser(_ID,_num) {
             var _total=0;
             for(playerData in playerDataAr) {
                 _total+=parseInt(playerDataAr[playerData].inspiration)
-                //console.log(_total)
             }
             $('#totalInspirationField').val(_total);
             return save1;
@@ -107,12 +98,8 @@ function readPlayerChatData(_ID) {
         return save1;
     }).then(result => {
         save1=result.body
-        //console.log(save1);
         getStr="?"+JSON.parse(save1).GET_DATA
-        //console.log(getStr);
         urlParams = new URLSearchParams(getStr);
-        //console.log(urlParams);
-        //console.log("l1: "+urlParams.get('l1'));
         $(document).ready(() => {
             $('#chatNameField').val(urlParams.get('title'));
             return save1;
@@ -187,20 +174,13 @@ function savePartyIDs() {
     var _focusStr="";
     // up to 10 members in party ... does not preserve party orders ref maxMembers global var
     for(_i = 0; _i < maxMembers; _i++) {
-        //console.log($('#idField'+_i).val());
         if ($('#idField'+_i).val()) {
             if(_str) {
                 _str+=",";
                 _str+=$('#idField'+_i).val();
- //               _moraleStr+=",";
- //               _moraleStr+=$('#currentMoraleField'+_i).val();
- //               _focusStr+=",";
- //               _focusStr+=$('#currentFocusField'+_i).val();
             }
             else {
                 _str+=$('#idField'+_i).val();
- //               _moraleStr+=$('#currentMoraleField'+_i).val();
- //               _focusStr+=$('#currentFocusField'+_i).val();
                 // if there is a userid, update the current stats
                 // this is a seperate table from the party for easier updates.
                 // populate known values and call ...
@@ -221,7 +201,6 @@ function savePartyIDs() {
         } 
 
     }
-    //console.log(_str);
     var _partyID=$('#partyIDField').val();
     // instantiate a headers object
     var myHeaders = new Headers();
@@ -229,13 +208,9 @@ function savePartyIDs() {
     myHeaders.append("Content-Type", "application/json");
     var _data = {
         "PARTY_ID":_partyID,
-        "PARTY_MEMBERS":_str,
- //       "PARTY_MORALE":_moraleStr,
- //       "PARTY_FOCUS": _focusStr
+        "PARTY_MEMBERS":_str
     }
-    //console.log(_data);
     var _dataJSON = JSON.stringify(_data);
-    //console.log(_dataJSON);
     var requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -245,7 +220,7 @@ function savePartyIDs() {
     // make API call with parameters and use promises to get response
     fetch("https://fn067im8bk.execute-api.us-east-2.amazonaws.com/dev/", requestOptions)
     .then(response => response.text())
-    .then(result => alert(JSON.parse(result).body))
+//    .then(result => alert(JSON.parse(result).body))
     .catch(error => console.log('error', error)); 
 }
 
@@ -263,15 +238,12 @@ function getCurrentPlayerStats(_userid,_partyid,_num) {
             return _dataRead;
         }).then(result => {
             _dataRead=result.body
-            //console.log(_dataRead);
             var _currentJSON=JSON.parse(_dataRead)
             var _i=0;
             var _name=_currentJSON.NAME;
-            //console.log(_name);
-            //console.log(_currentJSON);
             $('#currentMoraleField'+_num).val(_currentJSON.MORALE);
             $('#currentFocusField'+_num).val(_currentJSON.FOCUS);
-            console.log(_currentJSON);
+            //console.log(_currentJSON);
         });
         
     }
@@ -281,8 +253,6 @@ function postCurrentPlayerStats(_currentData) {
     // instantiate a headers object
     var myHeaders = new Headers();
     // add content type header to object
-    //console.log("****");
-    //console.log(_currentData);
     myHeaders.append("Content-Type", "application/json");
     var _data = {
         "USERID":_currentData.USERID,
@@ -298,10 +268,7 @@ function postCurrentPlayerStats(_currentData) {
         "ON_COOLDOWN": _currentData.ON_COOLDOWN,
         "READY": _currentData.READY,
     }
-    //console.log(_data);
-    //console.log(_data);
     var _dataJSON = JSON.stringify(_data);
-    //console.log(_dataJSON);
     var requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -311,7 +278,7 @@ function postCurrentPlayerStats(_currentData) {
     // make API call with parameters and use promises to get response
     fetch("https://lg5j44cyu3.execute-api.us-east-2.amazonaws.com/dev", requestOptions)
     .then(response => response.text())
-    .then(result => alert(JSON.parse(result).body))
+//    .then(result => alert(JSON.parse(result).body))
     .catch(error => console.log('error', error));        
 
 }
@@ -329,9 +296,7 @@ function updatePartyScene(_partyID,_scene,_userID) {
         "USER_ID": _userID,
         "UPDATE": 1
     }
-    //console.log(_data);
     var _dataJSON = JSON.stringify(_data);
-    //console.log(_dataJSON);
     var requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -339,17 +304,17 @@ function updatePartyScene(_partyID,_scene,_userID) {
         redirect: 'follow'
     };
     // make API call with parameters and use promises to get response
-    alert("test");
     fetch("https://fn067im8bk.execute-api.us-east-2.amazonaws.com/dev/", requestOptions)
     .then(response => response.text())
-    .then(result => alert(JSON.parse(result).body))
+//    .then(result => alert(JSON.parse(result).body))
     .catch(error => console.log('error', error)); 
 }
 
 
-function getLatestScene(_partyID) {
+function showLatestScene(_partyID,_sceneTarget) {
     var raw = JSON.stringify({"PARTY_ID":_partyID,"TABLE_NAME":"VIRTUES_PARTY"});
     // get the PARTY_SCENE data
+    var _scene="";
 
     var requestOptions = {
         method: 'POST',
@@ -364,10 +329,15 @@ function getLatestScene(_partyID) {
     }).then(result => {
         _dataRead=result.body;
         var _partyJSON=JSON.parse(_dataRead);
-        var _scene =_partyJSON.PARTY_SCENE;
-        console.log("done updating scene");
-        console.log(_scene);
+        _scene =_partyJSON.PARTY_SCENE;
+        console.log("done reading scene");
+        //console.log(_scene);
+        scene0Data=_scene;
+        _sceneTarget.loadFromJSON(scene0Data);
         return _scene
+        
     });
-    
+
+    console.log(_scene);
+    return scene0Data;
 }

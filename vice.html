@@ -51,7 +51,9 @@
                 console.log("scene update detected\n--loading the latest available scene--")
                 // grab the latest scene from the chat log, update the canvas
                 // track scene with the partyID. (only 1 scene for the party, less data and more likely all look same)
-                getLatestScene($('#partyIDField').val()); // returns the scene data for the party
+                showLatestScene($('#partyIDField').val(),scene0); // gets scene
+                //console.log(_sceneData);
+                //console.log("*************_sceneData*");
             }
         }
 
@@ -70,6 +72,7 @@
         var playerDataAr=[];
         var maxMembers=10;
         var PCNameFontSize=20;
+        var scene0Data="";
         //console.log(virtuesJson);
         
 
@@ -182,9 +185,7 @@
             sendChatText("NOTIFY: Player updated scene",$('#chatIdField').val(),$('#chatNameField').val());
 
             // save scene to AWS party data table
-            var t_data=updatePartyScene($('#partyIDField').val(),sceneJSON0,$('#chatIdField').val());
-            console.log("*******************************");
-            console.log(t_data);
+            updatePartyScene($('#partyIDField').val(),sceneJSON0,$('#chatIdField').val());
 
         }
 
