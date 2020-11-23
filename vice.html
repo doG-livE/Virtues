@@ -152,8 +152,6 @@
         };
     
 
-
-
 </script>
 
     <script>
@@ -190,6 +188,15 @@
             top: 30, left: 30, width: 120, height: 80, fill: 'yellow' });
             scene0.add(newBox);
         }
+        var newHeight=50;
+        function addRoom() {
+
+            var newBox = new LabeledRect({
+            width: 75,height: 50,left: 100,top: newHeight,label: $('#newRoomNameField').val(),fill: '#faa', rx:10, ry:10 });
+            scene0.add(newBox);
+            newHeight+=75;
+            if (newHeight > 350) {newHeight=25};
+        }
         var freeDrawBool=0;
         
         function freeDrawToggle() {
@@ -220,14 +227,23 @@
 
             // save scene to AWS party data table. currently only one scene allowed per party.
             updatePartyScene($('#partyIDField').val(),sceneJSON0,$('#chatIdField').val());
-        }
+        };
+
+        function deleteSelectedItem(){
+            scene0.remove(scene0.getActiveObject());
+        };
 
     </script>
     <form>
-        <button type="button" onclick="addBox()">Add box</button>
         <button type="button" onclick="freeDrawToggle()">Free Draw Toggle</button>
         <button type="button" onclick="addPlayerNames()">Add party names</button>
         <button type="button" onclick="updateClients()">Update Scene</button>
+        <button type="button" onclick="deleteSelectedItem()">Delete 1 Selected</button>
+        <br>
+        <label>Room Name :</label><input type="text" size="6" id="newRoomNameField"></input>
+        <button type="button" onclick="addRoom()">Add room (with name)</button>
+        
+
     </form>
     <br><br><br>
     <form>
