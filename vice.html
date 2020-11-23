@@ -160,13 +160,13 @@
         var scene0 = this.__canvas = new fabric.Canvas('sceneCanvas');
         //var red = new fabric.Rect({
         var red = new LabeledRect({
-            top: 100, left: 0, width: 80, height: 50, fill: 'red', label: 'Room1', rx:10, ry:10});
+            top: 0, left: 0, width: 175, height: 125, fill: 'red', label: 'Entry', rx:10, ry:10});
         var blue = new LabeledRect({
-            top: 0, left: 100, width: 50, height: 70, fill: 'blue', label: 'Entry', rx:10, ry:10 });
+            top: 0, left: 200, width: 175, height: 125, fill: '#00b7ff', label: 'Room 1', rx:10, ry:10 });
         var green = new LabeledRect({
-            top: 100, left: 100, width: 60, height: 60, fill: 'green', label: '1', rx:10, ry:10 });
+            top: 200, left: 10, width: 175, height: 125, fill: 'green', label: 'Hall', rx:10, ry:10 });
         var test = new LabeledRect({
-            width: 100,height: 50,left: 100,top: 100,label: 'test',fill: '#faa', rx:10, ry:10 });
+            width: 150,height: 125,left: 200,top: 200,label: 'Room 2',fill: '#faa', rx:10, ry:10 });
         //fabric.Object.prototype.transparentCorners = true;
 
         scene0.add(red, blue, green, test)
