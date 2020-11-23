@@ -50,8 +50,8 @@
             if (message.includes("NOTIFY: Player updated scene")) {
                 console.log("scene update detected\n--loading the latest available scene--")
                 // grab the latest scene from the chat log, update the canvas
-                // track scene with the partyID.
-                getLatestScene()
+                // track scene with the partyID. (only 1 scene for the party, less data and more likely all look same)
+                getLatestScene($('#partyIDField').val()); // returns the scene data for the party
             }
         }
 
@@ -176,8 +176,15 @@
             // send to clients as message
             // (will need to update for new route "onScene" to get out of the chat logging and into the scene logging)
             // sending a scene update doesn't trigger sending to client, though it is stored in the default chat message log.
-            sendChatText(sceneJSON0,$('#chatIdField').val(),$('#chatNameField').val());
+            //sendChatText(sceneJSON0,$('#chatIdField').val(),$('#chatNameField').val());
+
+            // let the players know that the scene is updated, also trigger for auto-update.
             sendChatText("NOTIFY: Player updated scene",$('#chatIdField').val(),$('#chatNameField').val());
+
+            // save scene to AWS party data table
+            var t_data=updatePartyScene($('#partyIDField').val(),sceneJSON0,$('#chatIdField').val());
+            console.log("*******************************");
+            console.log(t_data);
 
         }
 

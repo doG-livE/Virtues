@@ -27,7 +27,7 @@ function readPlayerData(_ID) {
         save1=result.body;
         //console.log(save1);
         //console.log(JSON.parse(save1).GET_DATA);
-        getStr="?"+JSON.parse(save1).GET_DATA;
+        getStr="?"+JSON.parse(save1).GET_DATA
         //console.log(getStr);
         urlParams = new URLSearchParams(getStr);
         //console.log(urlParams);
@@ -162,32 +162,20 @@ function loadPartyIDs(_partyID) {
         //console.log(_dataRead);
         var _partyJSON=JSON.parse(_dataRead)
         var _i=0;
+        //console.log(_partyJSON.PARTY_SCENE);
+        if (_partyJSON.PARTY_SCENE) {
+            // update the encounter if there is one
+            scene0.loadFromJSON(_partyJSON.PARTY_SCENE);
+        };
         var _partyMembersAr=_partyJSON.PARTY_MEMBERS.split(/\s*,\s*/);
-//        var _partyMoraleAr=_partyJSON.PARTY_MORALE.split(/\s*,\s*/);
-       // var _partyfocusAr=_partyJSON.PARTY_FOCUS.split(/\s*,\s*/);
+
         //console.log(_partyfocusAr)
         for (_i = 0; _i < _partyMembersAr.length; _i++) {
             updateUser(_partyMembersAr[_i],_i);
             getCurrentPlayerStats(_partyMembersAr[_i],_partyID,_i);
-            //console.log(_partyMembersAr[_i]);
-            //console.log(_partyID);
+
         }
-/*
-        _partyMembersAr.forEach(_member => {
-            $('#idField'+_i).val(_partyMembersAr[_i]);
-            $('#nameField'+_i).val(_partyMembersAr[_i]);
-            $('#idField'+_i).val(_partyMembersAr[_i]);
-            _i++;
-        });
-*/  
-  //      _partyMembersAr.forEach(_member => {
-            //$('#idField'+_i).val(_partyMembersAr[_i]);
 
-//            $('#currentMoraleField'+_i).val(_partyMoraleAr[_i]);
-           // $('#currentFocusField'+_i).val(_partyfocusAr[_i]);
-
-  //          _i++;
-  //      });
         // do not put alert here, it messes with the loops
         console.log("done loading party of "+_i);
     });
@@ -259,8 +247,6 @@ function savePartyIDs() {
     .then(response => response.text())
     .then(result => alert(JSON.parse(result).body))
     .catch(error => console.log('error', error)); 
-    
-
 }
 
 function getCurrentPlayerStats(_userid,_partyid,_num) {
@@ -328,4 +314,60 @@ function postCurrentPlayerStats(_currentData) {
     .then(result => alert(JSON.parse(result).body))
     .catch(error => console.log('error', error));        
 
+}
+
+
+function updatePartyScene(_partyID,_scene,_userID) {
+    // instantiate a headers object
+    var myHeaders = new Headers();
+    // add content type header to object
+    // this one is not adding a record, it is for an update to a current record, no need to replace party members
+    myHeaders.append("Content-Type", "application/json");
+    var _data = {
+        "PARTY_ID": _partyID,
+        "PARTY_SCENE": _scene,
+        "USER_ID": _userID,
+        "UPDATE": 1
+    }
+    //console.log(_data);
+    var _dataJSON = JSON.stringify(_data);
+    //console.log(_dataJSON);
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: _dataJSON,
+        redirect: 'follow'
+    };
+    // make API call with parameters and use promises to get response
+    alert("test");
+    fetch("https://fn067im8bk.execute-api.us-east-2.amazonaws.com/dev/", requestOptions)
+    .then(response => response.text())
+    .then(result => alert(JSON.parse(result).body))
+    .catch(error => console.log('error', error)); 
+}
+
+
+function getLatestScene(_partyID) {
+    var raw = JSON.stringify({"PARTY_ID":_partyID,"TABLE_NAME":"VIRTUES_PARTY"});
+    // get the PARTY_SCENE data
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+    const fetchPromise = fetch("https://yowtulzb9l.execute-api.us-east-2.amazonaws.com/dev/", requestOptions);
+    fetchPromise.then(response => {
+        _dataRead=response.json();
+        return _dataRead;
+    }).then(result => {
+        _dataRead=result.body;
+        var _partyJSON=JSON.parse(_dataRead);
+        var _scene =_partyJSON.PARTY_SCENE;
+        console.log("done updating scene");
+        console.log(_scene);
+        return _scene
+    });
+    
 }
