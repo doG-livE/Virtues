@@ -36,7 +36,6 @@
  
         const chatURL = "wss://h86xupi032.execute-api.us-east-2.amazonaws.com/dev/";
         let socket = new WebSocket(chatURL);
-        //console.log(socket);
         // message received - show the message in div#messages
         socket.onmessage = function(event) {
             let message = event.data;
@@ -45,15 +44,11 @@
             messageElem.textContent = message;
             document.getElementById('messages').prepend(messageElem);
             // check for scene update, if a scene update, get the new scene data and load into the graphics.
-            //var test=toString(message);
-            //console.log(message)
             if (message.includes("NOTIFY: Player updated scene")) {
                 console.log("scene update detected\n--loading the latest available scene--")
-                // grab the latest scene from the chat log, update the canvas
+                // grab the latest scene from the VIRTUES_PARTY table, update the canvas
                 // track scene with the partyID. (only 1 scene for the party, less data and more likely all look same)
-                showLatestScene($('#partyIDField').val(),scene0); // gets scene
-                //console.log(_sceneData);
-                //console.log("*************_sceneData*");
+                showLatestScene($('#partyIDField').val(),scene0); // set fabric object to party scene data from partyID
             }
         }
 
@@ -65,7 +60,6 @@
         var myHeaders = new Headers();
         // add content type header to object
         myHeaders.append("Content-Type", "application/json");
-        //var results=[];
         var save1="";
         var getStr="";
         var urlParams="";
@@ -73,7 +67,7 @@
         var maxMembers=10;
         var PCNameFontSize=20;
         var scene0Data="";
-        //console.log(virtuesJson);
+
         
 
     </script>
@@ -135,8 +129,6 @@
         function addPlayerNames() {
             textHeight=100;
             for (_i = 0; _i < maxMembers; _i++) {
-                //console.log(_i);
-                //console.log($('#nameField'+_i).val());
                 if ($('#nameField'+_i).val()) {
                     var PCNameText = new fabric.Text($('#nameField'+_i).val(), { left: 30, top: textHeight, fontSize: PCNameFontSize, fontWeight: "bold", linethrough: false });
                     // add player banes to canvas, move down for next one.
@@ -173,20 +165,13 @@
             // get the data, can be either as object or as string.
             var sceneJSON0=JSON.stringify(scene0);
             var sceneObject0=scene0.toObject();
-            //console.log(sceneJSON0);
-            //console.log(sceneObject0);
 
             // send to clients as message
-            // (will need to update for new route "onScene" to get out of the chat logging and into the scene logging)
-            // sending a scene update doesn't trigger sending to client, though it is stored in the default chat message log.
-            //sendChatText(sceneJSON0,$('#chatIdField').val(),$('#chatNameField').val());
-
             // let the players know that the scene is updated, also trigger for auto-update.
             sendChatText("NOTIFY: Player updated scene",$('#chatIdField').val(),$('#chatNameField').val());
 
-            // save scene to AWS party data table
+            // save scene to AWS party data table. currently only one scene allowed per party.
             updatePartyScene($('#partyIDField').val(),sceneJSON0,$('#chatIdField').val());
-
         }
 
     </script>
@@ -208,7 +193,6 @@
         <label>Compassion :</label><input type="text" size="10" id="compassionField"><br><br>
         <!-- set button onClick method to call function we defined passing input values as parameters -->
         <button type="button" onclick="readPlayerData($('#idField').val())">Update player display stats</button><br><br><br>
-        
     </form>
     
     <form>
@@ -218,16 +202,12 @@
         <!-- set button onClick method to call function we defined passing input values as parameters -->
         <!--<textarea rows="6" cols="40" id="chatTextBox" readonly></textarea>
         -->
-
         <br>
         <label>Chat :</label><input type="text" size="40" id="chatField"></label>
         <button type="button" onclick="sendChatText($('#chatField').val(),$('#chatIdField').val(),$('#chatNameField').val())">Send</button></input>
         <br>
-        <!--
-        <button type="button" onclick="readPlayerChatData($('#chatIdField').val())">Update player display stats</button>
-        <br><br><br>
-        -->
     </form>
+
     <div id="messages">Chat messages go here, newest at top</div>
        <!-- div with messages -->
     
