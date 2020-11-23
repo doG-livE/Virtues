@@ -61,6 +61,29 @@ function sendChatText(_message,_id,_sourceName){
     //return false;        
 }
 
+/*
+function sendChatSceneUpdate(_sceneData,_id,_sourceName) {
+    // update scene from UI.
+    // us onScene route.
+    // format message as {"action" : "onScene" , "message" : "Message"}
+    // note: this is saving to the party table.
+    //console.log(this);
+    //let outgoingMessage = '{"action" : "onScene" , "message" : "' + _message + '", "sourceName":"'+_sourceName+'"}';
+    //socket.send(outgoingMessage);
+    //console.log(_message+" -  sent")
+    
+    // update the log message (should be initialized in the chat.js file)
+    playerChatLogNames.MESSAGE=_message;
+    playerChatLogNames.SOURCE_ID=_id;
+    playerChatLogNames.SOURCE_NAME="PlayerChat";
+    playerChatLogNames.CLIENT_MILLIS=Date.now();
+    //console.log(playerChatLogNames);
+
+    saveLogMessage(playerChatLogNames);
+    //return false;        
+}
+*/
+
 function saveLogMessage(_data) {
     // save the message to the log
     // note: data must contain SOURCE_NAME
