@@ -164,7 +164,6 @@ function loadPartyIDs(_partyID) {
         for (_i = 0; _i < _partyMembersAr.length; _i++) {
             updateUser(_partyMembersAr[_i],_i);
             getCurrentPlayerStats(_partyMembersAr[_i],_partyID,_i);
-
         }
 
         // do not put alert here, it messes with the loops
@@ -347,32 +346,7 @@ function showLatestScene(_partyID,_sceneTarget) {
     return scene0Data;
 }
 
-/*
-function getAllTableData(_tableName) {
-    // store in allNPCTraits
-    var raw = JSON.stringify({"TABLE_NAME":_tableName});
-    var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
-    };
-    const fetchPromise = fetch("https://bgjcen5ru2.execute-api.us-east-2.amazonaws.com/dev", requestOptions);
-    fetchPromise.then(response => {
-        _dataRead=response.json();
-        return _dataRead;
-    }).then(result => {
-        _dataRead=result.body;
-        var _traitsJSON=_dataRead;
-        //console.log("done reading traits");
-        queryDataHolder=_traitsJSON
-        //console.log(queryDataHolder);
-        return queryDataHolder
-    });
-}
-*/
-
-// promise is not getting completed, use async and await instead
+// returning promise, completing scan after function call.
 async function getAllTableData(_tableName) {
     // store in allNPCTraits
     var raw = JSON.stringify({"TABLE_NAME":_tableName});
