@@ -10,7 +10,7 @@
     <script src="virtues_json.js"></script>
     <script src="fabric.min.js">// see http://fabricjs.com/</script>
     
-
+    
 
     <title>VICE development</title>
     <!-- Add some CSS to change client UI -->
@@ -51,7 +51,10 @@
                 showLatestScene($('#partyIDField').val(),scene0); // set fabric object to party scene data from partyID
             }
         }
-
+        function onloadCreation() {
+            // set NPCroom to whatever the deault was
+            updateRoomSelect("NPCRoom",scene0);
+        }
     </script>
 
 </head>
@@ -67,9 +70,10 @@
         var maxMembers=10;
         var PCNameFontSize=20;
         var scene0Data="";
+        var allNPCTraits="";
+        var queryDataHolder="";
 
         
-
     </script>
     
     <form>
@@ -150,9 +154,7 @@
         fabric.LabeledRect.fromObject = function(object, callback, forceAsync) {
             return fabric.Object._fromObject('LabeledRect', object, callback, forceAsync, 'label');
         };
-    
-
-</script>
+    </script>
 
     <script>
         // add a few shapes
@@ -170,7 +172,72 @@
         //fabric.Object.prototype.transparentCorners = true;
 
         scene0.add(red, blue, green, test)
+
         
+        function updateRoomSelect(_selectListName, _scene) {
+            // first, remove all the items
+            var _sel = document.getElementById(_selectListName);
+            while(_sel.options.length > 1) {
+                _sel.removeChild( _sel.options[1] );
+            }
+            // loop through the scene objects, get any with labels,
+            var _i=0;
+            var _label="";
+          
+            for (_i = 0; _i < _scene._objects.length; _i++) {
+                if (_scene._objects[_i].label) {_label=_scene._objects[_i].label};
+                if (_label) {
+                    var _opt = document.createElement('option');
+                    _opt.text = _label;
+                    _opt.value = _label;
+                    _sel.add(_opt, _sel[_i+1]); // keeping level 0 unchanged
+                }
+            }
+        }
+
+        function updateTraitSelectList(_selectListName){
+            // get the trais from AWS, update list(s).
+            // stores traits in queryDataHolder
+            // get the trait data if missing
+ /*
+ // This would be the bad way to do this as you are blocking b from running until the a function returns. 
+const makeSomething = async() => {
+    const a = await getSomething('apples')
+    const b = await getSomething('strawberry')
+     return [a, b]
+   }
+   */
+
+            if (!allNPCTraits) {
+                allNPCTraits=getAllTableData("VIRTUES_TRAITS");
+                //console.log("*************");
+                //console.log(allNPCTraits);
+                //allNPCTraits=queryDataHolder;
+            }
+            allNPCTraits.then((allNPCTraits) => {
+                //console.log(allNPCTraits.body);
+                allNPCTraits=allNPCTraits.body
+                //console.log(allNPCTraits);
+                // loop through the select lists
+                for (_j=0; _j <maxMembers; _j++) {
+                    // run for each select list to update.
+                    var _sel = document.getElementById(_selectListName+_j);
+                    if (_sel && allNPCTraits) {
+                        // first, remove all the items
+                        while(_sel.options.length > 1) {
+                            _sel.removeChild( _sel.options[1] );
+                        }
+                        //use API query data
+                        for (_i = 0; _i < allNPCTraits.length; _i++) {
+                            var _opt = document.createElement('option');
+                            _opt.text = allNPCTraits[_i].TRAIT_NAME+" -- "+allNPCTraits[_i].TRAIT_TIP;
+                            _opt.value = allNPCTraits[_i].TRAIT_NAME;
+                            _sel.add(_opt, _sel[_i+1]); // keeping level 0 unchanged
+                        }
+                    } 
+                }
+            });
+        }
 
         function addPlayerNames() {
             textHeight=100;
@@ -190,15 +257,17 @@
         }
         var newHeight=50;
         function addRoom() {
-
             var newBox = new LabeledRect({
             width: 75,height: 50,left: 100,top: newHeight,label: $('#newRoomNameField').val(),fill: '#faa', rx:10, ry:10 });
             scene0.add(newBox);
             newHeight+=75;
             if (newHeight > 350) {newHeight=25};
+            //update the pulldown for room changes
+            updateRoomSelect("NPCRoom",scene0);
         }
+
         var freeDrawBool=0;
-        
+
         function freeDrawToggle() {
             if (freeDrawBool) {
                 //turn off
@@ -231,6 +300,7 @@
 
         function deleteSelectedItem(){
             scene0.remove(scene0.getActiveObject());
+            updateRoomSelect("NPCRoom",scene0);
         };
 
     </script>
@@ -242,6 +312,44 @@
         <br>
         <label>Room Name :</label><input type="text" size="6" id="newRoomNameField"></input>
         <button type="button" onclick="addRoom()">Add room (with name)</button>
+    </form>
+<br>
+    <form>
+        <!-- NPC party management-->
+        <!--  put current in current stats table virtues_NPC_CURRENT_STATS to avoid PK conflicts
+            name
+            traits
+            partyID
+            starting_room
+            traitsFOWList
+            starting_morale
+            starting_compusure
+            starting_force
+            starting_range
+            owner_id
+
+
+        -->
+        NPC requires a party ID and an NPC ID, changes are limited to the creator ID.
+        <br>Save the map!  Be sure to have a party ID entered and loaded at the top.
+        <br>
+        <label>CREATOR ID :</label><input type="text" size="10" id="NPCCreator" onchange='updateRoomSelect("NPCRoom",scene0)'></input>
+        <br><label>PARTY ID :</label>SEE PARTY SECTION ABOVE -- SET THERE</input>
+        <br><label>NPC ID :</label><input type="text" size="10" id="NPCId"></input>
+        <br><label>NPC NAME :</label><input type="text" size="10" id="NPCName"></input>
+        Visible?<input type="checkbox" size="10" id="NPCVisible" value="Visible">
+        <br><label>NPC STARTING ROOM :</label><select id="NPCRoom"><option>Select Encounter Room</option></select>
+        <br><label>NPC Morale :</label><input type="text" size="10" id="NPCMoral"></input>
+        <br><label>NPC Composure :</label><input type="text" size="10" id="NPCComposure"></input>
+        <br><label>NPC Force :</label><input type="text" size="10" id="NPCForce"></input>
+        <br><label>NPC Range :</label><input type="text" size="10" id="NPCRange"></input>
+        <br><button type="button" onclick='updateTraitSelectList("NPCTrait")'>Load traits</button>
+        <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait1" value="Visible"><label>Trait 1 :</label><select id="NPCTrait1"><option>Select Trait</option></select></input>
+        <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait2" value="Visible"><label>Trait 2 :</label><select id="NPCTrait2"><option>Select Trait</option></select></input>
+        <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait3" value="Visible"><label>Trait 3 :</label><select id="NPCTrait3"><option>Select Trait</option></select></input>
+        <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait4" value="Visible"><label>Trait 4 :</label><select id="NPCTrait4"><option>Select Trait</option></select></input>
+        <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait5" value="Visible"><label>Trait 5 :</label><select id="NPCTrait5"><option>Select Trait</option></select></input>
+        <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait6" value="Visible"><label>Trait 6 :</label><select id="NPCTrait6"><option>Select Trait</option></select></input>
         
 
     </form>

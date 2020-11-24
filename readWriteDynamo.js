@@ -346,3 +346,56 @@ function showLatestScene(_partyID,_sceneTarget) {
     console.log(_scene);
     return scene0Data;
 }
+
+/*
+function getAllTableData(_tableName) {
+    // store in allNPCTraits
+    var raw = JSON.stringify({"TABLE_NAME":_tableName});
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+    const fetchPromise = fetch("https://bgjcen5ru2.execute-api.us-east-2.amazonaws.com/dev", requestOptions);
+    fetchPromise.then(response => {
+        _dataRead=response.json();
+        return _dataRead;
+    }).then(result => {
+        _dataRead=result.body;
+        var _traitsJSON=_dataRead;
+        //console.log("done reading traits");
+        queryDataHolder=_traitsJSON
+        //console.log(queryDataHolder);
+        return queryDataHolder
+    });
+}
+*/
+
+// promise is not getting completed, use async and await instead
+async function getAllTableData(_tableName) {
+    // store in allNPCTraits
+    var raw = JSON.stringify({"TABLE_NAME":_tableName});
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+    let response = await fetch("https://bgjcen5ru2.execute-api.us-east-2.amazonaws.com/dev", requestOptions);
+        
+    if (response.status == 200) {
+        let _dataRead=await response.json();
+        //console.log(_dataRead.body); 
+        queryDataHolder= _dataRead.body;     
+        return _dataRead
+    }
+    throw new Error(res.status);
+    
+}
+getAllTableData('database error').catch(console.log); // Error: 404 (4)
+        
+
+
