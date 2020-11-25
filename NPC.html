@@ -18,11 +18,18 @@
     body {
         background-color: #6f7750;
         }
-    label, button {
+        label {
         color: #00ff22;
         font-family: Arial, Helvetica, sans-serif;
         font-size: 14px;
         margin-left: 5px;
+        }
+        button {
+        color: #312eca;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        margin-left: 5px;
+        font-weight: bold;
         }
      input {
         color: #a39799;
@@ -149,32 +156,80 @@
         <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait3" value="Visible"><label>Trait 4 :</label><select id="NPCTrait3"><option value="">Select Trait</option></select></input>
         <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait4" value="Visible"><label>Trait 5 :</label><select id="NPCTrait4"><option value="">Select Trait</option></select></input>
         <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait5" value="Visible"><label>Trait 6 :</label><select id="NPCTrait5"><option value="">Select Trait</option></select></input>
-        <br><button type="button" onclick='saveNPC()'>Save NPCs for party ID</button>
-
+        <br><button type="button" onclick='saveNPC()'>Save NPC to party ID</button>
+        <br><br>
+        <label>LOAD NPC Named :</label><input type="text" size="10" id="loadNPCNameField"></input>
+        <button type="button" onclick="loadNPC($('#partyIdField').val(),$('#loadNPCNameField').val())">Load NPC NAME for MAP PARTY ID</button>
     </form>
     <br><br><br>
     <form>
         <label>NPC CURRENT STATS VIEW (below) for NPC Party ID -->:</label>
         <input type="text" size="10" id="partyIDField"></input>
         <!-- set button onClick method to call function we defined passing input values as parameters -->
-        <button type="button" onclick="updateDisplayNPCParty($('#partyIDField').val(),'NPCParty')">Update NPC display stats</button>
+        <button type="button" onclick="updateDisplayNPCParty($('#partyIdField').val(),'NPCParty')">Update NPC display stats</button>
     </form>
     <div id="NPCParty">NPC Party members go here</div>
     <!-- div with messages -->
 <script>
+    function loadNPC(_partyID, _NPCName){
+        // load npc into fields.
+        // first get updated values for the NPC.
+        // check for the values, break if not there
+        //console.log("party :"+_partyID+"  name :"+ _NPCName);
+        if (_partyID == "" || _NPCName == "") {return alert("name and party are both required")};
+        var _NPCPromise=getNPCOrScanNPCParty("VIRTUES_NPC",_partyID,_NPCName);
+        _NPCPromise.then((_myNPC) => { // complete the DB read from the function
+            _myNPC=_myNPC.body;
+            //console.log(_myNPC)
+            // should be one row returned
+            if (_myNPC.length != 1){return alert("did not find a unique record")};
+            // set the values in the form
+            $('#NPCCreator').val(_myNPC[0].CREATOR_ID);
+            $('#NPCComposure').val(_myNPC[0].NPC_BASE_COMPOSURE);
+            $('#NPCForce').val(_myNPC[0].NPC_BASE_FORCE);
+            $('#NPCMoral').val(_myNPC[0].NPC_BASE_MORALE);
+            $('#NPCRange').val(_myNPC[0].NPC_BASE_RANGE);
+            $('#NPCVisible').val(_myNPC[0].NPC_BASE_VISIBILITY);
+            $('#NPCName').val(_myNPC[0].NPC_NAME);
+            // select the room
+            $('#NPCRoom').val(_myNPC[0].NPC_ROOM_NAME);
+            var _opt = document.createElement('option');
+            var _sel = document.getElementById('NPCRoom');
+            _opt.text = _myNPC[0].NPC_ROOM_NAME;
+            _opt.value = _myNPC[0].NPC_ROOM_NAME;
+            _sel.add(_opt, _sel[0]); // setting default to thius room
+
+            // loop through the traits, set the fields for each trait.
+            // convert to object
+            var traitsKnownList=JSON.parse(_myNPC[0].NPC_TRAITS_AR);
+            var traitsShownList=JSON.parse(_myNPC[0].NPC_BASE_TRAITS_VISIBLE_AR);
+            console.log(traitsKnownList);
+            //console.log(traitsKnownList);
+            for (_i=0; _i < traitsKnownList.length; _i++) {
+                // select obj
+                _sel = document.getElementById('NPCTrait'+_i);
+                _opt = document.createElement('option');
+                _opt.text = traitsKnownList[_i];// setting default to this trait (no flavor text)
+                _opt.value = traitsKnownList[_i];
+                _opt.selected = 1; // selecct
+                _sel.add(_opt, _sel[0]); 
+                
+                // also mark the ckeckboxes
+                if (traitsShownList[_i]) {
+                    document.getElementById("NPCVisibleTrait"+_i).checked=1;
+                }
+             }
+        });
+    }
     function updateDisplayNPCParty(_party_ID,_divName) {
         // update the specified div.
         // get all the table data, then loop through for the given ID, send to the given DIV
-        var allNPCsPromise=getNPCParty("VIRTUES_NPC"); // get all the records
-        //console.log(allNPCsPromise);
-        // read promise data and update dev.
+        var allNPCsPromise=getNPCOrScanNPCParty("VIRTUES_NPC"); // get all the records
+        // get returned promise data and update dev.
         allNPCsPromise.then((allNPCs) => { // complete the DB read from the function
             allNPCs=allNPCs.body;
             // clear the div
-            //console.log(allNPCs);
             document.getElementById(_divName).innerHTML = ""; 
-            //document.getElementById('NPCParty').innerHTML = "";
-            //document.getElementById('NPCParty').prepend(messageElem);
             for (_i=0; _i < allNPCs.length; _i++) {
                 // add a row of text for each it.
                 // check for partyid
@@ -185,8 +240,6 @@
                 }        
             }
         });
-
-        //document.getElementById('_divName').prepend(messageElem);
     }
 </script>
     <form>
@@ -194,8 +247,6 @@
         <label>ID for Chat :</label><input type="text" size="10" id="chatIdField" onchange="readPlayerChatData($('#chatIdField').val())"></input>
         <label>Name :</label><input type="text" size="10" id="chatNameField"></input><br><br>
         <!-- set button onClick method to call function we defined passing input values as parameters -->
-        <!--<textarea rows="6" cols="40" id="chatTextBox" readonly></textarea>
-        -->
         <br>
         <label>Chat :</label><input type="text" size="40" id="chatField"></label>
         <button type="button" onclick="sendChatText($('#chatField').val(),$('#chatIdField').val(),$('#chatNameField').val())">Send</button></input>

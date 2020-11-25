@@ -198,7 +198,7 @@ function savePartyIDs() {
                 _data.FORCE_MOD=$('#force'+_i).val();
                 _data.ROOM_NAME=$('#currentRoomField'+_i).val();
                 // update for each player
-                console.log(_data);
+                // console.log(_data);
 
             postCurrentPlayerStats(_data);
         } 
@@ -343,7 +343,7 @@ function showLatestScene(_partyID,_sceneTarget) {
         
     });
 
-    console.log(_scene);
+    //console.log(_scene);
     return scene0Data;
 }
 
@@ -386,10 +386,10 @@ function saveNPC() {
             _traitsVisibilityAr.push(document.getElementById("NPCVisibleTrait"+_i).checked)
         }
     }
-    $("#NPCTrait1").val()
+    //$("#NPCTrait1").val()
     var _data = {
             "PARTY_ID": document.getElementById('partyIdField').value,
-            "CREATOR_ID":document.getElementById('NPCCreator').value,
+            "CREATOR_ID": document.getElementById('NPCCreator').value,
             "NPC_NAME": document.getElementById('NPCName').value,
             "NPC_BASE_VISIBILITY":document.getElementById("NPCVisible").checked,
             "NPC_BASE_MORALE": document.getElementById('NPCMoral').value,
@@ -411,24 +411,20 @@ function saveNPC() {
     // make API call with parameters and use promises to get response
     fetch("https://7dxqxy0m90.execute-api.us-east-2.amazonaws.com/dev", requestOptions)
     .then(response => response.text())
-    .then(result => alert(JSON.parse(result).body))
+    //.then(result => alert(JSON.parse(result).body))
     .catch(error => console.log('error', error));        
 }
     
 
-async function getNPCParty(_tableName,_partyID,_NPCName) {
+async function getNPCOrScanNPCParty(_tableName,_partyID,_NPCName) {
     // get the NPC party members for a party
     // get the NPC current status for the members
     // update the party text lines and/or fields after return
     // API to return all records if not providing both keys. Return matching records if providing keys.
     if (!_tableName) {_tableName="VIRTUES_NPC"};
-    if (_partyID && _NPCName) {
-        var raw = JSON.stringify({"TABLE_NAME":_tableName});
-    }
-    else {
-        var raw = JSON.stringify({"TABLE_NAME":_tableName,"NPC_NAME":_NPCName,"PARTY_ID":_partyID});
-    }
+    var raw = JSON.stringify({"TABLE_NAME":_tableName,"NPC_NAME":_NPCName,"PARTY_ID":_partyID});
     //console.log(raw);
+
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     var requestOptions = {
