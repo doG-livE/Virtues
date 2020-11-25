@@ -10,6 +10,7 @@ var currentStatusNames = {
     "FORCE_MOD":"",
     "ROOM_NAME":"",
 }
+var partyMembersAr=[];
 
 
 function readPlayerData(_ID) {
@@ -159,7 +160,7 @@ function loadPartyIDs(_partyID) {
             scene0.loadFromJSON(_partyJSON.PARTY_SCENE);
         };
         var _partyMembersAr=_partyJSON.PARTY_MEMBERS.split(/\s*,\s*/);
-
+        partyMembersAr=_partyMembersAr;
         //console.log(_partyfocusAr)
         for (_i = 0; _i < _partyMembersAr.length; _i++) {
             updateUser(_partyMembersAr[_i],_i);
@@ -284,19 +285,19 @@ function postCurrentPlayerStats(_currentData) {
     .then(response => response.text())
 //    .then(result => alert(JSON.parse(result).body))
     .catch(error => console.log('error', error));        
-
 }
 
 
 function updatePartyScene(_partyID,_scene,_userID) {
     // instantiate a headers object
+    var sceneJSON0=JSON.stringify(_scene);
     var myHeaders = new Headers();
     // add content type header to object
     // this one is not adding a record, it is for an update to a current record, no need to replace party members
     myHeaders.append("Content-Type", "application/json");
     var _data = {
         "PARTY_ID": _partyID,
-        "PARTY_SCENE": _scene,
+        "PARTY_SCENE": sceneJSON0,
         "USER_ID": _userID,
         "UPDATE": 1
     }
@@ -310,7 +311,7 @@ function updatePartyScene(_partyID,_scene,_userID) {
     // make API call with parameters and use promises to get response
     fetch("https://fn067im8bk.execute-api.us-east-2.amazonaws.com/dev/", requestOptions)
     .then(response => response.text())
-//    .then(result => alert(JSON.parse(result).body))
+    .then(result => updateRoomSelect("NPCRoom",_scene)) //alert(JSON.parse(result).body))
     .catch(error => console.log('error', error)); 
 }
 
@@ -371,5 +372,81 @@ async function getAllTableData(_tableName) {
 }
 getAllTableData('database error').catch(console.log); // Error: 404 (4)
         
+
+function saveNPC() {
+    // save NPC values to AWS, Keys == NPC_NAME and PARTY_ID.
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    // create arrays for traits. traitsListAr, traitsVisibilityAr
+    var _traitsListAr=[];
+    var _traitsVisibilityAr=[];
+    for (_i=0; _i < maxMembers; _i++ ) {
+        if ($("#NPCTrait"+_i).val()) {
+            _traitsListAr.push($("#NPCTrait"+_i).val());
+            _traitsVisibilityAr.push(document.getElementById("NPCVisibleTrait"+_i).checked)
+        }
+    }
+    $("#NPCTrait1").val()
+    var _data = {
+            "PARTY_ID": document.getElementById('partyIdField').value,
+            "CREATOR_ID":document.getElementById('NPCCreator').value,
+            "NPC_NAME": document.getElementById('NPCName').value,
+            "NPC_BASE_VISIBILITY":document.getElementById("NPCVisible").checked,
+            "NPC_BASE_MORALE": document.getElementById('NPCMoral').value,
+            "NPC_BASE_FORCE": document.getElementById('NPCForce').value,
+            "NPC_BASE_COMPOSURE": document.getElementById('NPCComposure').value,
+            "NPC_BASE_RANGE": document.getElementById('NPCRange').value,
+            "NPC_BASE_TRAITS_VISIBLE_AR": JSON.stringify(_traitsVisibilityAr),
+            "NPC_TRAITS_AR": JSON.stringify(_traitsListAr),
+            "NPC_ROOM_NAME": document.getElementById("NPCRoom").value
+    }
+    var _dataJSON = JSON.stringify(_data);
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: _dataJSON,
+        redirect: 'follow'
+    };
+    console.log(_data);
+    // make API call with parameters and use promises to get response
+    fetch("https://7dxqxy0m90.execute-api.us-east-2.amazonaws.com/dev", requestOptions)
+    .then(response => response.text())
+    .then(result => alert(JSON.parse(result).body))
+    .catch(error => console.log('error', error));        
+}
+    
+
+async function getNPCParty(_tableName,_partyID,_NPCName) {
+    // get the NPC party members for a party
+    // get the NPC current status for the members
+    // update the party text lines and/or fields after return
+    // API to return all records if not providing both keys. Return matching records if providing keys.
+    if (!_tableName) {_tableName="VIRTUES_NPC"};
+    if (_partyID && _NPCName) {
+        var raw = JSON.stringify({"TABLE_NAME":_tableName});
+    }
+    else {
+        var raw = JSON.stringify({"TABLE_NAME":_tableName,"NPC_NAME":_NPCName,"PARTY_ID":_partyID});
+    }
+    //console.log(raw);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+    let response = await fetch("https://50ittpn3u4.execute-api.us-east-2.amazonaws.com/dev", requestOptions);
+        
+    if (response.status == 200) {
+        let _dataRead=await response.json();
+        //console.log(_dataRead.body); 
+        queryDataHolder= _dataRead.body;     
+        return _dataRead
+    }
+    throw new Error(res.status);
+}
+getAllTableData('database error').catch(console.log); // Error: 404 (4)
 
 

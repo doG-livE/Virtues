@@ -182,7 +182,7 @@
     <form>
         <button type="button" onclick="freeDrawToggle()">Free Draw Toggle</button>
         <button type="button" onclick="addPlayerNames()">Add party names</button>
-        <button type="button" onclick="updateClients()">Update Scene</button>
+        <button type="button" onclick="updateClients($('#partyIdField').val(),scene0,$('#chatIdField').val(),$('#chatNameField').val())">Update Scene</button>
         <button type="button" onclick="deleteSelectedItem()">Delete 1 Selected</button>
         <br>
         <label>Room Name :</label><input type="text" size="6" id="newRoomNameField"></input>

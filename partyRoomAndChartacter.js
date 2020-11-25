@@ -7,15 +7,18 @@ function updateRoomSelect(_selectListName, _scene) {
     // loop through the scene objects, get any with labels,
     var _i=0;
     var _label="";
+
+    //console.log(_selectListName);
+    //console.log(_scene);
   
     for (_i = 0; _i < _scene._objects.length; _i++) {
-        if (_scene._objects[_i].label) {_label=_scene._objects[_i].label};
-        if (_label) {
-            var _opt = document.createElement('option');
+        if (_scene._objects[_i].type=="LabeledRect" && _scene._objects[_i].label){
+            _label=_scene._objects[_i].label
+             var _opt = document.createElement('option');
             _opt.text = _label;
             _opt.value = _label;
             _sel.add(_opt, _sel[_i+1]); // keeping level 0 unchanged
-        }
+       };
     }
 }
 
@@ -92,21 +95,12 @@ function freeDrawToggle() {
     scene0.isDrawingMode=freeDrawBool;
 }
 
-function updateClients() {
-    // use the chat socket to send the scene updates to the clients.
-    // they should redraw the scene with the new canvas data.
-    //fabric.Canvas#toObject()
-
-    // get the data, can be either as object or as string.
-    var sceneJSON0=JSON.stringify(scene0);
-    var sceneObject0=scene0.toObject();
-
-    // send to clients as message
+function updateClients(_partyID,_scene,_chatID, _chatName) {
     // let the players know that the scene is updated, also trigger for auto-update.
-    sendChatText("NOTIFY: Player updated scene",$('#chatIdField').val(),$('#chatNameField').val());
+    sendChatText("NOTIFY: Player updated scene",_chatID,_chatName);
 
     // save scene to AWS party data table. currently only one scene allowed per party.
-    updatePartyScene($('#partyIDField').val(),sceneJSON0,$('#chatIdField').val());
+    updatePartyScene(_partyID,_scene,_chatID);
 };
 
 function deleteSelectedItem(){
