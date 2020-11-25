@@ -1,0 +1,234 @@
+{
+    "VIRTUES_TRAITS": [
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Comeback"},
+       "TRAIT_HOLDER": {"S":"Foe"},
+       "TRAIT_TEXT": {"S":"The first time this foe is vanquished, it resurrects in the same zone it was vanquished in at the start of the next round. It heals to full after resurrecting, but it now has stats as if it were 1 Challenge Slot category weaker."},
+       "TRAIT_TIP": {"S":"After being vanquished, resurrects weaker."},
+       "TRAIT_KEYS": {"S":"Elite"},
+       "AUTO_REVEALED": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Noble"},
+       "TRAIT_HOLDER": {"S":"Foe"},
+       "TRAIT_TEXT": {"S":"Doubles the Force or Composure bonuses granted to him by other foes."},
+       "TRAIT_TIP": {"S":"Doubles Force/Composure bonuses."},
+       "TRAIT_KEYS": {"S":"Elite"},
+       "AUTO_REVEALED": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Stalking"},
+       "TRAIT_HOLDER": {"S":"Foe"},
+       "TRAIT_TEXT": {"S":"This foe deals 1 Hope damage whenever it engages (it does not even make a roll when engaging). However, this foe may only take 1 action each round."},
+       "TRAIT_TIP": {"S":"Deals 1 Hope instead of making normal engagement. Only 1 action."},
+       "TRAIT_KEYS": {"S":"Elite"},
+       "AUTO_REVEALED": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Vengeful"},
+       "TRAIT_HOLDER": {"S":"Foe"},
+       "TRAIT_TEXT": {"S":"Whenever another foe is Vanquished, this foe gains a cumulative +2 Force."},
+       "TRAIT_TIP": {"S":"Cumulative +2 Force when another foe Vanquished."},
+       "TRAIT_KEYS": {"S":"Elite"},
+       "AUTO_REVEALED": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Aggressor"},
+       "TRAIT_HOLDER": {"S":"Foe"},
+       "TRAIT_TEXT": {"S":"This foe may use its Prep action to Jab. This foe's Main action engagements gain Fork. Whenever this foe suffers a non-damage effect of a hero's engagement, this foe gains cumulative +1 Force until the end of its next turn."},
+       "TRAIT_TIP": {"S":"Prep to Jab. Main action gains Fork. Gets +1 Force til end of turn when hit with effect."},
+       "TRAIT_KEYS": {"S":"Template"},
+       "AUTO_REVEALED": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Artillery"},
+       "TRAIT_HOLDER": {"S":"Foe"},
+       "TRAIT_TEXT": {"S":"This foe has Ranged 3 and can engage from up to three zones away, but this foe cannot engage heroes in its own zone! This foe also cannot engage and take a Step during the same turn."},
+       "TRAIT_TIP": {"S":"Ranged 3. Can't engage adjacent. Can't Step if engages."},
+       "TRAIT_KEYS": {"S":"Template"},
+       "AUTO_REVEALED": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Brash"},
+       "TRAIT_HOLDER": {"S":"Foe"},
+       "TRAIT_TEXT": {"S":"This foe has an extra +6 Health and Force, but has -2 Composure."},
+       "TRAIT_TIP": {"S":"+6 Health and Force, -2 Composure"},
+       "TRAIT_KEYS": {"S":"Template"},
+       "AUTO_REVEALED": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Commanding"},
+       "TRAIT_HOLDER": {"S":"Foe"},
+       "TRAIT_TEXT": {"S":"Can use Main action to cause any other foe to Jab. Can use Hasten action to Hustle any other foe."},
+       "TRAIT_TIP": {"S":"Main to make any foe Jab. Hasten to Hustle any foe."},
+       "TRAIT_KEYS": {"S":"Template"},
+       "AUTO_REVEALED": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Distracting"},
+       "TRAIT_HOLDER": {"S":"Foe"},
+       "TRAIT_TEXT": {"S":"Heroes in this foe's zone cannot use prepped actions, even if they otherwise must. Heroes in this foe's zone suffer -2 Force."},
+       "TRAIT_TIP": {"S":"Heroes in this zone -2 Force, can't use preps."},
+       "TRAIT_KEYS": {"S":"Template"},
+       "AUTO_REVEALED": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Manipulative"},
+       "TRAIT_HOLDER": {"S":"Foe"},
+       "TRAIT_TEXT": {"S":"This foe may Hustle its target after engaging. This foe may Augment any of its engagements to grant the engagement Fork, Gentle, and Ranged 1."},
+       "TRAIT_TIP": {"S":"Can Hustle its target. Can Augment engagement with Gentle, Fork, and Ranged 1."},
+       "TRAIT_KEYS": {"S":"Template"},
+       "AUTO_REVEALED": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Skirmisher"},
+       "TRAIT_HOLDER": {"S":"Foe"},
+       "TRAIT_TEXT": {"S":"Whenever this foe engages, OR is engaged, it may Hustle itself after the engagement. When this foe engages, it gains +6 if it has changed zones this turn."},
+       "TRAIT_TIP": {"S":"Hustles after engaging or being engaged. +6 Force if it moved this turn"},
+       "TRAIT_KEYS": {"S":"Template"},
+       "AUTO_REVEALED": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Sneak"},
+       "TRAIT_HOLDER": {"S":"Foe"},
+       "TRAIT_TEXT": {"S":"This foe can use its Prep action to gain the Hidden trait. If this foe engages while Hidden, it gains +8 Force and then loses the Hidden trait. This foe can Hustle itself after making an engagement. "},
+       "TRAIT_TIP": {"S":"Prep to hide. If sneak attack, +8 but lose Hidden. Can Hustle self after engaging."},
+       "TRAIT_KEYS": {"S":"Template"},
+       "AUTO_REVEALED": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Cheerleader"},
+       "TRAIT_HOLDER": {"S":"Friend"},
+       "TRAIT_TEXT": {"S":"All Heroes have +2 Force as long as this NPC is active. If this NPC is Vanquished, all Heroes have -2 Force until the end of the encounter."},
+       "TRAIT_TIP": {"S":"I grant you +2 Force, but if I drop, you get -2 Force."},
+       "TRAIT_KEYS": {"S":" "},
+       "AUTO_REVEALED": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Panicked"},
+       "TRAIT_HOLDER": {"S":"Friend"},
+       "TRAIT_TEXT": {"S":"After this NPC is engaged, they Hustle toward a hero, and then any hero in their zone takes 1 damage."},
+       "TRAIT_TIP": {"S":"After I'm engaged, I hustle toward you, then any hero in my zone takes 1 damage."},
+       "TRAIT_KEYS": {"S":" "},
+       "AUTO_REVEALED": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Resolve"},
+       "TRAIT_HOLDER": {"S":"Friend"},
+       "TRAIT_TEXT": {"S":"This NPC can be engaged by a Hero, and doing so won't hurt this NPC but will instead grant this NPC extra Resolve equal to the damage that would be dealt. Whenever this NPC engages, it gains a Force bonus equal to its total Resolve."},
+       "TRAIT_TIP": {"S":"Engaging me permanently increases my Force."},
+       "TRAIT_KEYS": {"S":"Beneficial"},
+       "AUTO_REVEALED": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Responsive"},
+       "TRAIT_HOLDER": {"S":"Friend"},
+       "TRAIT_TEXT": {"S":"Any hero can spend their Main action to cause this NPC to Jab. Any hero may spend their Hasten action to cause this NPC to Step."},
+       "TRAIT_TIP": {"S":"Heroes can Hasten to let me Step, Main to let me Jab."},
+       "TRAIT_KEYS": {"S":"Beneficial"},
+       "AUTO_REVEALED": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Capacity X"},
+       "TRAIT_HOLDER": {"S":"Zone"},
+       "TRAIT_TEXT": {"S":"If X number of characters are in this zone, then any character who enters the zone must immediately Hustle another character in the zone out."},
+       "TRAIT_TIP": {"S":"If X characters in zone, next character in hustles another character out."},
+       "TRAIT_KEYS": {"S":" "},
+       "AUTO_REVEALED": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Cover"},
+       "TRAIT_HOLDER": {"S":"Zone"},
+       "TRAIT_TEXT": {"S":"Characters in this zone can't be targeted by Ranged engagements."},
+       "TRAIT_TIP": {"S":"Characters in this zone can't be targeted by Ranged engagements."},
+       "TRAIT_KEYS": {"S":" "},
+       "AUTO_REVEALED": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Fated X"},
+       "TRAIT_HOLDER": {"S":"Zone"},
+       "TRAIT_TEXT": {"S":"Whenever a character in this zone would roll a die, instead assume that they rolled X on the die."},
+       "TRAIT_TIP": {"S":"All die rolls in this zone instead come up X."},
+       "TRAIT_KEYS": {"S":" "},
+       "AUTO_REVEALED": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Goal"},
+       "TRAIT_HOLDER": {"S":"Zone"},
+       "TRAIT_TEXT": {"S":"At the end of each round, if all heroes are in this zone, then the heroes win the encounter."},
+       "TRAIT_TIP": {"S":"At the end of each round, if all heroes are in this zone, then the heroes win the encounter."},
+       "TRAIT_KEYS": {"S":" "},
+       "AUTO_REVEALED": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Invigorating"},
+       "TRAIT_HOLDER": {"S":"Zone"},
+       "TRAIT_TEXT": {"S":"Characters in this zone heal for 1 at the end of their turn."},
+       "TRAIT_TIP": {"S":"Characters in this zone heal for 1 at the end of their turn."},
+       "TRAIT_KEYS": {"S":" "},
+       "AUTO_REVEALED": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Pacifying"},
+       "TRAIT_HOLDER": {"S":"Zone"},
+       "TRAIT_TEXT": {"S":"Characters in this zone can't engage."},
+       "TRAIT_TIP": {"S":"Characters in this zone can't engage."},
+       "TRAIT_KEYS": {"S":" "},
+       "AUTO_REVEALED": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"TRAIT_NAME": {"S":"Turret"},
+       "TRAIT_HOLDER": {"S":"Zone"},
+       "TRAIT_TEXT": {"S":"Characters in this zone gain +2 Range."},
+       "TRAIT_TIP": {"S":"Characters in this zone gain +2 Range."},
+       "TRAIT_KEYS": {"S":" "},
+       "AUTO_REVEALED": {"S":"false"}
+  }}}
+]
+}

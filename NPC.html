@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="UTF-8">
+    <!--jQuery and other libraries-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="chat.js"></script>
+    <script src="readWriteDynamo.js"></script>
+    <script src="virtues_json.js"></script>
+    <script src="fabric.min.js">// see http://fabricjs.com/</script>
+    <script src="partyRoomAndChartacter.js"></script>    
+    
+
+    <title>VICE development</title>
+    <!-- Add some CSS to change client UI -->
+    <style>
+    body {
+        background-color: #6f7750;
+        }
+        label {
+        color: #00ff22;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        margin-left: 5px;
+        }
+        button {
+        color: #312eca;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        margin-left: 5px;
+        font-weight: bold;
+        }
+     input {
+        color: #a39799;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        margin-left: 5px;
+        }
+    </style>
+
+    <script>
+        // setup chatsocket and onloads.
+        const chatURL = "wss://h86xupi032.execute-api.us-east-2.amazonaws.com/dev/";
+        let socket = new WebSocket(chatURL);
+        // message received - show the message in div#messages
+        socket.onmessage = function(event) {
+            let message = event.data;
+
+            let messageElem = document.createElement('div');
+            messageElem.textContent = message;
+            document.getElementById('messages').prepend(messageElem);
+            // check for scene update, if a scene update, get the new scene data and load into the graphics.
+            if (message.includes("NOTIFY: Player updated scene")) {
+                console.log("scene update detected\n--loading the latest available scene--")
+                // grab the latest scene from the VIRTUES_PARTY table, update the canvas
+                // track scene with the partyID. (only 1 scene for the party, less data and more likely all look same)
+                showLatestScene($('#partyIDField').val(),scene0); // set fabric object to party scene data from partyID
+            }
+        }
+        function onloadCreation() {
+            // set NPCroom to whatever the deault was
+            updateRoomSelect("NPCRoom",scene0);
+            updateTraitSelectList("NPCTrait");
+        }
+    </script>
+
+</head>
+<body onload="onloadCreation()">
+    <script>
+        var myHeaders = new Headers();
+        // add content type header to object
+        myHeaders.append("Content-Type", "application/json");
+        var save1="";
+        var getStr="";
+        var urlParams="";
+        var playerDataAr=[];
+        var maxMembers=10;
+        var PCNameFontSize=20;
+        var scene0Data="";
+        var allNPCTraits="";
+        var queryDataHolder="";
+        var newHeight=50;
+        var freeDrawBool=0;
+    </script>
+    
+
+    <!-- draw the scene graphics -->
+    <canvas id="sceneCanvas" width="450" height="450" style="border:1px solid #aaa"></canvas>  
+    <script> // the canvas above and this block start the scene graphics.
+        fabric.LabeledRect = fabric.util.createClass(fabric.Rect, {
+        type: 'LabeledRect',
+        initialize: function(options) {
+        options || (options = { });
+        this.callSuper('initialize', options);
+        this.set('label', options.label || '');
+        }, 
+        toObject: function() {
+            return fabric.util.object.extend(this.callSuper('toObject'), {
+                label: this.get('label')
+            });
+        },
+            _render: function(ctx) {
+                this.callSuper('_render', ctx);
+                ctx.font = '20px Helvetica';
+                ctx.fillStyle = '#333';
+                ctx.fillText(this.label, -this.width/2, -this.height/2 + 20);
+            }
+        });
+        fabric.LabeledRect.fromObject = function(object, callback, forceAsync) {
+            return fabric.Object._fromObject('LabeledRect', object, callback, forceAsync, 'label');
+        };
+        // load the shapes from a save after given a partyid
+        var LabeledRect = fabric.LabeledRect;
+        var scene0 = this.__canvas = new fabric.Canvas('sceneCanvas');
+    </script>
+    <form>
+        NPC requires a party ID, changes are limited to the creator ID.
+        <br>Save the map if making changes!  Be sure to have a party ID entered and loaded at the top.
+        <br><label>PARTY ID :</label><input type="text" size="10" id="partyIdField" onchange=''></input>
+        <button type="button" onclick="loadPartyIDs($('#partyIdField').val())"> <-- Load Scene for party ID</button>
+        <br><br><button type="button" onclick="freeDrawToggle()">Free Draw Toggle</button>
+        <button type="button" onclick="addPlayerNames()">Add party names</button>
+        <button type="button" onclick="updateClients($('#partyIdField').val(),scene0,$('#chatIdField').val(),$('#chatNameField').val())">Update Scene</button>
+        <button type="button" onclick="deleteSelectedItem()">Delete 1 Selected Object</button>
+        <br>
+        <label>Room Name :</label><input type="text" size="6" id="newRoomNameField"></input>
+        <button type="button" onclick="addRoom()">Add room (with name)</button>
+        <!--<br><label>Number PCs in room :</label><input type="text" size="2" id="numPCInRoomField" readonly></input>(system value)
+        <br><label>Number NPCs in room :</label><input type="text" size="2" id="numNPCInRoomField" readonly></input>(system value)
+        -->
+    </form>
+<br>
+    <form>
+        <!-- NPC party management-->
+        <!--  put current in current stats table virtues_NPC_CURRENT_STATS to avoid PK conflicts
+        -->
+        <br>
+        <label>CREATOR ID :</label><input type="text" size="10" id="NPCCreator" ></input>
+
+        <!-- <br><label>NPC ID :</label><input type="text" size="10" id="NPCId"></input>
+        name should be enough, do not need ID at the moment-->
+        <br><label>NPC NAME :</label><input type="text" size="10" id="NPCName"></input>
+        <br>Visible?<input type="checkbox" size="10" id="NPCVisible" value="Visible"> leave unchecked for fog of war
+        <br><label>NPC STARTING ROOM :</label>
+        <button type="button" onclick='updateRoomSelect("NPCRoom",scene0),updateRoomSelect("NPCCurrentRoom",scene0)'>Update pulldown from room display---></button>
+        <select id="NPCRoom"><option value="">Select Encounter Room</option></select>
+        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Current Room :</label>
+        <select id="NPCCurrentRoom"><option value="">Select Encounter Room</option></select>
+        <br>Use button to update room list after scene changes.
+        <br><label>Base NPC Morale :</label><input type="text" size="10" id="NPCMoral"></input>
+        <label>Current NPC Morale :</label><input type="text" size="10" id="NPCCurrentMoral"></input>
+        <br><label>Base NPC Composure :</label><input type="text" size="10" id="NPCComposure"></input>
+        <label>Current Composure MOD:</label><input type="text" size="10" id="NPCCurrentComposure"></input>
+        <br><label>Base NPC Force :</label><input type="text" size="10" id="NPCForce"></input>
+        <label>Current Force MOD :</label><input type="text" size="10" id="NPCCurrentForce"></input>
+        <br><label>Base NPC Range :</label><input type="text" size="10" id="NPCRange"></input>
+        <label>Current Range MOD :</label><input type="text" size="10" id="NPCCurrentRange"></input>
+        <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait0" value="Visible"><label>Trait 1 :</label><select id="NPCTrait0"><option value="">Select Trait</option></select></input>
+        <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait1" value="Visible"><label>Trait 2 :</label><select id="NPCTrait1"><option value="">Select Trait</option></select></input>
+        <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait2" value="Visible"><label>Trait 3 :</label><select id="NPCTrait2"><option value="">Select Trait</option></select></input>
+        <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait3" value="Visible"><label>Trait 4 :</label><select id="NPCTrait3"><option value="">Select Trait</option></select></input>
+        <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait4" value="Visible"><label>Trait 5 :</label><select id="NPCTrait4"><option value="">Select Trait</option></select></input>
+        <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait5" value="Visible"><label>Trait 6 :</label><select id="NPCTrait5"><option value="">Select Trait</option></select></input>
+        <br><button type="button" onclick="saveNPC()">Save NPC BASE stats to party ID</button>
+        <br><button type="button" onclick="sendNPCCurrent($('#partyIdField').val(),$('#NPCName').val())">Save NPC "CURRENT" stats</button>
+        <br><br>
+        <label>LOAD NPC Named :</label><input type="text" size="10" id="loadNPCNameField"></input>
+        <button type="button" onclick="loadNPC($('#partyIdField').val(),$('#loadNPCNameField').val())">Load NPC NAME for MAP PARTY ID</button>
+    </form>
+    <br><br><br>
+    <form>
+        <label>NPC CURRENT STATS VIEW (below) for NPC Party ID -->:</label>
+        <input type="text" size="10" id="partyIDField"></input>
+        <!-- set button onClick method to call function we defined passing input values as parameters -->
+        <button type="button" onclick="updateDisplayNPCParty($('#partyIdField').val(),'NPCParty')">Update NPC display stats</button>
+    </form>
+    <div id="NPCParty">NPC Party members go here</div>
+    <!-- div with messages -->
+<script>
+    function sendNPCCurrent(_partyID,_NPCName) {
+        // get the data and send to upload 
+        _dataStr=JSON.stringify({
+            "TABLE_NAME":"VIRTUES_NPC_CURRENT_STATS",
+            "PARTY_ID":_partyID,
+            "NPC_NAME":_NPCName,
+            "MORALE_CURRENT":$("#NPCCurrentMorale").val(),
+            "COMPOSURE_CURRENT_MOD":$("#NPCCurrentComposure").val(),
+            "ROOM_CURRENT":$("#NPCCurrentRoom").val(),
+            "FORCE_CURRENT_MOD":$("#NPCCurrentForce").val(),
+            "RANGE_CURRENT_MOD":$("#NPCCurrentRange").val()
+        })
+        //console.log(_dataStr);
+        // send the data to AWS
+        saveDataToTable(_dataStr);
+    }
+    function loadNPC(_partyID, _NPCName){
+        // load npc into fields.
+        // first get updated values for the NPC.
+        // check for the values, break if not there
+        //console.log("party :"+_partyID+"  name :"+ _NPCName);
+        if (_partyID == "" || _NPCName == "") {return alert("name and party are both required")};
+        var _NPCPromise=getNPCOrScanNPCParty("VIRTUES_NPC",_partyID,_NPCName);
+        _NPCPromise.then((_myNPC) => { // complete the DB read from the function
+            _myNPC=_myNPC.body;
+            //console.log(_myNPC)
+            // should be one row returned
+            if (_myNPC.length != 1){return alert("did not find an unique record")};
+            // set the values in the form
+            $('#NPCCreator').val(_myNPC[0].CREATOR_ID);
+            $('#NPCComposure').val(_myNPC[0].NPC_BASE_COMPOSURE);
+            $('#NPCForce').val(_myNPC[0].NPC_BASE_FORCE);
+            $('#NPCMoral').val(_myNPC[0].NPC_BASE_MORALE);
+            $('#NPCRange').val(_myNPC[0].NPC_BASE_RANGE);
+            document.getElementById("NPCVisible").checked=_myNPC[0].NPC_BASE_VISIBILITY;
+            $('#NPCName').val(_myNPC[0].NPC_NAME);
+            // select the room
+            $('#NPCRoom').val(_myNPC[0].NPC_ROOM_NAME);
+            var _opt = document.createElement('option');
+            var _sel = document.getElementById('NPCRoom');
+            _opt.text = _myNPC[0].NPC_ROOM_NAME;
+            _opt.value = _myNPC[0].NPC_ROOM_NAME;
+            _sel.add(_opt, _sel[0]); // setting default to thius room
+
+            // loop through the traits, set the fields for each trait.
+            // convert to object
+            var traitsKnownList=JSON.parse(_myNPC[0].NPC_TRAITS_AR);
+            var traitsShownList=JSON.parse(_myNPC[0].NPC_BASE_TRAITS_VISIBLE_AR);
+            //console.log(traitsKnownList);
+            //console.log(traitsKnownList);
+            for (_i=0; _i < traitsKnownList.length; _i++) {
+                // select obj
+                _sel = document.getElementById('NPCTrait'+_i);
+                _opt = document.createElement('option');
+                _opt.text = traitsKnownList[_i];// setting default to this trait (no flavor text)
+                _opt.value = traitsKnownList[_i];
+                _opt.selected = 1; // selecct
+                _sel.add(_opt, _sel[0]); 
+                
+                // also mark the ckeckboxes
+                if (traitsShownList[_i]) {
+                    document.getElementById("NPCVisibleTrait"+_i).checked=1;
+                }
+             }
+        });
+    }
+    function updateDisplayNPCParty(_party_ID,_divName) {
+        // update the specified div.
+        // get all the table data, then loop through for the given ID, send to the given DIV
+        var allNPCsPromise=getNPCOrScanNPCParty("VIRTUES_NPC"); // get all the records
+        // get returned promise data and update dev.
+        allNPCsPromise.then((allNPCs) => { // complete the DB read from the function
+            allNPCs=allNPCs.body;
+            // clear the div
+            document.getElementById(_divName).innerHTML = ""; 
+            for (_i=0; _i < allNPCs.length; _i++) {
+                // add a row of text for each it.
+                // check for partyid
+                if (allNPCs[_i].PARTY_ID == _party_ID) {
+                    let messageElem = document.createElement('div');
+                    messageElem.textContent = JSON.stringify(allNPCs[_i]);
+                    document.getElementById(_divName).prepend(messageElem);
+                }        
+            }
+        });
+    }
+</script>
+    <form>
+         <br><br><br><br><br>
+        <label>ID for Chat :</label><input type="text" size="10" id="chatIdField" onchange="readPlayerChatData($('#chatIdField').val())"></input>
+        <label>Name :</label><input type="text" size="10" id="chatNameField"></input><br><br>
+        <!-- set button onClick method to call function we defined passing input values as parameters -->
+        <br>
+        <label>Chat :</label><input type="text" size="40" id="chatField"></label>
+        <button type="button" onclick="sendChatText($('#chatField').val(),$('#chatIdField').val(),$('#chatNameField').val())">Send</button></input>
+        <br>
+    </form>
+
+    <div id="messages">Chat messages go here, newest at top</div>
+       <!-- div with messages -->
+    
+</body>
+</html>

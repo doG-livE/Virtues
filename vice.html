@@ -9,8 +9,8 @@
     <script src="readWriteDynamo.js"></script>
     <script src="virtues_json.js"></script>
     <script src="fabric.min.js">// see http://fabricjs.com/</script>
+    <script src="partyRoomAndChartacter.js"></script>
     
-
 
     <title>VICE development</title>
     <!-- Add some CSS to change client UI -->
@@ -36,7 +36,6 @@
  
         const chatURL = "wss://h86xupi032.execute-api.us-east-2.amazonaws.com/dev/";
         let socket = new WebSocket(chatURL);
-        //console.log(socket);
         // message received - show the message in div#messages
         socket.onmessage = function(event) {
             let message = event.data;
@@ -45,34 +44,39 @@
             messageElem.textContent = message;
             document.getElementById('messages').prepend(messageElem);
             // check for scene update, if a scene update, get the new scene data and load into the graphics.
-            //var test=toString(message);
-            //console.log(message)
             if (message.includes("NOTIFY: Player updated scene")) {
                 console.log("scene update detected\n--loading the latest available scene--")
-                // grab the latest scene from the chat log, update the canvas
+                // grab the latest scene from the VIRTUES_PARTY table, update the canvas
                 // track scene with the partyID. (only 1 scene for the party, less data and more likely all look same)
-                getLatestScene($('#partyIDField').val()); // returns the scene data for the party
+                showLatestScene($('#partyIDField').val(),scene0); // set fabric object to party scene data from partyID
             }
         }
-
+        function onloadCreation() {
+            // set NPCroom to whatever the deault was
+            //updateRoomSelect("NPCRoom",scene0);
+            //updateTraitSelectList("NPCTrait");
+            // those are both for NPC screen
+        }
     </script>
 
 </head>
-<body>
+<body onload="onloadCreation()">
     <script>
         var myHeaders = new Headers();
         // add content type header to object
         myHeaders.append("Content-Type", "application/json");
-        //var results=[];
         var save1="";
         var getStr="";
         var urlParams="";
         var playerDataAr=[];
         var maxMembers=10;
         var PCNameFontSize=20;
-        //console.log(virtuesJson);
+        var scene0Data="";
+        var allNPCTraits="";
+        var queryDataHolder="";
+        var newHeight=50;
+        var freeDrawBool=0;
         
-
     </script>
     
     <form>
@@ -81,30 +85,35 @@
         <label>MORALE :</label><input type="text" size="2" id="currentMoraleField0"></input>
         <label>Base MORALE :</label><input type="text" readonly size="2" id="moraleField0"></input>
         <label>Focus(R-G-B) :</label><input type="text" size="2" id="currentFocusField0"></input>
+        <label>ROOM :</label><input type="text" size="2" id="currentRoomField0"></input>
         <br><br>
         <label>PLAYER 1 ID :</label><input type="text" size="10" id="idField1" onchange="updateUser($('#idField1').val(),'1')"></input>
         <label>NAME :</label><input type="text" readonly size="10" id="nameField1"></input>
         <label>MORALE :</label><input type="text" size="2" id="currentMoraleField1"></input>
         <label>Base MORALE :</label><input type="text" readonly size="2" id="moraleField1"></input>
         <label>Focus(R-G-B) :</label><input type="text" size="2" id="currentFocusField1"></input>
+        <label>ROOM :</label><input type="text" size="2" id="currentRoomField1"></input>
         <br><br>
         <label>PLAYER 2 ID :</label><input type="text" size="10" id="idField2" onchange="updateUser($('#idField2').val(),'2')"></input>
         <label>NAME :</label><input type="text" readonly size="10" id="nameField2"></input>
         <label>MORALE :</label><input type="text" size="2" id="currentMoraleField2"></input>
         <label>Base MORALE :</label><input type="text" readonly size="2" id="moraleField2"></input>
         <label>Focus(R-G-B) :</label><input type="text" size="2" id="currentFocusField2"></input>
+        <label>ROOM :</label><input type="text" size="2" id="currentRoomField2"></input>
         <br><br>
         <label>PLAYER 3 ID :</label><input type="text" size="10" id="idField3" onchange="updateUser($('#idField3').val(),'3')"></input>
         <label>NAME :</label><input type="text" readonly size="10" id="nameField3"></input>
         <label>MORALE :</label><input type="text" size="2" id="currentMoraleField3"></input>
         <label>Base MORALE :</label><input type="text" readonly size="2" id="moraleField3"></input>
         <label>Focus(R-G-B) :</label><input type="text" size="2" id="currentFocusField3"></input>
+        <label>ROOM :</label><input type="text" size="2" id="currentRoomField3"></input>
         <br><br>
         <label>PLAYER 4 ID :</label><input type="text" size="10" id="idField4" onchange="updateUser($('#idField4').val(),'4')"></input>
         <label>NAME :</label><input type="text" readonly size="10" id="nameField4"></input>
         <label>MORALE :</label><input type="text" size="2" id="currentMoraleField4"></input>
         <label>Base MORALE :</label><input type="text" readonly size="2" id="moraleField4"></input>
         <label>Focus(R-G-B) :</label><input type="text" size="2" id="currentFocusField4"></input>
+        <label>ROOM :</label><input type="text" size="2" id="currentRoomField4"></input>
         <br><br>
         <button type="button" onclick="loadPartyIDs($('#partyIDField').val())">Load party ID</button><nbsp;>     </nbsp>
         <button type="button" onclick="savePartyIDs()">Save party</button><br><br>
@@ -116,85 +125,73 @@
     <!-- draw the scene graphics -->
     <canvas id="sceneCanvas" width="450" height="450" style="border:1px solid #aaa"></canvas>  
     <script>
+       // for more detail http://fabricjs.com/fabric-intro-part-3
+        // create a special class LabeledRect for the room to have a name.
+        // also update the functions for loading and saving.
+        fabric.LabeledRect = fabric.util.createClass(fabric.Rect, {
+        type: 'LabeledRect',
+        // initialize can be of type function(options) or function(property, options), like for text.
+        // no other signatures allowed.
+        initialize: function(options) {
+        options || (options = { });
+        this.callSuper('initialize', options);
+        this.set('label', options.label || '');
+        }, 
+        toObject: function() {
+            return fabric.util.object.extend(this.callSuper('toObject'), {
+                label: this.get('label')
+            });
+        },
+            _render: function(ctx) {
+                this.callSuper('_render', ctx);
+                ctx.font = '20px Helvetica';
+                ctx.fillStyle = '#333';
+                ctx.fillText(this.label, -this.width/2, -this.height/2 + 20);
+            }
+        });
+
+        // standard options type:
+        // argument + options type:
+        // in this example aProp is the property in the object that contains the value
+        // that goes in someValue in `new fabric.MyClass(someValue, options)`
+        fabric.LabeledRect.fromObject = function(object, callback, forceAsync) {
+            return fabric.Object._fromObject('LabeledRect', object, callback, forceAsync, 'label');
+        };
+    </script>
+
+    <script>
         // add a few shapes
+        var LabeledRect = fabric.LabeledRect;
         var scene0 = this.__canvas = new fabric.Canvas('sceneCanvas');
-        var red = new fabric.Rect({
-        top: 100, left: 0, width: 80, height: 50, fill: 'red' });
-        var blue = new fabric.Rect({
-        top: 0, left: 100, width: 50, height: 70, fill: 'blue' });
-        var green = new fabric.Rect({
-        top: 100, left: 100, width: 60, height: 60, fill: 'green' });
+        //var red = new fabric.Rect({
+        var red = new LabeledRect({
+            top: 0, left: 0, width: 175, height: 125, fill: 'red', label: 'Entry', rx:10, ry:10});
+        var blue = new LabeledRect({
+            top: 0, left: 200, width: 175, height: 125, fill: '#00b7ff', label: 'Room 1', rx:10, ry:10 });
+        var green = new LabeledRect({
+            top: 200, left: 10, width: 175, height: 125, fill: 'green', label: 'Hall', rx:10, ry:10 });
+        var test = new LabeledRect({
+            width: 150,height: 125,left: 200,top: 200,label: 'Room 2',fill: '#faa', rx:10, ry:10 });
+        //fabric.Object.prototype.transparentCorners = true;
 
-        fabric.Object.prototype.transparentCorners = false;
-        scene0.add(red, blue, green)
-        
+        scene0.add(red, blue, green, test)
 
-        function addPlayerNames() {
-            textHeight=100;
-            for (_i = 0; _i < maxMembers; _i++) {
-                //console.log(_i);
-                //console.log($('#nameField'+_i).val());
-                if ($('#nameField'+_i).val()) {
-                    var PCNameText = new fabric.Text($('#nameField'+_i).val(), { left: 30, top: textHeight, fontSize: PCNameFontSize, fontWeight: "bold", linethrough: false });
-                    // add player banes to canvas, move down for next one.
-                    scene0.add(PCNameText);
-                    textHeight+=PCNameFontSize+10;
-                }   
-            }
-        }
-        function addBox() {
-            var newBox = new fabric.Rect({
-            top: 30, left: 30, width: 120, height: 80, fill: 'yellow' });
-            scene0.add(newBox);
-        }
-        var freeDrawBool=0;
-        
-        function freeDrawToggle() {
-            if (freeDrawBool) {
-                //turn off
-                freeDrawBool=0;
-            }
-            else {
-                freeDrawBool=1;
-            }
-            scene0.freeDrawingBrush.color="orange";
-            scene0.freeDrawingBrush.width="10";
-            scene0.isDrawingMode=freeDrawBool;
-        }
 
-        function updateClients() {
-            // use the chat socket to send the scene updates to the clients.
-            // they should redraw the scene with the new canvas data.
-            //fabric.Canvas#toObject()
-
-            // get the data, can be either as object or as string.
-            var sceneJSON0=JSON.stringify(scene0);
-            var sceneObject0=scene0.toObject();
-            //console.log(sceneJSON0);
-            //console.log(sceneObject0);
-
-            // send to clients as message
-            // (will need to update for new route "onScene" to get out of the chat logging and into the scene logging)
-            // sending a scene update doesn't trigger sending to client, though it is stored in the default chat message log.
-            //sendChatText(sceneJSON0,$('#chatIdField').val(),$('#chatNameField').val());
-
-            // let the players know that the scene is updated, also trigger for auto-update.
-            sendChatText("NOTIFY: Player updated scene",$('#chatIdField').val(),$('#chatNameField').val());
-
-            // save scene to AWS party data table
-            var t_data=updatePartyScene($('#partyIDField').val(),sceneJSON0,$('#chatIdField').val());
-            console.log("*******************************");
-            console.log(t_data);
-
-        }
 
     </script>
     <form>
-        <button type="button" onclick="addBox()">Add box</button>
         <button type="button" onclick="freeDrawToggle()">Free Draw Toggle</button>
         <button type="button" onclick="addPlayerNames()">Add party names</button>
-        <button type="button" onclick="updateClients()">Update Clients</button>
+        <button type="button" onclick="updateClients($('#partyIdField').val(),scene0,$('#chatIdField').val(),$('#chatNameField').val())">Update Scene</button>
+        <button type="button" onclick="deleteSelectedItem()">Delete 1 Selected</button>
+        <br>
+        <label>Room Name :</label><input type="text" size="6" id="newRoomNameField"></input>
+        <button type="button" onclick="addRoom()">Add room (with name)</button>
+        <!--<br><label>Number PCs in room :</label><input type="text" size="2" id="numPCInRoomField" readonly></input>(system value)
+        <br><label>Number NPCs in room :</label><input type="text" size="2" id="numNPCInRoomField" readonly></input>(system value)
+        -->
     </form>
+
     <br><br><br>
     <form>
         <label>PLAYER DISPLAY :</label><input type="text" size="10" id="idField" onchange="readPlayerData($('#idField').val())"></input>check values for a given player ID
@@ -207,7 +204,6 @@
         <label>Compassion :</label><input type="text" size="10" id="compassionField"><br><br>
         <!-- set button onClick method to call function we defined passing input values as parameters -->
         <button type="button" onclick="readPlayerData($('#idField').val())">Update player display stats</button><br><br><br>
-        
     </form>
     
     <form>
@@ -217,16 +213,12 @@
         <!-- set button onClick method to call function we defined passing input values as parameters -->
         <!--<textarea rows="6" cols="40" id="chatTextBox" readonly></textarea>
         -->
-
         <br>
         <label>Chat :</label><input type="text" size="40" id="chatField"></label>
         <button type="button" onclick="sendChatText($('#chatField').val(),$('#chatIdField').val(),$('#chatNameField').val())">Send</button></input>
         <br>
-        <!--
-        <button type="button" onclick="readPlayerChatData($('#chatIdField').val())">Update player display stats</button>
-        <br><br><br>
-        -->
     </form>
+
     <div id="messages">Chat messages go here, newest at top</div>
        <!-- div with messages -->
     
