@@ -446,3 +446,21 @@ async function getNPCOrScanNPCParty(_tableName,_partyID,_NPCName) {
 getAllTableData('database error').catch(console.log); // Error: 404 (4)
 
 
+function saveDataToTable(_dataStr) {
+    // save current NPC data keys need to be included in the _dataStr
+    // not data needs table name and PK values.
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: _dataStr,
+        redirect: 'follow'
+    };
+    //console.log(requestOptions);
+    // make API call with parameters and use promises to get response (virtues save table row API)
+    fetch("https://0s8bii7ypb.execute-api.us-east-2.amazonaws.com/dev", requestOptions)
+    .then(response => response.text())
+    //.then(result => alert(JSON.parse(result).body))
+    .catch(error => console.log('error', error));        
+}
