@@ -189,7 +189,7 @@
             $('#NPCForce').val(_myNPC[0].NPC_BASE_FORCE);
             $('#NPCMoral').val(_myNPC[0].NPC_BASE_MORALE);
             $('#NPCRange').val(_myNPC[0].NPC_BASE_RANGE);
-            $('#NPCVisible').val(_myNPC[0].NPC_BASE_VISIBILITY);
+            document.getElementById("NPCVisible").checked=_myNPC[0].NPC_BASE_VISIBILITY;
             $('#NPCName').val(_myNPC[0].NPC_NAME);
             // select the room
             $('#NPCRoom').val(_myNPC[0].NPC_ROOM_NAME);
