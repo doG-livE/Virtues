@@ -1,6 +1,7 @@
 function updateRoomSelect(_selectListName, _scene) {
     // first, remove all the items
     var _sel = document.getElementById(_selectListName);
+    if(_sel == null) {return console.log("room select list not found")}
     while(_sel.options.length > 1) {
         _sel.removeChild( _sel.options[1] );
     }
@@ -96,11 +97,12 @@ function freeDrawToggle() {
 }
 
 function updateClients(_partyID,_scene,_chatID, _chatName) {
+    // save scene to AWS party data table. currently only one scene allowed per party.   
     // let the players know that the scene is updated, also trigger for auto-update.
+    //console.log("1: "+_partyID+"  3: "+_chatID);
+    updatePartyScene(_partyID,_scene,_chatID);   
     sendChatText("NOTIFY: Player updated scene",_chatID,_chatName);
-
-    // save scene to AWS party data table. currently only one scene allowed per party.
-    updatePartyScene(_partyID,_scene,_chatID);
+ 
 };
 
 function deleteSelectedItem(){

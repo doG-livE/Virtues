@@ -18,11 +18,18 @@
     body {
         background-color: #6f7750;
         }
-    label, button {
+        label {
         color: #00ff22;
         font-family: Arial, Helvetica, sans-serif;
         font-size: 14px;
         margin-left: 5px;
+        }
+        button {
+        color: #312eca;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        margin-left: 5px;
+        font-weight: bold;
         }
      input {
         color: #a39799;
@@ -48,7 +55,7 @@
                 console.log("scene update detected\n--loading the latest available scene--")
                 // grab the latest scene from the VIRTUES_PARTY table, update the canvas
                 // track scene with the partyID. (only 1 scene for the party, less data and more likely all look same)
-                showLatestScene($('#partyIDField').val(),scene0); // set fabric object to party scene data from partyID
+                showLatestScene($('#partyIdField').val(),scene0); // set fabric object to party scene data from partyID
             }
         }
         function onloadCreation() {
@@ -115,9 +122,9 @@
         <label>Focus(R-G-B) :</label><input type="text" size="2" id="currentFocusField4"></input>
         <label>ROOM :</label><input type="text" size="2" id="currentRoomField4"></input>
         <br><br>
-        <button type="button" onclick="loadPartyIDs($('#partyIDField').val())">Load party ID</button><nbsp;>     </nbsp>
+        <button type="button" onclick="loadPartyIDs($('#partyIdField').val())">Load party ID</button><nbsp;>     </nbsp>
         <button type="button" onclick="savePartyIDs()">Save party</button><br><br>
-        <label>Party ID :</label><input type="text" size="10" id="partyIDField"></input><br><br><br><br>
+        <label>Party ID :</label><input type="text" size="10" id="partyIdField"></input><br><br><br><br>
         <label>Total inspiration :</label><input type="text" size="10" id="totalInspirationField" readonly></input>(watch to be sure data is added for the playerID)
         <br><br><br>
     </form>
