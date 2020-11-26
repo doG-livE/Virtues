@@ -191,7 +191,7 @@ function savePartyIDs() {
                 var _data = currentStatusNames;
                 _data.USERID=$('#idField'+_i).val();
                 _data.NAME=$('#nameField'+_i).val();
-                _data.PARTYID=$('#partyIDField').val();
+                _data.PARTYID=$('#partyIdField').val();
                 _data.FOCUS=$('#currentFocusField'+_i).val();
                 _data.MORALE=$('#currentMoraleField'+_i).val();
                 _data.HOPE=$('#currentHopeField'+_i).val();
@@ -204,7 +204,7 @@ function savePartyIDs() {
         } 
 
     }
-    var _partyID=$('#partyIDField').val();
+    var _partyID=$('#partyIdField').val();
     // instantiate a headers object
     var myHeaders = new Headers();
     // add content type header to object

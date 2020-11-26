@@ -55,7 +55,7 @@
                 console.log("scene update detected\n--loading the latest available scene--")
                 // grab the latest scene from the VIRTUES_PARTY table, update the canvas
                 // track scene with the partyID. (only 1 scene for the party, less data and more likely all look same)
-                showLatestScene($('#partyIDField').val(),scene0); // set fabric object to party scene data from partyID
+                showLatestScene($('#partyIdField').val(),scene0); // set fabric object to party scene data from partyID
             }
         }
         function onloadCreation() {
@@ -149,7 +149,7 @@
         <select id="NPCCurrentRoom"><option value="">Select Encounter Room</option></select>
         <br>Use button to update room list after scene changes.
         <br><label>Base NPC Morale :</label><input type="text" size="10" id="NPCMoral"></input>
-        <label>Current NPC Morale :</label><input type="text" size="10" id="NPCCurrentMoral"></input>
+        <label>Current NPC Morale :</label><input type="text" size="10" id="NPCCurrentMorale"></input>
         <br><label>Base NPC Composure :</label><input type="text" size="10" id="NPCComposure"></input>
         <label>Current Composure MOD:</label><input type="text" size="10" id="NPCCurrentComposure"></input>
         <br><label>Base NPC Force :</label><input type="text" size="10" id="NPCForce"></input>
@@ -157,12 +157,18 @@
         <br><label>Base NPC Range :</label><input type="text" size="10" id="NPCRange"></input>
         <label>Current Range MOD :</label><input type="text" size="10" id="NPCCurrentRange"></input>
         <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait0" value="Visible"><label>Trait 1 :</label><select id="NPCTrait0"><option value="">Select Trait</option></select></input>
+        Discovered?<input type="checkbox" size="10" id="NPCCurrentVisibleTrait0" value="Visible">
         <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait1" value="Visible"><label>Trait 2 :</label><select id="NPCTrait1"><option value="">Select Trait</option></select></input>
+        Discovered?<input type="checkbox" size="10" id="NPCCurrentVisibleTrait1" value="Visible">
         <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait2" value="Visible"><label>Trait 3 :</label><select id="NPCTrait2"><option value="">Select Trait</option></select></input>
+        Discovered?<input type="checkbox" size="10" id="NPCCurrentVisibleTrait2" value="Visible">
         <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait3" value="Visible"><label>Trait 4 :</label><select id="NPCTrait3"><option value="">Select Trait</option></select></input>
+        Discovered?<input type="checkbox" size="10" id="NPCCurrentVisibleTrait3" value="Visible">
         <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait4" value="Visible"><label>Trait 5 :</label><select id="NPCTrait4"><option value="">Select Trait</option></select></input>
+        Discovered?<input type="checkbox" size="10" id="NPCCurrentVisibleTrait4" value="Visible">
         <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait5" value="Visible"><label>Trait 6 :</label><select id="NPCTrait5"><option value="">Select Trait</option></select></input>
-        <br><button type="button" onclick="saveNPC()">Save NPC BASE stats to party ID</button>
+        Discovered?<input type="checkbox" size="10" id="NPCCurrentVisibleTrait5" value="Visible">
+        <br><button type="button" onclick="saveNPC()">Save NPC BASE stats to party ID & NPC Name</button>
         <br><button type="button" onclick="sendNPCCurrent($('#partyIdField').val(),$('#NPCName').val())">Save NPC "CURRENT" stats</button>
         <br><br>
         <label>LOAD NPC Named :</label><input type="text" size="10" id="loadNPCNameField"></input>
@@ -170,8 +176,7 @@
     </form>
     <br><br><br>
     <form>
-        <label>NPC CURRENT STATS VIEW (below) for NPC Party ID -->:</label>
-        <input type="text" size="10" id="partyIDField"></input>
+        <label>NPC CURRENT STATS VIEW (below) for NPC Party ID (near room map) -->:</label>
         <!-- set button onClick method to call function we defined passing input values as parameters -->
         <button type="button" onclick="updateDisplayNPCParty($('#partyIdField').val(),'NPCParty')">Update NPC display stats</button>
     </form>
@@ -179,7 +184,15 @@
     <!-- div with messages -->
 <script>
     function sendNPCCurrent(_partyID,_NPCName) {
-        // get the data and send to upload 
+        // get the data and send to upload
+        // build the checkbox list
+        var _traitsDiscoveredAr=[];
+        for (_i=0; _i < maxMembers; _i++ ) {
+            if ($("#NPCCurrentVisibleTrait"+_i).val()) {
+                _traitsDiscoveredAr.push(document.getElementById("NPCCurrentVisibleTrait"+_i).checked)
+            }
+        }
+
         _dataStr=JSON.stringify({
             "TABLE_NAME":"VIRTUES_NPC_CURRENT_STATS",
             "PARTY_ID":_partyID,
@@ -188,7 +201,8 @@
             "COMPOSURE_CURRENT_MOD":$("#NPCCurrentComposure").val(),
             "ROOM_CURRENT":$("#NPCCurrentRoom").val(),
             "FORCE_CURRENT_MOD":$("#NPCCurrentForce").val(),
-            "RANGE_CURRENT_MOD":$("#NPCCurrentRange").val()
+            "RANGE_CURRENT_MOD":$("#NPCCurrentRange").val(),
+            "TRAITS_DISCOVERED_LIST":JSON.stringify(_traitsDiscoveredAr)
         })
         //console.log(_dataStr);
         // send the data to AWS
@@ -243,7 +257,48 @@
                 }
              }
         });
+        loadNPCCurrentStats(_partyID, _NPCName);
     }
+
+    function loadNPCCurrentStats(_partyID, _NPCName) {
+        // setNPC Current
+        // get the data connection
+        if (_partyID == "" || _NPCName == "") {return alert("name and party are both required")};
+        var _NPCPromise=getNPCOrScanNPCParty("VIRTUES_NPC_CURRENT_STATS",_partyID,_NPCName);
+        _NPCPromise.then((_myNPCCurrent) => { // complete the DB read from the function
+            _myNPCCurrent=_myNPCCurrent.body;
+            //console.log(_myNPC)
+            // should be one row returned
+            console.log(_myNPCCurrent);
+            if (_myNPCCurrent.length != 1){return alert("did not find an unique record")};
+            // set the values in the form
+           
+            $('#NPCCurrentComposure').val(_myNPCCurrent[0].COMPOSURE_CURRENT_MOD);
+            $('#NPCCurrentForce').val(_myNPCCurrent[0].FORCE_CURRENT_MOD);
+            //$('#').val(_myNPCCurrent[0].NPC_NAME);
+            //$('#').val(_myNPCCurrent[0].PARTY_ID);
+            $('#NPCCurrentRange').val(_myNPCCurrent[0].RANGE_CURRENT_MOD);
+            $('#NPCCurrentMorale').val(_myNPCCurrent[0].MORALE_CURRENT);
+
+            // add a value to the top of the room list.
+            $('#NPCCurrentRoom').val(_myNPCCurrent[0].ROOM_CURRENT);
+            var _opt = document.createElement('option');
+            var _sel = document.getElementById('NPCCurrentRoom');
+            _opt.text = _myNPCCurrent[0].ROOM_CURRENT;
+            _opt.value = _myNPCCurrent[0].ROOM_CURRENT;
+            _sel.add(_opt, _sel[0]); // setting default to thius room
+
+            // will need to loop through checkboxes (not currently saved)
+            traitsDiscoveredList=JSON.parse(_myNPCCurrent[0].TRAITS_DISCOVERED_LIST);
+            for (_i=0; _i < traitsDiscoveredList.length; _i++) {
+                // mark the ckeckboxes
+                if (traitsDiscoveredList[_i]) {
+                    document.getElementById("NPCCurrentVisibleTrait"+_i).checked=1;
+                }
+             }
+        });
+    }
+
     function updateDisplayNPCParty(_party_ID,_divName) {
         // update the specified div.
         // get all the table data, then loop through for the given ID, send to the given DIV
