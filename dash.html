@@ -120,7 +120,7 @@
         NPC requires a party ID, changes are limited to the creator ID.
         <br>Save the map if making changes!  Be sure to have a party ID entered and loaded at the top.
         <br><label>PARTY ID :</label><input type="text" size="10" id="partyIdField" onchange=''></input>
-        <button type="button" onclick="loadPartyIDs($('#partyIdField').val())"> <-- Load Scene for party ID</button>
+        <button type="button" onclick="loadPartyIDs($('#partyIdField').val()),loadNPCs($('#partyIdField').val())"> <-- Load Scene for party ID</button>
         <br><br><button type="button" onclick="freeDrawToggle()">Free Draw Toggle</button>
         <button type="button" onclick="addPlayerNames()">Add party names</button>
         <button type="button" onclick="updateClients($('#partyIdField').val(),scene0,$('#chatIdField').val(),$('#chatNameField').val())">Update Scene</button>
@@ -157,19 +157,23 @@
         // this will probably be buggy for interim party level changes.
         var _sel = document.getElementById('waitingOrder');
         if(_sel == null) {return console.log("players select list not found")}
-        while(_sel.options.length > 1) {
-            _sel.removeChild( _sel.options[1] );
+
+        for (_i=1; _i<_sel.options.length ;_i++) {
+            // remove any PC : names, add back in
+            if (_sel.options[1].text.startsWith("PC: ")) {
+                _sel.removeChild( _sel.options[1] );
+            }
         }
 
         // get the player list for the party ID, add to the select box and playerAr.
-        console.log(partyMembersAr);
-        console.log($('#waitingOrder').val());
+        //console.log(partyMembersAr);
+        //console.log($('#waitingOrder').val());
         for (_i=0;_i<partyMembersAr.length;_i++) {
             //populate the waiting room
             //$('#waitingOrder').val();
             var _opt = document.createElement('option');
             var _sel = document.getElementById('waitingOrder');
-            _opt.text = partyMembersAr[_i];
+            _opt.text = "PC: "+partyMembersAr[_i];
             _opt.value = partyMembersAr[_i];
             _sel.add(_opt, _sel[1]); // add in 2nd spot
         }
@@ -181,19 +185,49 @@
         var _selFrom = document.getElementById(_fromListName);
         var _selTo = document.getElementById(_toListName);
         _value=$("#"+_fromListName).val();
-        console.log(_fromListName+":"+_toListName+":"+_value)
         for (var _i=1; _i<_selFrom.options.length; _i++ ) {
-            console.log(_selFrom.options[_i].value);
             if (_selFrom.options[_i].value==_value) {
-                _selFrom.removeChild( _selFrom.options[_i] );
                 // also add it to the other list
                 var _selTo = document.getElementById(_toListName);
                 var _opt = document.createElement('option');
-                _opt.text = _value;
-                _opt.value = _value;
+                _opt.text = _selFrom.options[_i].text;
+                _opt.value = _selFrom.options[_i].value;
                 _selTo.add(_opt, _selTo[_selTo.options.length]); // add in bottom spot
+                _selFrom.removeChild( _selFrom.options[_i] );
             }  
         }
+    }
+
+
+    function loadNPCs(_partyID, _NPCName){
+        // load npc into fields.
+        // first get updated values for the NPC.
+        // check for the values, break if not there
+        //console.log("party :"+_partyID+"  name :"+ _NPCName);
+        // eventually this will need to be handled without returning all the party data, probably can use a global index.
+        //if (_partyID == "" || _NPCName == "") {return alert("name and party are both required")};
+        //var _NPCPromise=getNPCOrScanNPCParty("VIRTUES_NPC",_partyID,_NPCName);
+        var _NPCPromise=getNPCOrScanNPCParty("VIRTUES_NPC",_partyID); // gat all NPCs
+        _NPCPromise.then((_allNPCs) => { // complete the DB read from the function
+            _allNPCs=_allNPCs.body;
+            // should be one row returned
+            console.log(_allNPCs)
+            //if (_myNPCs.length != 1){return alert("did not find an unique record")};
+            // put the data in the NPC array for accessibility
+            NPCDataAr=[];
+            for (_i=0; _i<_allNPCs.length;_i++) {
+                // check the partyid
+                if (_allNPCs[_i].PARTY_ID==_partyID) {
+                    NPCDataAr.push(_allNPCs[_i]);// add to list
+                    var _opt = document.createElement('option');
+                    var _sel = document.getElementById('waitingOrder');
+                    _opt.text = "NPC: "+_allNPCs[_i].NPC_NAME;
+                    _opt.value = _allNPCs[_i].NPC_NAME;
+                    _sel.add(_opt, _sel[1]); // add in last spot
+                }
+            }
+        });
+        //loadNPCCurrentStats(_partyID, _NPCName);
     }
 
 
