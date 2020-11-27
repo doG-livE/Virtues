@@ -167,8 +167,12 @@ function loadPartyIDs(_partyID) {
             getCurrentPlayerStats(_partyMembersAr[_i],_partyID,_i);
         }
 
+        getPlayers();// update the players list. for the dash page.
+        // this will through an error for pages without the list.
+        
         // do not put alert here, it messes with the loops
         console.log("done loading party of "+_i);
+
     });
     
 }
@@ -248,6 +252,7 @@ function getCurrentPlayerStats(_userid,_partyid,_num) {
             $('#currentFocusField'+_num).val(_currentJSON.FOCUS);
             $('#currentRoomField'+_num).val(_currentJSON.ROOM_NAME);
             //console.log(_currentJSON);
+            // current data should also be stored into the  array playerCurrentAr, add that here
         });
         
     }

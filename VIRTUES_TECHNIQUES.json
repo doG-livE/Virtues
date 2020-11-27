@@ -1,4 +1,356 @@
-
-
-
-placeholder file for AWS update
+{
+    "VIRTUES_TECHNIQUES": [
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Heroic Engagement"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Neutral"},
+       "CARD_ID": {"S":"53"},
+       "DISPLAY_NUMBER": {"S":"0"},
+       "ACTION_TYPE_NAME": {"S":"Main"},
+       "CARD_TEXT": {"S":"[Default Action] <br> <br> Make an engagement. You may declare this Engagement to be of any one Virtue, and Surge it with Focus of that Virtue if the Weaver allows."},
+       "CARD_TIP": {"S":"Default action. Engage, and declare Virtue of the engagement."},
+       "BUY_COST": {"S":"0"},
+       "EMPOWERABLE_BOOL": {"S":"true"},
+       "DEFAULT_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Step"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Neutral"},
+       "CARD_ID": {"S":"54"},
+       "DISPLAY_NUMBER": {"S":"0"},
+       "ACTION_TYPE_NAME": {"S":"Hasten"},
+       "CARD_TEXT": {"S":"[Default Action] <br> <br> Move from your current zone to an adjacent zone."},
+       "CARD_TIP": {"S":"Default action. Move one zone."},
+       "BUY_COST": {"S":"0"},
+       "EMPOWERABLE_BOOL": {"S":"false"},
+       "DEFAULT_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Kind Words"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Neutral"},
+       "CARD_ID": {"S":"55"},
+       "DISPLAY_NUMBER": {"S":"0"},
+       "ACTION_TYPE_NAME": {"S":"Aid"},
+       "CARD_TEXT": {"S":"[Default Action] <br> <br> <strong> Heal </strong> one ally."},
+       "CARD_TIP": {"S":"Default action. <strong> Heal </strong> one ally."},
+       "BUY_COST": {"S":"0"},
+       "EMPOWERABLE_BOOL": {"S":"true"},
+       "DEFAULT_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Go Defensive"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Neutral"},
+       "CARD_ID": {"S":"0"},
+       "DISPLAY_NUMBER": {"S":"0"},
+       "ACTION_TYPE_NAME": {"S":"Prep"},
+       "CARD_TEXT": {"S":"[Default Action] <br> <br> Prep this action: If a foe engages you, you <strong> must </strong> use this prepped action to grant yourself +1 <strong> Composure </strong> against that engagement."},
+       "CARD_TIP": {"S":"Default action. Prep: If a foe engages you, you must grant yourself +1 <strong> Composure </strong> against that engagement."},
+       "BUY_COST": {"S":"0"},
+       "DEFAULT_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Advance"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Courage"},
+       "CARD_ID": {"S":"1"},
+       "DISPLAY_NUMBER": {"S":"1"},
+       "ACTION_TYPE_NAME": {"S":"Main"},
+       "CARD_TEXT": {"S":"Before engaging, you may <strong> Hustle. </strong> <br> <br> After engaging, you may choose a hero in a zone adjacent to yours, and <strong> Hustle </strong> that hero into your zone."},
+       "CARD_TIP": {"S":"Before engaging, <strong> Hustle </strong> self. After engaging, <strong> Hustle </strong> ally to you."},
+       "BUY_COST": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Aggravate"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Courage"},
+       "CARD_ID": {"S":"2"},
+       "DISPLAY_NUMBER": {"S":"0"},
+       "ACTION_TYPE_NAME": {"S":"Main"},
+       "CARD_TEXT": {"S":"Engage with +2. <br> <br> After engaging: The target gains +2 <strong> Force </strong> until the beginning of your next turn."},
+       "CARD_TIP": {"S":"Engage with +2. Foe gains +2 <strong> Force. </strong>"},
+       "BUY_COST": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Aim"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Clever"},
+       "CARD_ID": {"S":"3"},
+       "DISPLAY_NUMBER": {"S":"0"},
+       "ACTION_TYPE_NAME": {"S":"Hasten"},
+       "CARD_TEXT": {"S":"The next engagement you make this turn gains <strong> +1 Range. </strong>"},
+       "CARD_TIP": {"S":"The next engagement you make this turn gains <strong> +1 Range. </strong>"},
+       "BUY_COST": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Anticipation"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Clever"},
+       "CARD_ID": {"S":"4"},
+       "DISPLAY_NUMBER": {"S":"1"},
+       "ACTION_TYPE_NAME": {"S":"Prep"},
+       "CARD_TEXT": {"S":"Prep this action: After any character you can sense rolls an engagement, you may use this prep to force them to reroll their engagement and keep the new result."},
+       "CARD_TIP": {"S":"Prep: Force any character to reroll engagement."},
+       "BUY_COST": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Ameliorate"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Clever"},
+       "CARD_ID": {"S":"5"},
+       "DISPLAY_NUMBER": {"S":"1"},
+       "ACTION_TYPE_NAME": {"S":"Aid"},
+       "CARD_TEXT": {"S":"Choose an ally. You may end any one status on that ally. <br> <br> <strong> Heal. </strong>"},
+       "CARD_TIP": {"S":"End status on one ally, then <strong> Heal </strong> them."},
+       "BUY_COST": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Appeal"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Compassion"},
+       "CARD_ID": {"S":"6"},
+       "DISPLAY_NUMBER": {"S":"2"},
+       "ACTION_TYPE_NAME": {"S":"Main"},
+       "CARD_TEXT": {"S":"Engage with +1 Range. <br> <br> After engaging, <strong> Hustle </strong> the target closer to you."},
+       "CARD_TIP": {"S":"Engage with +1 <strong> Range. </strong> <strong> Hustle </strong> target toward you."},
+       "BUY_COST": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Assist"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Compassion"},
+       "CARD_ID": {"S":"7"},
+       "DISPLAY_NUMBER": {"S":"0"},
+       "ACTION_TYPE_NAME": {"S":"Encounter"},
+       "CARD_TEXT": {"S":"[Primary Compassion] <br> <br> (Calling ability: OPE, No Action) <br> <br> Use this ability when an ally rolls a 1 when making an engagement. <br> <br> Roll a d6, and add the result to the triggering ally's <strong> Force </strong> for this engagement."},
+       "CARD_TIP": {"S":"When engaging ally rolls 1, add 1d6."},
+       "BUY_COST": {"S":"0"},
+       "CALLING_TYPE_NAME": {"S":"Primary"},
+       "CALLING_PRIMARY_NAME": {"S":"Compassion"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Blunt"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Compassion"},
+       "CARD_ID": {"S":"8"},
+       "DISPLAY_NUMBER": {"S":"1"},
+       "ACTION_TYPE_NAME": {"S":"Main"},
+       "CARD_TEXT": {"S":"Engage your target. The next time your target engages before the start of your next turn, prevent all non-damage effects of the engagement."},
+       "CARD_TIP": {"S":"Engage. Prevent non-damage effects of target's next engagement."},
+       "BUY_COST": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Bouy"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Compassion"},
+       "CARD_ID": {"S":"9"},
+       "DISPLAY_NUMBER": {"S":"1"},
+       "ACTION_TYPE_NAME": {"S":"Aid"},
+       "CARD_TEXT": {"S":"<strong> Heal </strong> an ally. That ally gains +3 <strong> Composure </strong> for the next engagement against them before your next turn."},
+       "CARD_TIP": {"S":"<strong> Heal </strong> an ally. They get +3 <strong> Composure. </strong>"},
+       "BUY_COST": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Brace"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Compassion"},
+       "CARD_ID": {"S":"10"},
+       "DISPLAY_NUMBER": {"S":"1"},
+       "ACTION_TYPE_NAME": {"S":"Prep"},
+       "CARD_TEXT": {"S":"Spend any amount of Morale, and choose another hero that can sense you. The chosen hero gains a bonus to <strong> Composure </strong> until the start of your next turn. The bonus is four times the amount of Morale you spent."},
+       "CARD_TIP": {"S":"Spend your Morale to give an ally +4 <strong> Composure </strong> per Morale spent."},
+       "BUY_COST": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"false"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Bulwark"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Compassion"},
+       "CARD_ID": {"S":"11"},
+       "DISPLAY_NUMBER": {"S":"1"},
+       "ACTION_TYPE_NAME": {"S":"Hasten"},
+       "CARD_TEXT": {"S":"Until the beginning of your next turn, you gain an <strong> Aura: </strong> Heroes in your zone gain +2 <strong> Composure. </strong>"},
+       "CARD_TIP": {"S":"Until the start of your next turn, heroes in your zone have +2 <strong> Composure. </strong>"},
+       "BUY_COST": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Calm"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Compassion"},
+       "CARD_ID": {"S":"12"},
+       "DISPLAY_NUMBER": {"S":"0"},
+       "ACTION_TYPE_NAME": {"S":"Encounter"},
+       "CARD_TEXT": {"S":"[Secondary Compassion] <br> <br> (Calling ability: OPE, No Action) <br> <br> Use this ability when a foe engages an ally you can see. <br> <br> Roll a d6, and add the result to the triggering ally's <strong> Composure </strong> against this engagement."},
+       "CARD_TIP": {"S":"When ally engaged, grant +1d6 <strong> Composure.</strong>"},
+       "BUY_COST": {"S":"0"},
+       "CALLING_TYPE_NAME": {"S":"Secondary"},
+       "CALLING_PRIMARY_NAME": {"S":"Compassion"},
+       "CALLING_SECONDAY_NAME": {"S":"Compassion"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Caper"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Clever"},
+       "CARD_ID": {"S":"13"},
+       "DISPLAY_NUMBER": {"S":"2/0"},
+       "ACTION_TYPE_NAME": {"S":"Main"},
+       "CARD_TEXT": {"S":"[Clever/Courage Calling] <br> <br> After engaging, you may <strong> Hustle </strong> any character in an adjacent zone into your zone, and then you may <strong> Hustle </strong> any character in your zone (including yourself) out of the zone."},
+       "CARD_TIP": {"S":"After engaging, <strong> Hustle </strong> someone into zone, then <strong> Hustle </strong> someone out of zone."},
+       "BUY_COST": {"S":"0"},
+       "CALLING_TYPE_NAME": {"S":"Supreme"},
+       "CALLING_PRIMARY_NAME": {"S":"Clever"},
+       "CALLING_SECONDAY_NAME": {"S":"Courage"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Cavalier"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Courage"},
+       "CARD_ID": {"S":"14"},
+       "DISPLAY_NUMBER": {"S":"2/0"},
+       "ACTION_TYPE_NAME": {"S":"Main"},
+       "CARD_TEXT": {"S":"[Courage/Courage Calling] <br> <br> You gain a bonus to this engagement equal to the base <strong> Force </strong> bonus of the target foe."},
+       "CARD_TIP": {"S":"Gain bonus equal to foe's <strong> Force </strong> bonus."},
+       "BUY_COST": {"S":"0"},
+       "CALLING_TYPE_NAME": {"S":"Secondary"},
+       "CALLING_SECONDAY_NAME": {"S":"Courage"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Culmination"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Clever"},
+       "CARD_ID": {"S":"15"},
+       "DISPLAY_NUMBER": {"S":"0"},
+       "ACTION_TYPE_NAME": {"S":"Main"},
+       "CARD_TEXT": {"S":"Engage. If you use this technique against a foe that has triggered one of your prep actions during this encounter, then you gain an extra +1 <strong> Force </strong> for each Focus you spend to <strong> Surge. </strong>"},
+       "CARD_TIP": {"S":"If you engage a foe who's triggered your prep, +1 per <strong> Surge.</strong>"},
+       "BUY_COST": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Dauntless"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Courage"},
+       "CARD_ID": {"S":"16"},
+       "DISPLAY_NUMBER": {"S":"0"},
+       "ACTION_TYPE_NAME": {"S":"Encounter"},
+       "CARD_TEXT": {"S":"[Primary Courage] <br> <br> (Calling ability: OPE, No Action) <br> <br> Use this ability when you would be able to use a hasten action. <br> <br> <strong> Hustle. </strong>"},
+       "CARD_TIP": {"S":"During your turn, <strong> Hustle </strong> yourself."},
+       "BUY_COST": {"S":"0"},
+       "CALLING_TYPE_NAME": {"S":"Primary"},
+       "CALLING_PRIMARY_NAME": {"S":"Courage"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Discretion"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Clever"},
+       "CARD_ID": {"S":"17"},
+       "DISPLAY_NUMBER": {"S":"0"},
+       "ACTION_TYPE_NAME": {"S":"Encounter"},
+       "CARD_TEXT": {"S":"[Secondary Clever] <br> <br> (Calling ability: OPE, No Action) <br> <br> You may use this ability when your turn begins, and another character could act instead. <br> <br> The turn is passed to a valid character of your choice instead of you."},
+       "CARD_TIP": {"S":"When turn is passed to you, pass to another instead."},
+       "BUY_COST": {"S":"0"},
+       "CALLING_TYPE_NAME": {"S":"Secondary"},
+       "CALLING_SECONDAY_NAME": {"S":"Clever"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Dogged"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Courage"},
+       "CARD_ID": {"S":"18"},
+       "DISPLAY_NUMBER": {"S":"1"},
+       "ACTION_TYPE_NAME": {"S":"Hasten"},
+       "CARD_TEXT": {"S":"<strong> Hustle. </strong> <br> <br> If there are no heroes or foes in your new zone, <strong> Hustle </strong> again. <br> <br> If there is at least one foe in your new zone, regain one Morale."},
+       "CARD_TIP": {"S":"<strong>Hustle, </strong> then <strong> Hustle </strong> again if new zone empty."},
+       "BUY_COST": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Elevate"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Compassion"},
+       "CARD_ID": {"S":"52"},
+       "DISPLAY_NUMBER": {"S":"1"},
+       "ACTION_TYPE_NAME": {"S":"Main"},
+       "SYNERGY_AFTER": {"S":"31"},
+       "CARD_TEXT": {"S":"Engage. <br> <br> After engaging, you may <strong> Heal </strong> an ally, with <strong> Heal +1. </strong>"},
+       "CARD_TIP": {"S":"Engage, then <strong> Heal </strong> with <strong> +1 Heal. </strong>"}
+  }}},
+   {
+                   "PutRequest": {
+               "Item": {
+"CARD_NAME": {"S":"Empower"},
+       "CARD_TYPE_NAME": {"S":"Technique"},
+       "VIRTUE_NAME": {"S":"Compassion"},
+       "CARD_ID": {"S":"19"},
+       "DISPLAY_NUMBER": {"S":"0"},
+       "ACTION_TYPE_NAME": {"S":"Main"},
+       "CARD_TEXT": {"S":"This engagement deals half damage (round up). <br> <br> After engaging: Choose another hero. They gain a bonus to their next engagement before your next turn, equal to 4 times the damage dealt with this engagement."},
+       "CARD_TIP": {"S":"Deal half damage. Give ally <strong> Force </strong> bonus equal to 4 times damage dealt."},
+       "BUY_COST": {"S":"1"},
+       "EMPOWERABLE_BOOL": {"S":"true"}
+  }}}
+]
+}
