@@ -123,9 +123,11 @@
         <label>Focus(R-G-B) :</label><input type="text" size="2" id="currentFocusField4"></input>
         <label>ROOM :</label><input type="text" size="2" id="currentRoomField4"></input>
         <br><br>
-        <button type="button" onclick="loadPartyIDs($('#partyIdField').val())">Load party ID</button><nbsp;>     </nbsp>
+        <button type="button" onclick="loadPartyIDs($('#partyIdField').val(),$('#encounterNameField').val())">Load party ID</button><nbsp;>     </nbsp>
         <button type="button" onclick="savePartyIDs()">Save party</button><br><br>
-        <label>Party ID :</label><input type="text" size="10" id="partyIdField"></input><br><br><br><br>
+        <label>Party ID :</label><input type="text" size="10" id="partyIdField"></input>
+        <label>Encounter Name :</label><input type="text" size="10" id="encounterNameField"></input>
+        <br><br><br><br>
         <label>Total inspiration :</label><input type="text" size="10" id="totalInspirationField" readonly></input>(watch to be sure data is added for the playerID)
         <br><br><br>
     </form>
@@ -190,7 +192,7 @@
     <form>
         <button type="button" onclick="freeDrawToggle()">Free Draw Toggle</button>
         <button type="button" onclick="addPlayerNames()">Add party names</button>
-        <button type="button" onclick="updateClients($('#partyIdField').val(),scene0,$('#chatIdField').val(),$('#chatNameField').val())">Update Scene</button>
+        <button type="button" onclick="updateClients($('#partyIdField').val(),scene0,$('#chatIdField').val(),$('#chatNameField').val(),$('#encounterNameField').val())">Update Scene</button>
         <button type="button" onclick="deleteSelectedItem()">Delete 1 Selected</button>
         <br>
         <label>Room Name :</label><input type="text" size="6" id="newRoomNameField"></input>

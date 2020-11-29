@@ -96,11 +96,11 @@ function freeDrawToggle() {
     scene0.isDrawingMode=freeDrawBool;
 }
 
-function updateClients(_partyID,_scene,_chatID, _chatName) {
+function updateClients(_partyID,_scene,_chatID, _chatName,_encounterName) {
     // save scene to AWS party data table. currently only one scene allowed per party.   
     // let the players know that the scene is updated, also trigger for auto-update.
     //console.log("1: "+_partyID+"  3: "+_chatID);
-    updatePartyScene(_partyID,_scene,_chatID);   
+    updatePartyScene(_partyID,_scene,_chatID,_encounterName);   
     sendChatText("NOTIFY: Player updated scene",_chatID,_chatName);
  
 };

@@ -109,8 +109,8 @@ function readPlayerChatData(_ID) {
     });
 }
 
-function loadPartyIDs(_partyID) {
-    var raw = JSON.stringify({"PARTY_ID":_partyID,"TABLE_NAME":"VIRTUES_PARTY"});
+function loadPartyIDs(_partyID,_encounterName) {
+    var raw = JSON.stringify({"PARTY_ID":_partyID,"TABLE_NAME":"VIRTUES_PARTY","ENCOUNTER_NAME":_encounterName});
     var _dataRead="";
     // remove any old party data.
     playerDataAr=[];
@@ -215,7 +215,8 @@ function savePartyIDs() {
     myHeaders.append("Content-Type", "application/json");
     var _data = {
         "PARTY_ID":_partyID,
-        "PARTY_MEMBERS":_str
+        "PARTY_MEMBERS":_str,
+        "ENCOUNTER_NAME":$('#encounterNameField').val()
     }
     var _dataJSON = JSON.stringify(_data);
     var requestOptions = {
@@ -293,18 +294,20 @@ function postCurrentPlayerStats(_currentData) {
 }
 
 
-function updatePartyScene(_partyID,_scene,_userID) {
+function updatePartyScene(_partyID,_scene,_userID,_encounterName) {
     // instantiate a headers object
     var sceneJSON0=JSON.stringify(_scene);
     var myHeaders = new Headers();
     // add content type header to object
     // this one is not adding a record, it is for an update to a current record, no need to replace party members
+    // pass update=1 to tell API it is update.
     myHeaders.append("Content-Type", "application/json");
     var _data = {
         "PARTY_ID": _partyID,
         "PARTY_SCENE": sceneJSON0,
         "USER_ID": _userID,
-        "UPDATE": 1
+        "UPDATE": 1,
+        "ENCOUNTER_NAME": _encounterName
     }
     var _dataJSON = JSON.stringify(_data);
     var requestOptions = {
@@ -321,8 +324,8 @@ function updatePartyScene(_partyID,_scene,_userID) {
 }
 
 
-function showLatestScene(_partyID,_sceneTarget) {
-    var raw = JSON.stringify({"PARTY_ID":_partyID,"TABLE_NAME":"VIRTUES_PARTY"});
+function showLatestScene(_partyID,_sceneTarget,_encounterName) {
+    var raw = JSON.stringify({"PARTY_ID":_partyID,"TABLE_NAME":"VIRTUES_PARTY", "ENCOUNTER_NAME":_encounterName});
     // get the PARTY_SCENE data
     var _scene="";
 

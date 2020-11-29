@@ -120,7 +120,8 @@
         NPC requires a party ID, changes are limited to the creator ID.
         <br>Save the map if making changes!  Be sure to have a party ID entered and loaded at the top.
         <br><label>PARTY ID :</label><input type="text" size="10" id="partyIdField" onchange=''></input>
-        <button type="button" onclick="loadPartyIDs($('#partyIdField').val()),loadNPCs($('#partyIdField').val())"> <-- Load Scene for party ID</button>
+        <label>Encounter Name :</label><input type="text" size="10" id="encounterNameField"></input>
+        <button type="button" onclick="loadPartyIDs($('#partyIdField').val(),$('#encounterNameField').val()),loadNPCs($('#partyIdField').val(),$('#encounterNameField').val())"> <-- Load Scene for party ID</button>
         <br><br><button type="button" onclick="freeDrawToggle()">Free Draw Toggle</button>
         <button type="button" onclick="addPlayerNames()">Add party names</button>
         <button type="button" onclick="updateClients($('#partyIdField').val(),scene0,$('#chatIdField').val(),$('#chatNameField').val())">Update Scene</button>
