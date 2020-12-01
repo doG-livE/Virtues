@@ -34,6 +34,11 @@ function updateTraitSelectList(_selectListName){
     allNPCTraits.then((allNPCTraits) => { // complete the DB read from the function
         allNPCTraits=allNPCTraits.body
         // loop through the select lists
+        for (_i = 0; _i < allNPCTraits.length; _i++) {
+            // build NPCTraitIndex{}
+            NPCTraitIndex[allNPCTraits[_i].TRAIT_NAME] = allNPCTraits[_i].TRAIT_TIP;
+        }
+
         for (_j=0; _j <maxMembers; _j++) {
             // run for each select list to update.
             var _sel = document.getElementById(_selectListName+_j);

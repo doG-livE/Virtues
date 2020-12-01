@@ -82,7 +82,7 @@
         var queryDataHolder="";
         var newHeight=50;
         var freeDrawBool=0;
-        var playerCurrentAr=[];
+        var NPCCurrentList="";
     </script>
     
 
@@ -171,10 +171,10 @@
         <br> Visible?<input type="checkbox" size="10" id="NPCVisibleTrait5" value="Visible"><label>Trait 6 :</label><select id="NPCTrait5"><option value="">Select Trait</option></select></input>
         Discovered?<input type="checkbox" size="10" id="NPCCurrentVisibleTrait5" value="Visible">
         <br><button type="button" onclick="saveNPC()">Save NPC BASE stats to party ID & NPC Name</button>
-        <br><button type="button" onclick="sendNPCCurrent($('#partyIdField').val(),$('#NPCName').val())">Save NPC "CURRENT" stats</button>
+        <br><button type="button" onclick="sendNPCCurrent($('#partyIdField').val(),$('#NPCName').val(),$('#encounterNameField').val())">Save NPC "CURRENT" stats</button>
         <br><br>
         <label>LOAD NPC Named :</label><input type="text" size="10" id="loadNPCNameField"></input>
-        <button type="button" onclick="loadNPC($('#partyIdField').val(),$('#loadNPCNameField').val())">Load NPC NAME for MAP PARTY ID</button>
+        <button type="button" onclick="loadNPC($('#partyIdField').val(),$('#loadNPCNameField').val(),$('#encounterNameField').val())">Load NPC NAME for MAP PARTY ID</button>
     </form>
     <br><br><br>
     <form>
@@ -185,7 +185,7 @@
     <div id="NPCParty">NPC Party members go here</div>
     <!-- div with messages -->
 <script>
-    function sendNPCCurrent(_partyID,_NPCName) {
+    function sendNPCCurrent(_partyID,_NPCName,_encounterName) {
         // get the data and send to upload
         // build the checkbox list
         var _traitsDiscoveredAr=[];
@@ -195,9 +195,14 @@
             }
         }
 
+        var _comboId = [];
+        _comboId[0]=_partyID;
+        _comboId[1]=_encounterName;
+        
         _dataStr=JSON.stringify({
             "TABLE_NAME":"VIRTUES_NPC_CURRENT_STATS",
-            "PARTY_ID":_partyID,
+            //"PARTY_ID":_partyID,
+            "PARTY_ID": JSON.stringify(_comboId),
             "NPC_NAME":_NPCName,
             "MORALE_CURRENT":$("#NPCCurrentMorale").val(),
             "COMPOSURE_CURRENT_MOD":$("#NPCCurrentComposure").val(),
@@ -210,18 +215,23 @@
         // send the data to AWS
         saveDataToTable(_dataStr);
     }
-    function loadNPC(_partyID, _NPCName){
+    function loadNPC(_partyID, _NPCName, _encounterName){
         // load npc into fields.
         // first get updated values for the NPC.
         // check for the values, break if not there
         //console.log("party :"+_partyID+"  name :"+ _NPCName);
-        if (_partyID == "" || _NPCName == "") {return alert("name and party are both required")};
-        var _NPCPromise=getNPCOrScanNPCParty("VIRTUES_NPC",_partyID,_NPCName);
+        var _comboId = [];
+        _comboId[0]=_partyID;
+        _comboId[1]=_encounterName;
+        _partyComboID = JSON.stringify(_comboId);
+
+        if (_partyID == "" || _NPCName == "") {return alert("name and party are both required : loadNPC")};
+        var _NPCPromise=getNPCOrScanNPCParty("VIRTUES_NPC",_partyID,_NPCName,_encounterName);
         _NPCPromise.then((_myNPC) => { // complete the DB read from the function
             _myNPC=_myNPC.body;
             //console.log(_myNPC)
             // should be one row returned
-            if (_myNPC.length != 1){return alert("did not find an unique record")};
+            if (_myNPC.length != 1){return console.log("did not find an unique record : loadNPC")};
             // set the values in the form
             $('#NPCCreator').val(_myNPC[0].CREATOR_ID);
             $('#NPCComposure').val(_myNPC[0].NPC_BASE_COMPOSURE);
@@ -259,22 +269,43 @@
                 }
              }
         });
-        loadNPCCurrentStats(_partyID, _NPCName);
+        loadNPCCurrentStats(_partyID, _NPCName,_encounterName);
     }
 
-    function loadNPCCurrentStats(_partyID, _NPCName) {
+    function loadNPCCurrentStats(_partyID, _NPCName, _encounterName) {
         // setNPC Current
         // get the data connection
-        if (_partyID == "" || _NPCName == "") {return alert("name and party are both required")};
-        var _NPCPromise=getNPCOrScanNPCParty("VIRTUES_NPC_CURRENT_STATS",_partyID,_NPCName);
+        var _comboId = [];
+        _comboId[0]=_partyID;
+        _comboId[1]=_encounterName;
+        _partyComboID = JSON.stringify(_comboId);
+        
+        if (_partyID == "" || _NPCName == "" || _encounterName == "") {return alert("NPC name, party ID and encounter name are required : loadNPCCurrentStats")};
+        var _NPCPromise=getNPCOrScanNPCParty("VIRTUES_NPC_CURRENT_STATS",_partyID,_NPCName,_encounterName);
         _NPCPromise.then((_myNPCCurrent) => { // complete the DB read from the function
             _myNPCCurrent=_myNPCCurrent.body;
             //console.log(_myNPC)
             // should be one row returned
-            console.log(_myNPCCurrent);
-            if (_myNPCCurrent.length != 1){return alert("did not find an unique record")};
+            console.log(_myNPCCurrent);           
+
+            var _match=-1;
+            if (_myNPCCurrent[0]==""){
+                return console.log("did not find a record : loadNPCCurrentStats");
+            }
+            else {
+                for (_i=0;_i<_myNPCCurrent.length;_i++) {
+                    // check each, use one matching _partID (which is combo ID wiht encounter name)
+                    if(_myNPCCurrent[_i].PARTY_ID == _partyComboID) {
+                        if (_match != -1) {return alert.log("multiple matches, should be a single match : loadNPCCurrentStats");}
+                        _match=_i;
+                    }
+                }
+            }
+            if (_match==-1) {return alert("no record found : loadNPCCurrentStats")}
             // set the values in the form
-           
+            // these may not be correct if there were multiple returns
+
+            _myNPCCurrent[0]=_myNPCCurrent[_match];
             $('#NPCCurrentComposure').val(_myNPCCurrent[0].COMPOSURE_CURRENT_MOD);
             $('#NPCCurrentForce').val(_myNPCCurrent[0].FORCE_CURRENT_MOD);
             //$('#').val(_myNPCCurrent[0].NPC_NAME);

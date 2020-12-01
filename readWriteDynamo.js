@@ -168,7 +168,7 @@ function loadPartyIDs(_partyID,_encounterName) {
         }
 
         getPlayers();// update the players list. for the dash page.
-        // this will through an error for pages without the list.
+        // this will throw an error for pages without the list.
         
         // do not put alert here, it messes with the loops
         console.log("done loading party of "+_i);
@@ -253,7 +253,7 @@ function getCurrentPlayerStats(_userid,_partyid,_num) {
             $('#currentFocusField'+_num).val(_currentJSON.FOCUS);
             $('#currentRoomField'+_num).val(_currentJSON.ROOM_NAME);
             //console.log(_currentJSON);
-            // current data should also be stored into the  array playerCurrentAr, add that here
+            // current data should also be stored into the  array NPCCurrentList, add that here
         });
         
     }
@@ -395,8 +395,13 @@ function saveNPC() {
         }
     }
     //$("#NPCTrait1").val()
+    // to allow multiple NPC per encounter, the party id will include the party id and encounter name. (otherwise the current tables do not allow multiples)
+    var _comboId = [];
+    _comboId[0]=document.getElementById('partyIdField').value;
+    _comboId[1]=document.getElementById("encounterNameField").value;
+
     var _data = {
-            "PARTY_ID": document.getElementById('partyIdField').value,
+            "PARTY_ID": JSON.stringify(_comboId),
             "CREATOR_ID": document.getElementById('NPCCreator').value,
             "NPC_NAME": document.getElementById('NPCName').value,
             "NPC_BASE_VISIBILITY":document.getElementById("NPCVisible").checked,
@@ -406,7 +411,8 @@ function saveNPC() {
             "NPC_BASE_RANGE": document.getElementById('NPCRange').value,
             "NPC_BASE_TRAITS_VISIBLE_AR": JSON.stringify(_traitsVisibilityAr),
             "NPC_TRAITS_AR": JSON.stringify(_traitsListAr),
-            "NPC_ROOM_NAME": document.getElementById("NPCRoom").value
+            "NPC_ROOM_NAME": document.getElementById("NPCRoom").value,
+            "ENCOUNTER_NAME": document.getElementById("encounterNameField").value
     }
     var _dataJSON = JSON.stringify(_data);
     var requestOptions = {
@@ -415,7 +421,7 @@ function saveNPC() {
         body: _dataJSON,
         redirect: 'follow'
     };
-    console.log(_data);
+    //console.log(_data);
     // make API call with parameters and use promises to get response
     fetch("https://7dxqxy0m90.execute-api.us-east-2.amazonaws.com/dev", requestOptions)
     .then(response => response.text())
@@ -424,13 +430,20 @@ function saveNPC() {
 }
     
 
-async function getNPCOrScanNPCParty(_tableName,_partyID,_NPCName) {
+async function getNPCOrScanNPCParty(_tableName,_partyID,_NPCName,_encounterName) {
     // get the NPC party members for a party
     // get the NPC current status for the members
     // update the party text lines and/or fields after return
     // API to return all records if not providing both keys. Return matching records if providing keys.
     if (!_tableName) {_tableName="VIRTUES_NPC"};
-    var raw = JSON.stringify({"TABLE_NAME":_tableName,"NPC_NAME":_NPCName,"PARTY_ID":_partyID});
+    // partyid is now a combo, parse it before restingify ...
+    //_partyID=JSON.parse(_partyID);
+    var _comboId = [];
+    _comboId[0]=_partyID;
+    _comboId[1]=_encounterName;
+    _partyComboID = JSON.stringify(_comboId);
+    var raw = JSON.stringify({"TABLE_NAME":_tableName,"NPC_NAME":_NPCName,"PARTY_ID":_partyComboID});
+
     //console.log(raw);
 
     var myHeaders = new Headers();
@@ -441,6 +454,7 @@ async function getNPCOrScanNPCParty(_tableName,_partyID,_NPCName) {
         body: raw,
         redirect: 'follow'
     };
+    //console.log(requestOptions);
     let response = await fetch("https://50ittpn3u4.execute-api.us-east-2.amazonaws.com/dev", requestOptions);
         
     if (response.status == 200) {
