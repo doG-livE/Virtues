@@ -86,10 +86,24 @@
         var freeDrawBool=0;
         var NPCTraitIndex={};
     </script>
-    
-
+    <div id="canvasDiv" style="border:1px solid #aaa; display:inline-block;margin-left:auto;margin-right:auto;">
+<table>
+    <tr>
+        <td>
+        <form>
+        Click to move from one list to the other.
+        <br>
+        <select id="inititiveOrder" multiple onclick="adjustOrder('inititiveOrder','waitingOrder')" size="12"><option value="">ACTED &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option></select>
+        <select id="waitingOrder" multiple onclick="adjustOrder('waitingOrder','inititiveOrder')" size="12"><option value="">WAITING &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option></select>
+    </td>
     <!-- draw the scene graphics -->
-    <canvas id="sceneCanvas" width="450" height="450" style="border:1px solid #aaa"></canvas>  
+<td>
+        <canvas id="sceneCanvas" width="450" height="450" style="border:1px solid #aaa; display:inline-block;margin-left:auto;margin-right:auto;"></canvas>  
+    </div>
+</td>
+    </form>
+</tr>
+</table>
     <script> // the canvas above and this block start the scene graphics.
         fabric.LabeledRect = fabric.util.createClass(fabric.Rect, {
         type: 'LabeledRect',
@@ -136,16 +150,8 @@
     </form>
 <br>
 <form>
-    <!-- provide places to track turn order and traits
-    this is intended to be similar to moving bits on a spreadsheet for now.
-    the inititive order and trait list should now show for NPC not visible.
-    first add PC, then add NPC visible, 
-    -->
-    Click to move from one list to the other.
-    <br>
-    <select id="inititiveOrder" multiple onclick="adjustOrder('inititiveOrder','waitingOrder')" size="12"><option value="">ACTED &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option></select>
-    <select id="waitingOrder" multiple onclick="adjustOrder('waitingOrder','inititiveOrder')" size="12"><option value="">WAITING &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option></select>
-    <br><br>
+
+
     Click on a trait in the left list to show/hide
     <br>
     <select id="traitsVisible" multiple size="14"onclick="clickTrait('traitsVisible','traitsLeaned',1)"><option value="">Traits by NPC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option></select>
@@ -156,18 +162,17 @@
     function clickTrait(_listSelectName,_displaySelectName,_visibility) {
         // for clicked trait, either show , or hide the trait.
         // update NPCCurrentAr.
-
         var _selShown = document.getElementById(_listSelectName);
         var _selKnown = document.getElementById(_displaySelectName);
         //console.log(_selShown);
-        console.log(_selShown.value);
+        //console.log(_selShown.value);
         if (_visibility && _selShown.value) { // first list is selected & a value is picked
             // set the CurrentNPC data to show the revealed trait.
             // value is set to the index selected value
             _value=_selShown.value; // the clicked item
             _pair=_selKnown.options[_selShown.value].value;
             _pair=JSON.parse(_pair).split(/\s*,\s*/);
-            console.log(_pair);
+            //console.log(_pair);
             // given the pair, set the value for the visible trait
             var _traitsListForNPC=JSON.parse(NPCCurrentDataList[_pair[0]].traitsAr); // this is the array of trait names
             var _traitName=_traitsListForNPC[_pair[1]];
@@ -179,10 +184,21 @@
             // update the list for the NPCCurrent data;
             // update the list to the most recent client data...           
             NPCCurrentDataList[_pair[0]].TRAITS_DISCOVERED_LIST=JSON.stringify(_tempList);
-            updateKnownTraits(_listSelectName,_displaySelectName,NPCCurrentDataList)
+            updateKnownTraits(_listSelectName,_displaySelectName,NPCCurrentDataList);
+        }
+        else if (!_visibility && _selShown.value){
+            // unshow the item selected (set text as hidden in the current vis stats).
+            _pair=_selKnown.value; // the clicked item
+            _pair=JSON.parse(_pair).split(/\s*,\s*/);
+            var _tempList=NPCCurrentDataList[_pair[0]].TRAITS_DISCOVERED_LIST;
+            _tempList=JSON.parse(_tempList)            
+            _tempList[(_pair[1]-1)]=false;                     
+            NPCCurrentDataList[_pair[0]].TRAITS_DISCOVERED_LIST=JSON.stringify(_tempList);
+            updateKnownTraits(_listSelectName,_displaySelectName,NPCCurrentDataList);
         }
         else {
-            //hide
+            // and do nothing if level 0 is selected (would be a null value for the value).
+            return console.log("did not see any trait to update, I think clicked on header")
         }
     }
 
@@ -190,10 +206,20 @@
         // load the traits into the trait fields ... needs to have the NPCs loaded first.
         //console.log(_listSelectName,_displaySelectName,_partyId,_encounterName)
         // this is called from inside loadNPC rather than from the button press to get on the promise processing with the async call
-        console.log(NPCDataAr);
+        //console.log(NPCDataAr);
         if (!NPCDataAr[0]) {return (console.log("no NPC data found!"))}
-        // loop through NPCs, set the values in the lists.
-        // The order needs to match up between lists.
+            // loop through NPCs, set the values in the lists.
+            // The order needs to match up between lists.
+
+            var _sel = document.getElementById(_listSelectName);
+            var _sel2 = document.getElementById(_displaySelectName);
+            for (_i=1;_i<_sel.options.length;_i++) {
+                if (_sel.options[_i]) {
+                    _sel.removeChild(_sel.options[_i]); // leave the header
+                    _sel2.removeChild(_sel2.options[_i]);                    
+                    _i--; // try again, with same counter, as the item was removed.
+                }
+            }
             var _comboId = [];
             _comboId[0]=_partyID;
             _comboId[1]=_encounterName;
@@ -324,7 +350,10 @@
         // for each NPC Party, there should be an NPC current.
         // set the show text to the name and tool tip for any visible traits in the current party data.
         // loop through select list and set the targets
-        console.log(_shownSelectList,_knownSelectList,_NPCCurrentDataList);
+        //console.log(_shownSelectList,_knownSelectList,_NPCCurrentDataList);
+        // first, clear any data already in the fields.
+
+        
         for (_key in _NPCCurrentDataList) {
             // loop through the visibility, set the items in the list.
             //console.log(NPCCurrentDataList[_key]);
@@ -332,7 +361,7 @@
             var _visStr=_NPCCurrentDataList[_key].TRAITS_DISCOVERED_LIST;
             var _visAr=JSON.parse(_visStr);
             var _traitNamesAr=JSON.parse(_NPCCurrentDataList[_key].traitsAr);
-            console.log(_traitNamesAr);
+            //console.log(_traitNamesAr);
             for (_i=0;_i<_visAr.length;_i++) {
                 //console.log(_visAr[_i]);
                 // set the name and tip in the select list if showing
@@ -361,7 +390,7 @@
     function loadNPCCurrentDash(_NPCDataAr,_partyID,_encounterName) {
         // for each NPC, get the curent data and save to Ar.
         // then set the traits know.
-        console.log(_NPCDataAr,_partyID,_encounterName);
+        //console.log(_NPCDataAr,_partyID,_encounterName);
         for (var _i=0; _i<_NPCDataAr.length;_i++) {
             // get the current data.
             var _NPCPromise=getNPCOrScanNPCParty("VIRTUES_NPC_CURRENT_STATS",_partyID,_NPCDataAr[_i].NPC_NAME,_encounterName);
@@ -369,7 +398,7 @@
             _myNPCCurrent=_myNPCCurrent.body;
             //console.log(_myNPC)
             // should be one row returned
-            console.log(_myNPCCurrent);           
+            //console.log(_myNPCCurrent);           
 
             var _match=-1;
             if (_myNPCCurrent[0]==""){
@@ -386,16 +415,16 @@
             }
             if (_match==-1) {return alert("no record found : loadNPCCurrentStats")}
             // set the values in the form
-            console.log(_match);
+            //console.log(_match);
             // add data to NPCarCurrentAr 
             var _thisName=_myNPCCurrent[_match].NPC_NAME;
-            console.log(_thisName);
-            console.log(_myNPCCurrent[_match]);
+            //console.log(_thisName);
+            //console.log(_myNPCCurrent[_match]);
             NPCCurrentDataList[_thisName]=_myNPCCurrent[_match];
             // set the traits names in the NPC current object (current only stores the visibility, not the names)
-            console.log(_NPCDataAr);
+            //console.log(_NPCDataAr);
             var _thisList=_NPCDataAr[_match].NPC_TRAITS_AR;
-            console.log(_thisList);
+            //console.log(_thisList);
             NPCCurrentDataList[_thisName].traitsAr=_thisList;
             // run in the promise reply to wait for the data.
             updateKnownTraits('traitsVisible','traitsLeaned',NPCCurrentDataList);
@@ -407,11 +436,14 @@
     <form>
          <br><br><br><br><br>
         <label>ID for Chat :</label><input type="text" size="10" id="chatIdField" onchange="readPlayerChatData($('#chatIdField').val())"></input>
-        <label>Name :</label><input type="text" size="10" id="chatNameField"></input><br><br>
+        <label>Name :</label><input type="text" size="10" id="chatNameField"></input>
+        <br><br>
         <!-- set button onClick method to call function we defined passing input values as parameters -->
+        <button type="button" onclick="rollD6Chat(1,$('#chatIdField').val(),$('#chatNameField').val())">Roll 1 D6 in chat</button>
+        <button type="button" onclick="rollD6Chat(3,$('#chatIdField').val(),$('#chatNameField').val())">Roll 3x D6 in chat</button>
         <br>
-        <label>Chat :</label><input type="text" size="40" id="chatField"></label>
-        <button type="button" onclick="sendChatText($('#chatField').val(),$('#chatIdField').val(),$('#chatNameField').val())">Send</button></input>
+        <label>Chat :</label><input type="text" size="40" id="chatField"></input>
+        <button type="button" onclick="sendChatText($('#chatField').val(),$('#chatIdField').val(),$('#chatNameField').val())">Send</button>
         <br>
     </form>
 
