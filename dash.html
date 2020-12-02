@@ -159,20 +159,27 @@
 
         var _selShown = document.getElementById(_listSelectName);
         var _selKnown = document.getElementById(_displaySelectName);
-
-        console.log(_selShown);
-        if (_visibility) { // first list is selected
-        // set the CurrentNPC data to show the revealed trait.
-
-        // value is set to the index selected value
-            _value=$("#"+_listSelectName).val(); 
-            for (var _i=1; _i<_selShown.options.length; _i++ ) {
-                if (_selShown.options[_i].value==_value) {
-
-                    //_selKnown.options[_value].text="setsetsetsets";
-
-                }  
-            }
+        //console.log(_selShown);
+        console.log(_selShown.value);
+        if (_visibility && _selShown.value) { // first list is selected & a value is picked
+            // set the CurrentNPC data to show the revealed trait.
+            // value is set to the index selected value
+            _value=_selShown.value; // the clicked item
+            _pair=_selKnown.options[_selShown.value].value;
+            _pair=JSON.parse(_pair).split(/\s*,\s*/);
+            console.log(_pair);
+            // given the pair, set the value for the visible trait
+            var _traitsListForNPC=JSON.parse(NPCCurrentDataList[_pair[0]].traitsAr); // this is the array of trait names
+            var _traitName=_traitsListForNPC[_pair[1]];
+            // set the current value for the given index selected as shown.
+            //update discovered list
+            var _tempList=NPCCurrentDataList[_pair[0]].TRAITS_DISCOVERED_LIST;
+            _tempList=JSON.parse(_tempList)            
+            _tempList[(_pair[1]-1)]=true;            
+            // update the list for the NPCCurrent data;
+            // update the list to the most recent client data...           
+            NPCCurrentDataList[_pair[0]].TRAITS_DISCOVERED_LIST=JSON.stringify(_tempList);
+            updateKnownTraits(_listSelectName,_displaySelectName,NPCCurrentDataList)
         }
         else {
             //hide
@@ -343,9 +350,9 @@
                 //console.log(_sel.options[_i].value)
                 var _thisText="value hidden";
                 if (_visAr[_i]) {
+                    // set the text for a known trait
                     _thisText=_key+" : "+_traitNamesAr[_i]+" -- "+NPCTraitIndex[_traitNamesAr[_i]];
                 }
-                
                 _sel.options[_i+1].text=_thisText; // keep 0 as the default
             }
         }
