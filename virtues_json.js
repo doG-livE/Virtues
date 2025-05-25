@@ -793,19 +793,19 @@ virtuesJson = [
             "cardTooltip": "Engage with +1 <strong> Range. </strong> <strong> Hustle </strong> target toward you."
         },
         {
-            "cardTitle": "Assist",
+            "cardTitle": "Cheerful",
             "cardVirtue": "Compassion",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "0",
-            "cardActionLetter": "E",
+            "cardActionLetter": "P",
             "inspirationCostToBuy": "0",
-            "cardBody": "[Primary Compassion] <br> <br> (Calling ability: OPE, No Action) <br> <br> Use this ability when an ally rolls a 1 when making an engagement. <br> <br> Roll a d6, and add the result to the triggering ally's <strong> Force </strong> for this engagement.",
+            "cardBody": "[Primary Compassion] <br> <br> (Calling ability: Passive, Always on) <br> <br> You gain +2 <strong> Cheerleader. </strong> (first 2 Focus spent on a cheer/heal is free)",
             "cardType": "technique",
             "techIsCalling": "Compassion",
             "techissurgeable": false,
             "techIsDefault": false,
-            "cardTooltip": "When engaging ally rolls 1, add 1d6."
+            "cardTooltip": "You gain +2 <strong> Cheerleader. </strong> (first 2 Focus spent on a cheer/heal is free)"
         },
         {
             "cardTitle": "Blunt",
@@ -868,49 +868,49 @@ virtuesJson = [
             "cardTooltip": "Until the start of your next turn, heroes in your zone have +2 <strong> Composure. </strong>"
         },
         {
-            "cardTitle": "Calm",
+            "cardTitle": "Break Out",
             "cardVirtue": "Compassion",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "0",
             "cardActionLetter": "E",
             "inspirationCostToBuy": "0",
-            "cardBody": "[Secondary Compassion] <br> <br> (Calling ability: OPE, No Action) <br> <br> Use this ability when a foe engages an ally you can see. <br> <br> Roll a d6, and add the result to the triggering ally's <strong> Composure </strong> against this engagement.",
+            "cardBody": "[Secondary Compassion] <br> <br> (Calling ability: OPE, No Action) <br> <br> Once per encounter, during your turn, you may Hustle any ally without using an action.",
             "cardType": "technique",
             "techIsCalling": "secCompassion",
             "techissurgeable": false,
             "techIsDefault": false,
-            "cardTooltip": "When ally engaged, grant +1d6 <strong> Composure.</strong>"
+            "cardTooltip": "OPE <strong>Hustle</strong> Ally, no action cost."
         },
         {
-            "cardTitle": "Caper",
+            "cardTitle": "Break Lines",
             "cardVirtue": "Clever",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "2/0",
-            "cardActionLetter": "M",
+            "cardActionLetter": "E",
             "inspirationCostToBuy": "0",
-            "cardBody": "[Clever/Courage Calling] <br> <br> After engaging, you may <strong> Hustle </strong> any character in an adjacent zone into your zone, and then you may <strong> Hustle </strong> any character in your zone (including yourself) out of the zone.",
+            "cardBody": "[Clever/Courage Calling OPE] <br> <br> Either before or after your engagement, <strong> Hustle </strong> all foes.",
             "cardType": "technique",
             "techIsCalling": "Clever/Courage",
             "techissurgeable": true,
             "techIsDefault": false,
-            "cardTooltip": "After engaging, <strong> Hustle </strong> someone into zone, then <strong> Hustle </strong> someone out of zone."
+            "cardTooltip": "Either before or after your engagement, <strong> Hustle </strong> all foes."
         },
         {
-            "cardTitle": "Cavalier",
+            "cardTitle": "Strive",
             "cardVirtue": "Courage",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "2/0",
-            "cardActionLetter": "M",
+            "cardActionLetter": "E",
             "inspirationCostToBuy": "0",
-            "cardBody": "[Courage/Courage Calling] <br> <br> You gain a bonus to this engagement equal to the base <strong> Force </strong> bonus of the target foe.",
+            "cardBody": "[Courage/Courage Calling OPE] <br> <br> This engagement gains a <strong> Force </strong> bonus equal to twice the number of foes in your zone.",
             "cardType": "technique",
             "techIsCalling": "Courage/Courage",
             "techissurgeable": true,
             "techIsDefault": false,
-            "cardTooltip": "Gain bonus equal to foe's <strong> Force </strong> bonus."
+            "cardTooltip": "Gains a <strong> Force </strong> bonus equal to twice the number of foes in your zone"
         },
         {
             "cardTitle": "Culmination",
@@ -928,34 +928,34 @@ virtuesJson = [
             "cardTooltip": "If you engage a foe who's triggered your prep, +1 per <strong> Surge.</strong>"
         },
         {
-            "cardTitle": "Dauntless",
+            "cardTitle": "Forceful",
             "cardVirtue": "Courage",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "0",
-            "cardActionLetter": "E",
+            "cardActionLetter": "P",
             "inspirationCostToBuy": "0",
-            "cardBody": "[Primary Courage] <br> <br> (Calling ability: OPE, No Action) <br> <br> Use this ability when you would be able to use a hasten action. <br> <br> <strong> Hustle. </strong>",
+            "cardBody": "[Primary Courage] <br> <br> (Calling ability: Passive, always on) <br> <br> You gain +1 <strong> Sheer Force. </strong>",
             "cardType": "technique",
             "techIsCalling": "Courage",
             "techissurgeable": false,
             "techIsDefault": false,
-            "cardTooltip": "During your turn, <strong> Hustle </strong> yourself."
+            "cardTooltip": "You gain +1 <strong> Sheer Force. </strong>"
         },
         {
-            "cardTitle": "Discretion",
+            "cardTitle": "Scrutinize",
             "cardVirtue": "Clever",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "0",
             "cardActionLetter": "E",
             "inspirationCostToBuy": "0",
-            "cardBody": "[Secondary Clever] <br> <br> (Calling ability: OPE, No Action) <br> <br> You may use this ability when your turn begins, and another character could act instead. <br> <br> The turn is passed to a valid character of your choice instead of you.",
+            "cardBody": "[Secondary Clever] <br> <br> (Calling ability: OPE, No Action) <br> <br> Once per encounter, during your turn, you may <strong> Study </strong> without using an action.",
             "cardType": "technique",
             "techIsCalling": "secClever",
             "techissurgeable": false,
             "techIsDefault": false,
-            "cardTooltip": "When turn is passed to you, pass to another instead."
+            "cardTooltip": "OPE during your turn, you may <strong> Study </strong> without using an action."
         },
         {
             "cardTitle": "Dogged",
@@ -1048,37 +1048,37 @@ virtuesJson = [
             "cardTooltip": "Prep: If engaged, <strong> Jab. </strong> If prep expires, take 1 damage."
         },
         {
-            "cardTitle": "Incite",
+            "cardTitle": "Lock Step",
             "cardVirtue": "Compassion",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "2/0",
             "cardActionLetter": "M",
             "inspirationCostToBuy": "0",
-            "cardBody": "[Clever/Compassion Calling] <br> <br> After engaging, until the start of your next turn, whenever you would <strong> Jab, </strong> you may instead have each ally <strong> Jab </strong> a foe of their choice.",
+            "cardBody": "[Clever/Compassion Calling] <br> <br> Either before or after your engagement, <strong> Hustle </strong> yourself and all allies.",
             "cardType": "technique",
             "techIsCalling": "Clever/Compassion",
             "techissurgeable": true,
             "techIsDefault": false,
-            "cardTooltip": "After engaging, if you would <strong> Jab, </strong> instead allies <strong> Jab.</strong>"
+            "cardTooltip": "Either before or after your engagement, <strong> Hustle </strong> yourself and all allies."
         },
         {
-            "cardTitle": "Indignation",
+            "cardTitle": "Salvation",
             "cardVirtue": "Compassion",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "2/0",
-            "cardActionLetter": "M",
+            "cardActionLetter": "E",
             "inspirationCostToBuy": "0",
-            "cardBody": "[Compassion/Compassion Calling ] <br> <br> Engage with +1 for each point of Morale you have healed to an ally this encounter. You cannot gain more than +10 in this way.",
+            "cardBody": "[Compassion/Compassion Calling OPE] <br> <br> Engage, then perform a <strong> cheer </strong> with a <strong> cheerleader </strong> bonus equal to the damage dealt.",
             "cardType": "technique",
             "techIsCalling": "Compassion/Compassion",
             "techissurgeable": true,
             "techIsDefault": false,
-            "cardTooltip": "+1 <strong> Force </strong> for each point you've healed allies."
+            "cardTooltip": "Engage, then perform a <strong> cheer </strong> with a <strong> cheerleader </strong> bonus equal to the damage dealt."
         },
         {
-            "cardTitle": "Leverage",
+            "cardTitle": "Leverage-old",
             "cardVirtue": "Clever",
             "cardPurchased": false,
             "cardExported": false,
@@ -1087,7 +1087,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "Engage with a bonus equal to the total number of Traits that have been revealed this encounter.",
             "cardType": "technique",
-            "techIsCalling": true,
+            "techIsCalling": false,
             "techissurgeable": true,
             "techIsDefault": false,
             "cardTooltip": "Engage with a bonus equal to the total number of Traits that have been revealed this encounter."
@@ -1123,19 +1123,19 @@ virtuesJson = [
             "cardTooltip": "Engage +6. If target not vanquished, deal no damage, and target Gentled."
         },
         {
-            "cardTitle": "Moxie",
+            "cardTitle": "Poke",
             "cardVirtue": "Courage",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "0",
             "cardActionLetter": "E",
             "inspirationCostToBuy": "0",
-            "cardBody": "[Secondary Courage] <br> <br> (Calling ability: OPE, No Action) <br> <br> Use this ability when you could use any other initiative seize. <br> <br> Seize initiative.",
+            "cardBody": "[Secondary Courage] <br> <br> (Calling ability: OPE, No Action) <br> <br> Once per encounter, during your turn, you may <strong> Jab </strong> without using an action.",
             "cardType": "technique",
             "techIsCalling": "secCourage",
             "techissurgeable": false,
             "techIsDefault": false,
-            "cardTooltip": "Initiative seize."
+            "cardTooltip": "Once per encounter, during your turn, you may Jab without using an action."
         },
         {
             "cardTitle": "Onrush",
@@ -1153,19 +1153,19 @@ virtuesJson = [
             "cardTooltip": "Engage. If in target's zone, you may <strong> Hustle </strong> them."
         },
         {
-            "cardTitle": "Outmaneuver",
+            "cardTitle": "Leverage",
             "cardVirtue": "Clever",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "2/0",
-            "cardActionLetter": "M",
+            "cardActionLetter": "E",
             "inspirationCostToBuy": "0",
-            "cardBody": "[Clever/Clever Calling] <br> <br> You may choose to lose any number of actions you have prepped. (Those actions are no longer prepped, but do not count as expiring.) You gain +2 to the engagement for each prep action you lose this way.",
+            "cardBody": "[Clever/Clever Calling OPE] <br> <br> Learn all traits of your target. If all the foe's traits are known, add your Sheer Force.",
             "cardType": "technique",
             "techIsCalling": "Clever/Clever",
             "techissurgeable": true,
             "techIsDefault": false,
-            "cardTooltip": "Engage. You may spend preps to gain +2 per."
+            "cardTooltip": "Learn all traits of your target. If all the foe's traits are known, add your Sheer Force."
         },
         {
             "cardTitle": "Patience",
@@ -1198,19 +1198,19 @@ virtuesJson = [
             "cardTooltip": "Heroes +2 to <strong> Jabs, </strong> foes -2 to <strong> Jabs.</strong>"
         },
         {
-            "cardTitle": "Ramify",
+            "cardTitle": "Repel",
             "cardVirtue": "Courage",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "2",
-            "cardActionLetter": "M",
+            "cardActionLetter": "E",
             "inspirationCostToBuy": "0",
-            "cardBody": "[Courage/Clever Calling ] <br> <br> You may target one extra foe with this engagement.",
+            "cardBody": "[Courage/Clever Calling OPE] <br> <br> Once per Encounter <br> <br> Until the end of your next turn, whenever a foe enters or leaves your zone, you may <strong> Jab </strong> that foe.",
             "cardType": "technique",
             "techIsCalling": "Courage/Clever",
             "techissurgeable": true,
             "techIsDefault": false,
-            "cardTooltip": "Target an extra foe with this engagement."
+            "cardTooltip": "Until the end of your next turn, whenever a foe enters or leaves your zone, you may <strong> Jab </strong> that foe."
         },
         {
             "cardTitle": "Relentless",
@@ -1228,19 +1228,19 @@ virtuesJson = [
             "cardTooltip": "Engage. +3 if you engaged them last turn. +3 if you engage them next turn."
         },
         {
-            "cardTitle": "Scrutinize",
+            "cardTitle": "Focused",
             "cardVirtue": "Clever",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "0",
-            "cardActionLetter": "E",
+            "cardActionLetter": "P",
             "inspirationCostToBuy": "0",
-            "cardBody": "[Primary Clever] <br> <br> (Calling ability: OPE, No Action) <br> <br> Use this ability when you would be able to use a prep action. <br> <br> Choose and learn any one trait of a foe.",
+            "cardBody": "[Primary Clever] <br> <br> (Calling ability: Passive, always on) <br> <br> You gain 1 bonus <strong> Pure Focus </strong> during gathering phase.",
             "cardType": "technique",
             "techIsCalling": "Clever",
             "techissurgeable": false,
             "techIsDefault": false,
-            "cardTooltip": "Learn a trait for free."
+            "cardTooltip": "You gain 1 bonus <strong> Pure Focus </strong> during gathering phase."
         },
         {
             "cardTitle": "Sleight",
@@ -1303,19 +1303,19 @@ virtuesJson = [
             "cardTooltip": "<strong>Heal </strong> an ally. <strong> Hustle </strong> them unless they've been <strong> Hustled </strong> this round."
         },
         {
-            "cardTitle": "Stir",
+            "cardTitle": "Ward",
             "cardVirtue": "Compassion",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "2/0",
-            "cardActionLetter": "M",
+            "cardActionLetter": "E",
             "inspirationCostToBuy": "0",
-            "cardBody": "[Compassion/Clever Calling] <br> <br> Make a <strong> Gentle </strong> engagement. <br> <br> After engaging, choose a hero, and choose a foe. Until the start of your next turn, the chosen hero gains a <strong> Force </strong> bonus, and the chosen foe takes a <strong> Force </strong> penalty, equal to 4 times the gentled damage.",
+            "cardBody": "[Compassion/Clever Calling OPE] <br> <br> Until the start of your next turn, whenever an ally is engaged, that ally may <strong> Jab </strong> their attacker.",
             "cardType": "technique",
             "techIsCalling": "Compassion/Clever",
             "techissurgeable": true,
             "techIsDefault": false,
-            "cardTooltip": "Engage <strong> Gentle. </strong> Hero gains +4 <strong> Force </strong> per gentled, foe gets -4 <strong> Force </strong> per gentled."
+            "cardTooltip": "Until the start of your next turn, whenever an ally is engaged, that ally may <strong> Jab </strong> their attacker."
         },
         {
             "cardTitle": "Strengthen",
@@ -1333,34 +1333,34 @@ virtuesJson = [
             "cardTooltip": "<strong>Heal </strong> an ally. They gain +3 to their next engagement."
         },
         {
-            "cardTitle": "Strive",
+            "cardTitle": "Unflinching",
             "cardVirtue": "Courage",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "2/0",
-            "cardActionLetter": "M",
+            "cardActionLetter": "E",
             "inspirationCostToBuy": "0",
-            "cardBody": "[Courage/Compassion Calling] <br> <br> Before engaging, you may spend any amount of Morale, up to your current amount. <br> <br> Engage with +2 for each Morale spent.",
+            "cardBody": "[Courage/Compassion Calling OPE] <br> <br> Until the start of your next turn, you gain <strong> Conspicuous </strong> and +4 <strong> Composure. </strong>",
             "cardType": "technique",
             "techIsCalling": "Courage/Compassion",
             "techissurgeable": true,
             "techIsDefault": false,
-            "cardTooltip": "Engage. You may spend <strong> Morale </strong> to gain +2 per."
+            "cardTooltip": "Until the start of your next turn, you gain <strong> Conspicuous </strong> and +4 <strong> Composure. </strong>"
         },
         {
-            "cardTitle": "Ward",
+            "cardTitle": "Baton Pass",
             "cardVirtue": "Compassion",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "2/0",
-            "cardActionLetter": "M",
+            "cardActionLetter": "E",
             "inspirationCostToBuy": "0",
-            "cardBody": "[Compassion/Courage Calling ] <br> <br> Engage. After engaging, you gain this Aura effect until the end of your next turn: When a foe makes an engagement while in your zone, the target of their engagement may <strong> Jab </strong> that foe.",
+            "cardBody": "[Compassion/Courage Calling OPE] <br> <br> This engagement becomes Gentle. Choose an ally. They gain a Force bonus to their next engagement equal to the gentled damage, plus twice your Sheer Force.",
             "cardType": "technique",
             "techIsCalling": "Compassion/Courage",
             "techissurgeable": true,
             "techIsDefault": false,
-            "cardTooltip": "Engage and gain Aura: If ally in your zone is engaged, ally may <strong> Jab </strong> engaging foe."
+            "cardTooltip": "This engagement becomes Gentle. Choose an ally. They gain a Force bonus to their next engagement equal to the gentled damage, plus twice your Sheer Force."
         },
         {
             "cardTitle": "Watchful",
