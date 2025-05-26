@@ -424,19 +424,19 @@ virtuesJson = [
             "cardTooltip": "Until the start of your next turn, the target "
         },
         {
-            "cardTitle": "Cheerful",
-            "cardVirtue": "Compassion",
+            "cardTitle": "Hypervigilant",
+            "cardVirtue": "Courage",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "0",
-            "cardActionLetter": "P",
-            "inspirationCostToBuy": "0",
-            "cardBody": "[Primary Compassion] <br> <br> (Calling ability: Passive, Always on) <br> <br> You gain +2 <strong> Cheerleader. </strong> (first 2 Focus spent on a cheer/heal is free)",
+            "cardActionLetter": "M",
+            "inspirationCostToBuy": "1",
+            "cardBody": "If you are engaged before the start of your next turn, you may Jab the engaging foe.",
             "cardType": "technique",
-            "techIsCalling": "Compassion",
+            "techIsCalling": false,
             "techissurgeable": false,
             "techIsDefault": false,
-            "cardTooltip": "You gain +2 <strong> Cheerleader. </strong> (first 2 Focus spent on a cheer/heal is free)"
+            "cardTooltip": "If you are engaged before the start of your next turn, you may Jab the engaging foe."
         },
         {
             "cardTitle": "Tough",
@@ -499,19 +499,19 @@ virtuesJson = [
             "cardTooltip": "You are Conspicuous until the beginning of your next turn. "
         },
         {
-            "cardTitle": "Break Out",
-            "cardVirtue": "Compassion",
+            "cardTitle": "Defy",
+            "cardVirtue": "Courage",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": "0",
-            "cardActionLetter": "E",
-            "inspirationCostToBuy": "0",
-            "cardBody": "[Secondary Compassion] <br> <br> (Calling ability: OPE, No Action) <br> <br> Once per encounter, during your turn, you may Hustle any ally without using an action.",
+            "cardActionLetter": "M",
+            "inspirationCostToBuy": "1",
+            "cardBody": "This engagement gains Force equal to the difference between your current Morale and your max Morale.",
             "cardType": "technique",
-            "techIsCalling": "secCompassion",
+            "techIsCalling": false,
             "techissurgeable": false,
             "techIsDefault": false,
-            "cardTooltip": "OPE <strong>Hustle</strong> Ally, no action cost."
+            "cardTooltip": "This engagement gains Force equal to the difference between your current Morale and your max Morale."
         },
         {
             "cardTitle": "Jostle",
@@ -1007,6 +1007,36 @@ virtuesJson = [
             "techissurgeable": false,
             "techIsDefault": false,
             "cardTooltip": "Prep: Give engaged ally +2 <strong> Composure </strong> once."
+        },
+        {
+            "cardTitle": "Cheerful",
+            "cardVirtue": "Compassion",
+            "cardPurchased": false,
+            "cardExported": false,
+            "cardNumber": "0",
+            "cardActionLetter": "P",
+            "inspirationCostToBuy": "0",
+            "cardBody": "[Primary Compassion] <br> <br> (Calling ability: Passive, Always on) <br> <br> You gain +2 <strong> Cheerleader. </strong> (first 2 Focus spent on a cheer/heal is free)",
+            "cardType": "technique",
+            "techIsCalling": "Compassion",
+            "techissurgeable": false,
+            "techIsDefault": false,
+            "cardTooltip": "You gain +2 <strong> Cheerleader. </strong> (first 2 Focus spent on a cheer/heal is free)"
+        },
+        {
+            "cardTitle": "Break Out",
+            "cardVirtue": "Compassion",
+            "cardPurchased": false,
+            "cardExported": false,
+            "cardNumber": "0",
+            "cardActionLetter": "E",
+            "inspirationCostToBuy": "0",
+            "cardBody": "[Secondary Compassion] <br> <br> (Calling ability: OPE, No Action) <br> <br> Once per encounter, during your turn, you may Hustle any ally without using an action.",
+            "cardType": "technique",
+            "techIsCalling": "secCompassion",
+            "techissurgeable": false,
+            "techIsDefault": false,
+            "cardTooltip": "OPE <strong>Hustle</strong> Ally, no action cost."
         },
         {
             "cardTitle": "Courageous Outlook",
