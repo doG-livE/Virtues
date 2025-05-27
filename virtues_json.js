@@ -530,7 +530,7 @@ virtuesJson = [
         },
         {
             "cardTitle": "Strive",
-            "cardVirtue": "Clever",
+            "cardVirtue": "Courage",
             "cardPurchased": false,
             "cardExported": false,
             "cardNumber": " ",
@@ -900,7 +900,7 @@ virtuesJson = [
             "cardType": "technique",
             "techIsCalling": false,
             "techissurgeable": false,
-            "techIsDefault": true,
+            "techIsDefault": false,
             "cardTooltip": "Character sheet, populated when printing"
         },
         {
