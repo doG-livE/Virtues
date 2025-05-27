@@ -915,7 +915,7 @@ virtuesJson = [
             "cardType": "technique",
             "techIsCalling": false,
             "techissurgeable": false,
-            "techIsDefault": true,
+            "techIsDefault": false,
             "cardTooltip": "Character sheet, populated when printing"
         }
      ]
