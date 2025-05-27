@@ -12,3 +12,6 @@ Differences from Virtues-Current (as of writing)
     Many JS functions seperated from .html files
     JSON still javascript object(s), but split from the .html
     Some bug fixes that were in the Virtues-Current were not mergred and are not included here.
+
+
+-- 26MAR25 Updated bearings, techniques and callings for new Google Sheets data
