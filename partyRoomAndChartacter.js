@@ -34,6 +34,11 @@ function updateTraitSelectList(_selectListName){
     allNPCTraits.then((allNPCTraits) => { // complete the DB read from the function
         allNPCTraits=allNPCTraits.body
         // loop through the select lists
+        for (_i = 0; _i < allNPCTraits.length; _i++) {
+            // build NPCTraitIndex{}
+            NPCTraitIndex[allNPCTraits[_i].TRAIT_NAME] = allNPCTraits[_i].TRAIT_TIP;
+        }
+
         for (_j=0; _j <maxMembers; _j++) {
             // run for each select list to update.
             var _sel = document.getElementById(_selectListName+_j);
@@ -96,11 +101,11 @@ function freeDrawToggle() {
     scene0.isDrawingMode=freeDrawBool;
 }
 
-function updateClients(_partyID,_scene,_chatID, _chatName) {
+function updateClients(_partyID,_scene,_chatID, _chatName,_encounterName) {
     // save scene to AWS party data table. currently only one scene allowed per party.   
     // let the players know that the scene is updated, also trigger for auto-update.
     //console.log("1: "+_partyID+"  3: "+_chatID);
-    updatePartyScene(_partyID,_scene,_chatID);   
+    updatePartyScene(_partyID,_scene,_chatID,_encounterName);   
     sendChatText("NOTIFY: Player updated scene",_chatID,_chatName);
  
 };

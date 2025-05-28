@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="UTF-8">
+    <!--jQuery and other libraries-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="chat.js"></script>
+    <script src="readWriteDynamo.js"></script>
+    <script src="virtues_json.js"></script>
+    <script src="fabric.min.js">// see http://fabricjs.com/</script>
+    <script src="partyRoomAndChartacter.js"></script>    
+    
+
+    <title>VICE Dash-dev</title>
+    <!-- Add some CSS to change client UI -->
+    <style>
+    body {
+        background-color: #6f7750;
+        }
+        label {
+        color: #00ff22;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        margin-left: 5px;
+        }
+        button {
+        color: #312eca;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        margin-left: 5px;
+        font-weight: bold;
+        }
+     input {
+        color: #a39799;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        margin-left: 5px;
+        }
+    </style>
+
+    <script>
+        // setup chatsocket and onloads.
+        const chatURL = "wss://h86xupi032.execute-api.us-east-2.amazonaws.com/dev/";
+        let socket = new WebSocket(chatURL);
+        // message received - show the message in div#messages
+        socket.onmessage = function(event) {
+            let message = event.data;
+
+            let messageElem = document.createElement('div');
+            messageElem.textContent = message;
+            document.getElementById('messages').prepend(messageElem);
+            // check for scene update, if a scene update, get the new scene data and load into the graphics.
+            if (message.includes("NOTIFY: Player updated scene")) {
+                console.log("scene update detected\n--loading the latest available scene--")
+                // grab the latest scene from the VIRTUES_PARTY table, update the canvas
+                // track scene with the partyID. (only 1 scene for the party, less data and more likely all look same)
+                showLatestScene($('#partyIdField').val(),scene0); // set fabric object to party scene data from partyID
+            }
+        }
+        function onloadCreation() {
+            // set NPCroom to whatever the deault was
+            updateRoomSelect("NPCRoom",scene0);
+            updateTraitSelectList("NPCTrait");
+        }
+    </script>
+
+</head>
+<body onload="onloadCreation()">
+    <script>
+        var myHeaders = new Headers();
+        // add content type header to object
+        myHeaders.append("Content-Type", "application/json");
+        var save1="";
+        var getStr="";
+        var urlParams="";
+        var playerDataAr=[];
+        var NPCDataAr=[];
+        var NPCCurrentDataList={};
+        var maxMembers=10;
+        var PCNameFontSize=20;
+        var scene0Data="";
+        var allNPCTraits="";
+        var queryDataHolder="";
+        var newHeight=50;
+        var freeDrawBool=0;
+        var NPCTraitIndex={};
+    </script>
+    <div id="canvasDiv" style="border:1px solid #aaa; display:inline-block;margin-left:auto;margin-right:auto;">
+<table>
+    <tr>
+        <td>
+        <form>
+        Click to move from one list to the other.
+        <br>
+        <select id="inititiveOrder" multiple onclick="adjustOrder('inititiveOrder','waitingOrder')" size="12"><option value="">ACTED &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option></select>
+        <select id="waitingOrder" multiple onclick="adjustOrder('waitingOrder','inititiveOrder')" size="12"><option value="">WAITING &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option></select>
+    </td>
+    <!-- draw the scene graphics -->
+<td>
+        <canvas id="sceneCanvas" width="450" height="450" style="border:1px solid #aaa; display:inline-block;margin-left:auto;margin-right:auto;"></canvas>  
+    </div>
+</td>
+    </form>
+</tr>
+</table>
+    <script> // the canvas above and this block start the scene graphics.
+        fabric.LabeledRect = fabric.util.createClass(fabric.Rect, {
+        type: 'LabeledRect',
+        initialize: function(options) {
+        options || (options = { });
+        this.callSuper('initialize', options);
+        this.set('label', options.label || '');
+        }, 
+        toObject: function() {
+            return fabric.util.object.extend(this.callSuper('toObject'), {
+                label: this.get('label')
+            });
+        },
+            _render: function(ctx) {
+                this.callSuper('_render', ctx);
+                ctx.font = '20px Helvetica';
+                ctx.fillStyle = '#333';
+                ctx.fillText(this.label, -this.width/2, -this.height/2 + 20);
+            }
+        });
+        fabric.LabeledRect.fromObject = function(object, callback, forceAsync) {
+            return fabric.Object._fromObject('LabeledRect', object, callback, forceAsync, 'label');
+        };
+        // load the shapes from a save after given a partyid
+        var LabeledRect = fabric.LabeledRect;
+        var scene0 = this.__canvas = new fabric.Canvas('sceneCanvas');
+    </script>
+    <form>
+        NPC requires a party ID, changes are limited to the creator ID.
+        <br>Save the map if making changes!  Be sure to have a party ID entered and loaded at the top.
+        <br><label>PARTY ID :</label><input type="text" size="10" id="partyIdField" onchange=''></input>
+        <label>Encounter Name :</label><input type="text" size="10" id="encounterNameField"></input>
+        <button type="button" onclick="loadPartyIDs($('#partyIdField').val(),$('#encounterNameField').val()),loadNPCs($('#partyIdField').val(),$('#encounterNameField').val())"> <-- Load Scene for party ID</button>
+        <br><br><button type="button" onclick="freeDrawToggle()">Free Draw Toggle</button>
+        <button type="button" onclick="addPlayerNames()">Add party names</button>
+        <button type="button" onclick="updateClients($('#partyIdField').val(),scene0,$('#chatIdField').val(),$('#chatNameField').val())">Update Scene</button>
+        <button type="button" onclick="deleteSelectedItem()">Delete 1 Selected Object</button>
+        <br>
+        <label>Room Name :</label><input type="text" size="6" id="newRoomNameField"></input>
+        <button type="button" onclick="addRoom()">Add room (with name)</button>
+        <!--<br><label>Number PCs in room :</label><input type="text" size="2" id="numPCInRoomField" readonly></input>(system value)
+        <br><label>Number NPCs in room :</label><input type="text" size="2" id="numNPCInRoomField" readonly></input>(system value)
+        -->
+    </form>
+<br>
+<form>
+
+
+    Click on a trait in the left list to show/hide
+    <br>
+    <select id="traitsVisible" multiple size="14"onclick="clickTrait('traitsVisible','traitsLeaned',1)"><option value="">Traits by NPC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option></select>
+    <select id="traitsLeaned" multiple size="14"onclick="clickTrait('traitsVisible','traitsLeaned',0)"><option value="">Traits Known&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option></select>
+</form>
+<script>
+
+    function clickTrait(_listSelectName,_displaySelectName,_visibility) {
+        // for clicked trait, either show , or hide the trait.
+        // update NPCCurrentAr.
+        var _selShown = document.getElementById(_listSelectName);
+        var _selKnown = document.getElementById(_displaySelectName);
+        //console.log(_selShown);
+        //console.log(_selShown.value);
+        if (_visibility && _selShown.value) { // first list is selected & a value is picked
+            // set the CurrentNPC data to show the revealed trait.
+            // value is set to the index selected value
+            _value=_selShown.value; // the clicked item
+            _pair=_selKnown.options[_selShown.value].value;
+            _pair=JSON.parse(_pair).split(/\s*,\s*/);
+            //console.log(_pair);
+            // given the pair, set the value for the visible trait
+            var _traitsListForNPC=JSON.parse(NPCCurrentDataList[_pair[0]].traitsAr); // this is the array of trait names
+            var _traitName=_traitsListForNPC[_pair[1]];
+            // set the current value for the given index selected as shown.
+            //update discovered list
+            var _tempList=NPCCurrentDataList[_pair[0]].TRAITS_DISCOVERED_LIST;
+            _tempList=JSON.parse(_tempList)            
+            _tempList[(_pair[1]-1)]=true;            
+            // update the list for the NPCCurrent data;
+            // update the list to the most recent client data...           
+            NPCCurrentDataList[_pair[0]].TRAITS_DISCOVERED_LIST=JSON.stringify(_tempList);
+            updateKnownTraits(_listSelectName,_displaySelectName,NPCCurrentDataList);
+        }
+        else if (!_visibility && _selShown.value){
+            // unshow the item selected (set text as hidden in the current vis stats).
+            _pair=_selKnown.value; // the clicked item
+            _pair=JSON.parse(_pair).split(/\s*,\s*/);
+            var _tempList=NPCCurrentDataList[_pair[0]].TRAITS_DISCOVERED_LIST;
+            _tempList=JSON.parse(_tempList)            
+            _tempList[(_pair[1]-1)]=false;                     
+            NPCCurrentDataList[_pair[0]].TRAITS_DISCOVERED_LIST=JSON.stringify(_tempList);
+            updateKnownTraits(_listSelectName,_displaySelectName,NPCCurrentDataList);
+        }
+        else {
+            // and do nothing if level 0 is selected (would be a null value for the value).
+            return console.log("did not see any trait to update, I think clicked on header")
+        }
+    }
+
+    function loadTraits(_listSelectName,_displaySelectName,_partyID,_encounterName) {
+        // load the traits into the trait fields ... needs to have the NPCs loaded first.
+        //console.log(_listSelectName,_displaySelectName,_partyId,_encounterName)
+        // this is called from inside loadNPC rather than from the button press to get on the promise processing with the async call
+        //console.log(NPCDataAr);
+        if (!NPCDataAr[0]) {return (console.log("no NPC data found!"))}
+            // loop through NPCs, set the values in the lists.
+            // The order needs to match up between lists.
+
+            var _sel = document.getElementById(_listSelectName);
+            var _sel2 = document.getElementById(_displaySelectName);
+            for (_i=1;_i<_sel.options.length;_i++) {
+                if (_sel.options[_i]) {
+                    _sel.removeChild(_sel.options[_i]); // leave the header
+                    _sel2.removeChild(_sel2.options[_i]);                    
+                    _i--; // try again, with same counter, as the item was removed.
+                }
+            }
+            var _comboId = [];
+            _comboId[0]=_partyID;
+            _comboId[1]=_encounterName;
+            _partyComboID = JSON.stringify(_comboId);
+            //console.log(_partyComboID);
+            for (_i=0;_i<NPCDataAr.length;_i++) {
+            // check for party ID and encounter name
+            if (_partyComboID==NPCDataAr[_i].PARTY_ID) {
+                // traits are comma sererated list, split to array.
+                var _traitsAr=NPCDataAr[_i].NPC_TRAITS_AR.split(/\s*,\s*/);
+                // populate the list for each trait.
+                for (_j=0;_j<_traitsAr.length;_j++) {
+                    var _opt = document.createElement('option');
+                    var _sel = document.getElementById(_listSelectName);
+                    _traitNum=_j+1;
+                    _opt.text = NPCDataAr[_i].NPC_NAME+" : Trait "+_traitNum;
+                    _opt.value = _sel.length;
+                    _sel.add(_opt, _sel[_sel.length]); // add in last spot
+                    // also set the shown/hidden list to the correct state.
+                    var _opt = document.createElement('option');
+                    var _sel = document.getElementById(_displaySelectName);
+                    _opt.text = NPCDataAr[_i].NPC_NAME+" : Unknown Trait "+_traitNum;
+                    _opt.value = JSON.stringify(NPCDataAr[_i].NPC_NAME+","+_traitNum);
+                    _sel.add(_opt, _sel[_sel.length]); // add in last spot
+               }
+            }
+        }
+    }
+
+    function getPlayers() {
+        // loadPartyIDs(_partyID); // will populate partyMembersAr from the party and the saves (legacy data)
+        // will already be run from the party update
+        // clear any items in the list ... will need to add NPC afterwards again too!
+        // this will probably be buggy for interim party level changes.
+        var _sel = document.getElementById('waitingOrder');
+        if(_sel == null) {return console.log("players select list not found")}
+        
+        for (_i=1; _i<_sel.options.length ;_i++) {
+            // remove any PC : names, add back in
+            if (_sel.options[_i].text.startsWith("PC: ")) {
+                _sel.removeChild( _sel.options[_i] );
+                _i--; // try again, with same counter, as the item was removed.
+            }
+        }
+
+        // get the player list for the party ID, add to the select box and playerAr.
+        //console.log(partyMembersAr);
+        //console.log($('#waitingOrder').val());
+        for (_i=0;_i<partyMembersAr.length;_i++) {
+            //populate the waiting room
+            //$('#waitingOrder').val();
+            var _opt = document.createElement('option');
+            var _sel = document.getElementById('waitingOrder');
+            _opt.text = "PC: "+partyMembersAr[_i];
+            _opt.value = partyMembersAr[_i];
+            _sel.add(_opt, _sel[1]); // add in 2nd spot
+        }
+    }
+
+    function adjustOrder(_fromListName,_toListName){
+        // move from one list to another
+        // check for the value and remove.
+        var _selFrom = document.getElementById(_fromListName);
+        var _selTo = document.getElementById(_toListName);
+        _value=$("#"+_fromListName).val();
+        for (var _i=1; _i<_selFrom.options.length; _i++ ) {
+            if (_selFrom.options[_i].value==_value) {
+                // also add it to the other list
+                var _selTo = document.getElementById(_toListName);
+                var _opt = document.createElement('option');
+                _opt.text = _selFrom.options[_i].text;
+                _opt.value = _selFrom.options[_i].value;
+                _selTo.add(_opt, _selTo[_selTo.options.length]); // add in bottom spot
+                _selFrom.removeChild( _selFrom.options[_i] );
+            }  
+        }
+    }
+
+
+    function loadNPCs(_partyID, _encounterName){
+        // load npc into fields.
+        // first get updated values for the NPC.
+        // check for the values, break if not there
+        //console.log("party :"+_partyID+"  name :"+ _NPCName);
+        // eventually this will need to be handled without returning all the party data, probably can use a global index.
+        if (_partyID == "" || _encounterName == "") {return alert(" party and encoutner are both required")};
+        //var _NPCPromise=getNPCOrScanNPCParty("VIRTUES_NPC",_partyID,_NPCName);
+        var _comboId = [];
+        _comboId[0]=_partyID;
+        _comboId[1]=_encounterName;
+        var _partyComboID = JSON.stringify(_comboId);
+
+        var _NPCPromise=getNPCOrScanNPCParty("VIRTUES_NPC"); // gat all NPCs
+        _NPCPromise.then((_allNPCs) => { // complete the DB read from the function
+            _allNPCs=_allNPCs.body;
+            //console.log(_allNPCs)
+            // put the data in the NPC array for accessibility
+            // clear the old rows
+            var _sel = document.getElementById('waitingOrder');
+            for (_i=1; _i<_sel.options.length;_i++) {
+                // remove old rows
+                if (_sel.options[_i].text.startsWith("NPC: ")) {
+                    _sel.removeChild( _sel.options[_i] );
+                    _i--;
+                }
+            }
+
+            NPCDataAr=[];
+            for (_i=0; _i<_allNPCs.length;_i++) {
+                // check the partyid
+                //console.log(_allNPCs[_i].PARTY_ID+" == "+_partyComboID);
+                if (_allNPCs[_i].PARTY_ID==_partyComboID) {
+                    NPCDataAr.push(_allNPCs[_i]);// add to list
+                    var _opt = document.createElement('option');
+                    var _sel = document.getElementById('waitingOrder');
+                    _opt.text = "NPC: "+_allNPCs[_i].NPC_NAME;
+                    _opt.value = _allNPCs[_i].NPC_NAME;
+                    _sel.add(_opt, _sel[1]); // add in last spot
+                }
+            }
+            loadTraits('traitsVisible','traitsLeaned',$('#partyIdField').val(),$('#encounterNameField').val());
+            loadNPCCurrentDash(NPCDataAr,$('#partyIdField').val(),$('#encounterNameField').val());
+        });
+        // the array has each of the NPC from the party.
+    }
+
+    function updateKnownTraits(_shownSelectList,_knownSelectList,_NPCCurrentDataList) {
+        // for each NPC Party, there should be an NPC current.
+        // set the show text to the name and tool tip for any visible traits in the current party data.
+        // loop through select list and set the targets
+        //console.log(_shownSelectList,_knownSelectList,_NPCCurrentDataList);
+        // first, clear any data already in the fields.
+
+        
+        for (_key in _NPCCurrentDataList) {
+            // loop through the visibility, set the items in the list.
+            //console.log(NPCCurrentDataList[_key]);
+            // get the list
+            var _visStr=_NPCCurrentDataList[_key].TRAITS_DISCOVERED_LIST;
+            var _visAr=JSON.parse(_visStr);
+            var _traitNamesAr=JSON.parse(_NPCCurrentDataList[_key].traitsAr);
+            //console.log(_traitNamesAr);
+            for (_i=0;_i<_visAr.length;_i++) {
+                //console.log(_visAr[_i]);
+                // set the name and tip in the select list if showing
+                // hide the name and tip is false
+                /*
+                npcName=_key
+                optionnNumber=_i
+                visibility=_visAr[_i]
+                value = JSON.stringify(NPCName+","+indexNumber)
+                trait name array=traitsAr added to the current data to copy base vales as reference.
+                */
+                _thisValue=JSON.stringify(_key+","+_i);
+                //console.log(_thisValue);
+                var _sel = document.getElementById(_knownSelectList);
+                //console.log(_sel.options[_i].value)
+                var _thisText="value hidden";
+                if (_visAr[_i]) {
+                    // set the text for a known trait
+                    _thisText=_key+" : "+_traitNamesAr[_i]+" -- "+NPCTraitIndex[_traitNamesAr[_i]];
+                }
+                _sel.options[_i+1].text=_thisText; // keep 0 as the default
+            }
+        }
+    }
+
+    function loadNPCCurrentDash(_NPCDataAr,_partyID,_encounterName) {
+        // for each NPC, get the curent data and save to Ar.
+        // then set the traits know.
+        //console.log(_NPCDataAr,_partyID,_encounterName);
+        for (var _i=0; _i<_NPCDataAr.length;_i++) {
+            // get the current data.
+            var _NPCPromise=getNPCOrScanNPCParty("VIRTUES_NPC_CURRENT_STATS",_partyID,_NPCDataAr[_i].NPC_NAME,_encounterName);
+            _NPCPromise.then((_myNPCCurrent) => { // complete the DB read from the function
+            _myNPCCurrent=_myNPCCurrent.body;
+            //console.log(_myNPC)
+            // should be one row returned
+            //console.log(_myNPCCurrent);           
+
+            var _match=-1;
+            if (_myNPCCurrent[0]==""){
+                return console.log("did not find a record : loadNPCCurrentStats");
+            }
+            else {
+                for (_j=0;_j<_myNPCCurrent.length;_j++) {
+                    // check each, use one matching _partID (which is combo ID wiht encounter name)
+                    if(_myNPCCurrent[_j].PARTY_ID == _partyComboID) {
+                        if (_match != -1) {return alert.log("multiple matches, should be a single match : loadNPCCurrentStats");}
+                        _match=_j;
+                    }
+                }
+            }
+            if (_match==-1) {return alert("no record found : loadNPCCurrentStats")}
+            // set the values in the form
+            //console.log(_match);
+            // add data to NPCarCurrentAr 
+            var _thisName=_myNPCCurrent[_match].NPC_NAME;
+            //console.log(_thisName);
+            //console.log(_myNPCCurrent[_match]);
+            NPCCurrentDataList[_thisName]=_myNPCCurrent[_match];
+            // set the traits names in the NPC current object (current only stores the visibility, not the names)
+            //console.log(_NPCDataAr);
+            var _thisList=_NPCDataAr[_match].NPC_TRAITS_AR;
+            //console.log(_thisList);
+            NPCCurrentDataList[_thisName].traitsAr=_thisList;
+            // run in the promise reply to wait for the data.
+            updateKnownTraits('traitsVisible','traitsLeaned',NPCCurrentDataList);
+        });
+       }  
+    }
+
+</script>
+    <form>
+         <br><br><br><br><br>
+        <label>ID for Chat :</label><input type="text" size="10" id="chatIdField" onchange="readPlayerChatData($('#chatIdField').val())"></input>
+        <label>Name :</label><input type="text" size="10" id="chatNameField"></input>
+        <br><br>
+        <!-- set button onClick method to call function we defined passing input values as parameters -->
+        <button type="button" onclick="rollD6Chat(1,$('#chatIdField').val(),$('#chatNameField').val())">Roll 1 D6 in chat</button>
+        <button type="button" onclick="rollD6Chat(3,$('#chatIdField').val(),$('#chatNameField').val())">Roll 3x D6 in chat</button>
+        <br>
+        <label>Chat :</label><input type="text" size="40" id="chatField"></input>
+        <button type="button" onclick="sendChatText($('#chatField').val(),$('#chatIdField').val(),$('#chatNameField').val())">Send</button>
+        <br>
+    </form>
+
+    <div id="messages">Chat messages go here, newest at top</div>
+       <!-- div with messages -->
+    
+</body>
+</html>

@@ -58,6 +58,34 @@ function sendChatText(_message,_id,_sourceName){
     //return false;        
 }
 
+function rollD6Chat(_thisManyRolls,_id,_sourceName) {
+    // roll and output to chat
+    // for RNG, grab a timestamp, check the last digit.
+    var _rollsAr=[];
+    var _roll =0;
+    for (_i=0;_i<_thisManyRolls;_i++) {
+        _roll=Math.floor(Math.random() * 6) + 1;  // returns a random integer from 1 to 6
+        _rollsAr.push(_roll);
+    }
+    // make the message
+    console.log(_rollsAr);
+    _message="Rolling "+_thisManyRolls+" D6 : ";
+    for (_i=0;_i< _rollsAr.length;_i++) {
+        _message+=" R"+(_i+1)+" = "+_rollsAr[_i]+"  ";
+    }
+
+    let outgoingMessage = '{"action" : "onMessage" , "message" : "' + _message + '", "sourceName":"'+_sourceName+'"}';
+    socket.send(outgoingMessage);
+    
+    // update the log message (should be initialized in the chat.js file)
+    playerChatLogNames.MESSAGE=_message;
+    playerChatLogNames.SOURCE_ID=_id;
+    playerChatLogNames.SOURCE_NAME="PlayerRollD6s";
+    playerChatLogNames.CLIENT_MILLIS=Date.now();
+
+    saveLogMessage(playerChatLogNames);
+    //return false;      
+}
 
 function saveLogMessage(_data) {
     // save the message to the log

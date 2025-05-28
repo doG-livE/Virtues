@@ -72,11 +72,7 @@
     var maxMoraleBonus = 0;                     //These three variables are currently not used, yet
 
     var fileSaveAs = "Outlook"; // outlooks are loaded by default, the save as is used for image names for the deck export makeSingleImages()
-    //const rulesJson = require('./rules_json.json');
-    //console.log(rulesJson);
-    //const virtuesJson = require('./virtues_json.js');
-    // storing the ".json" data as a variable in a .js file. This makes it easier to test as a local file.
-    
+
  
 </script>
 
@@ -277,13 +273,13 @@
         </div>
 
         <br><br>
-        <p>Inspiration Earned: <input type="text" id="inspirationEarnedField" value="5" size="3" onchange="updateInspirationTable()"></input></p>
-        <p>Total Inspiration Spent: <input type="text" id="inspirationSpentField" value="0" size="3" readonly></input>Inspiration Remaining: <input type="text" id="inspirationRemainingField" value="0" size="3" readonly></input></p>
-        <p>Inspiration Bearings: <input type="text" id="inspirationBearingSpentField" value="0" size="3" readonly></input></p>
-        <p>Inspiration Techniques: <input type="text" id="inspirationTechSpentField" value="0" size="3" readonly></input>One "free" tech from each Virtue</p>
-        <p>Inspiration Courage: <input type="text" id="inspirationCourageSpentField" value="0" size="3" readonly></input>
-            Inspiration Clever: <input type="text" id="inspirationCleverSpentField" value="0" size="3" readonly></input>
-            Inspiration Compassion: <input type="text" id="inspirationCompassionSpentField" value="0" size="3" readonly></input>
+        <p>Inspiration Earned: <input type="text" id="inspirationEarnedField" value="5" size="3" onchange="updateInspirationTable()"> </input></p>
+        <p>Total Inspiration Spent: <input type="text" id="inspirationSpentField" value="0" size="3" readonly> </input>Inspiration Remaining: <input type="text" id="inspirationRemainingField" value="0" size="3" readonly> </input></p>
+        <p>Inspiration Bearings: <input type="text" id="inspirationBearingSpentField" value="0" size="3" readonly> </input></p>
+        <p>Inspiration Techniques: <input type="text" id="inspirationTechSpentField" value="0" size="3" readonly> </input>One "free" tech from each Virtue</p>
+        <p>Inspiration Courage: <input type="text" id="inspirationCourageSpentField" value="0" size="3" readonly> </input>
+            Inspiration Clever: <input type="text" id="inspirationCleverSpentField" value="0" size="3" readonly> </input>
+            Inspiration Compassion: <input type="text" id="inspirationCompassionSpentField" value="0" size="3" readonly> </input>
             Start with 4/1/1 or 3/2/1, select manually based on Callings
         </p>
 
@@ -316,18 +312,21 @@
             <button class="btn btn-success" onclick="saveURLData()">
                 Open in new tab (bookmark to save)
             </button>
+ <!--    AWS trial ended, not active / could incur charges
             <p>UserID: <input type="text" id="useridField" value="" size="10"></input>
+
             <button onclick="saveAWSData()">
                 Save data to cloud (for the given userid)
-            </button></p>           
+            </button></p>
+ -->
         </div>
     
-<!-- commented out for general use, using this to build the descks for TableTop Simulator -->
+<!-- commented out for general use, using this to build the decks for TableTop Simulator -->
 <!--
         <button id="buyAllCardsButton" onclick="buyAllCards()"> 
             Buy all the technique and bearing cards (for printing)
         </button>
-        seect cards deck
+        select cards deck
         <select id="buyAllCardsPulldown" onchange="buyAllCards()">
             <option value="">Select from list</option>
             <option value="Courage">Courage</option>
@@ -407,7 +406,7 @@
         <div class="container buy-tab-content" id="buy-tab-bearings">
             <div class="row">
                 <h3> Choose a Bearing path from the dropdown to see the options from that Bearing. Click a Bearing level
-                    to add it. <h3>
+                    to add it. </h3>
                         <br>
 
                         <!--This fat ugly wall of text is here because 
@@ -450,12 +449,19 @@
                 <select id="bearingPurchaseDropDown" class="cardDropDown"
                     data-targetdiv="initialBearingPurchaseContainer">
                     <!-- A jquery on-change event is bound to this id-->
-                    <option value="Bold">Bold</option>
-                    <option value="Direct">Direct</option>
-                    <option value="Guarded">Guarded</option>
-                    <option value="Pugilist">Pugilist</option>
-                    <option value="Resourceful">Resourceful</option>
-                    <option value="Subtle">Subtle</option>
+                    <!-- this table may need to be manually updated for bearing changes, could be improved
+                    Updates also needed on a lower table in this file and on "populate.js" on the populatecarddisplay function.
+                    -->
+                    <option value="Straightforward">Straightforward</option>
+                    <option value="Headstrong">Headstrong</option>
+                    <option value="Scarred Soldier">Scarred Soldier</option>
+                    <option value="Punchy Princess">Punchy Princess</option>
+                    <option value="Overprotective Pilgrim">Overprotective Pilgrim</option>
+                    <option value="Fiery Dancer">Fiery Dancer</option>
+                    <option value="Prophecy's Chosen">Prophecy's Chosen</option>
+                    <option value="Martyr">Martyr</option>
+                    <option value="Chemist">Chemist</option>
+                    <option value="Executioner">Executioner</option>
                 </select>
                 &nbsp &nbsp &nbsp &nbsp
                 Enter text to search Bearings: 

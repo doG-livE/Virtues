@@ -84,12 +84,16 @@ function populateCardDisplay(dropdownValue, targetdiv, searchType) {
                 }
             }
             break;
-        case "Bold":
-        case "Direct":
-        case "Guarded":
-        case "Pugilist":
-        case "Resourceful":
-        case "Subtle":
+        case "Straightforward":
+        case "Headstrong":
+        case "Scarred Soldier":
+        case "Punchy Princess":
+        case "Overprotective Pilgrim":
+        case "Fiery Dancer":
+        case "Prophecy's Chosen":
+        case "Martyr":
+        case "Chemist":
+        case "Executioner":
             for (let i = 0; i < virtuesJson.length; i++) {
                 if (virtuesJson[i].cardTitle == dropdownValue) {
                     toPrintArray.push(i);
