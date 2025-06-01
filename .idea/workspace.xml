@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d0a1a9db-c8ee-4560-9a58-bcd6da118450" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/VirtuesCards.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/canvas_generation.js" beforeDir="false" afterPath="$PROJECT_DIR$/canvas_generation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/save_load.js" beforeDir="false" afterPath="$PROJECT_DIR$/save_load.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virtues.html" beforeDir="false" afterPath="$PROJECT_DIR$/virtues.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virtues.json" beforeDir="false" afterPath="$PROJECT_DIR$/virtues.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virtues_json.js" beforeDir="false" afterPath="$PROJECT_DIR$/virtues_json.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cardPrint.html" beforeDir="false" afterPath="$PROJECT_DIR$/cardPrint.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
