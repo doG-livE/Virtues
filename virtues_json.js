@@ -343,7 +343,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "Your next cheer this turn gains +2 Cheerleader.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": true,
             "techIsDefault": false,
             "cardTooltip": "Your next cheer this turn gains +2 Cheerleader."
@@ -358,7 +358,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "After engaging, Hustle yourself or an ally.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": true,
             "techIsDefault": false,
             "cardTooltip": "After engaging, Hustle yourself or an ally."
@@ -373,7 +373,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "Add twice your Sheer Force to this engagement, but if it doesn't deal enough damage to Vanquish your foe, then this engagement becomes Gentle.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": true,
             "techIsDefault": false,
             "cardTooltip": "Add twice your Sheer Force to this engagement, but if it doesn't deal enough damage to Vanquish your foe, then this engagement becomes Gentle."
@@ -388,7 +388,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "Add your Sheer Force to this engagement if you describe how you are incorporating an ally in this engagement. (This description is flavor.)",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": false,
             "techIsDefault": false,
             "cardTooltip": "Add your Sheer Force to this engagement if you describe how you are incorporating an ally in this engagement. (This description is flavor.)"
@@ -403,7 +403,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "You may deal any amount of Morale damage to yourself. Gain a bonus equal to that amount, and one ally regains that much Morale. ",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": false,
             "techIsDefault": false,
             "cardTooltip": "You may deal any amount of Morale damage to yourself. Gain a bonus equal to that amount, and one ally regains that much Morale. "
@@ -418,7 +418,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "Until the start of your next turn, the target ",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": true,
             "techIsDefault": false,
             "cardTooltip": "Until the start of your next turn, the target "
@@ -431,12 +431,12 @@ virtuesJson = [
             "cardNumber": " ",
             "cardActionLetter": "M",
             "inspirationCostToBuy": "1",
-            "cardBody": "If you are engaged before the start of your next turn, you may Jab the engaging foe.",
+            "cardBody": "If you are engaged before the start of your next turn, you may Jab the engaging foe if you can engage it.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": false,
             "techIsDefault": false,
-            "cardTooltip": "If you are engaged before the start of your next turn, you may Jab the engaging foe."
+            "cardTooltip": "If you are engaged before the start of your next turn, you may Jab the engaging foe if you can engage it."
         },
         {
             "cardTitle": "Tough",
@@ -448,7 +448,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "If you are at full Morale, add your Sheer Force to this engagement. Otherwise, recover 1 Morale.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": true,
             "techIsDefault": false,
             "cardTooltip": "If you are at full Morale, add your Sheer Force to this engagement. Otherwise, recover 1 Morale."
@@ -463,7 +463,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "Before engaging, Hustle yourself.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": false,
             "techIsDefault": false,
             "cardTooltip": "Before engaging, Hustle yourself."
@@ -478,7 +478,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "Add your Sheer Force to this engagement if you describe how you are incorporating a foe in this engagement. (This description is flavor.)",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": false,
             "techIsDefault": false,
             "cardTooltip": "Add your Sheer Force to this engagement if you describe how you are incorporating a foe in this engagement. (This description is flavor.)"
@@ -493,7 +493,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "You are Conspicuous until the beginning of your next turn. ",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": false,
             "techIsDefault": false,
             "cardTooltip": "You are Conspicuous until the beginning of your next turn. "
@@ -508,7 +508,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "This engagement gains Force equal to the difference between your current Morale and your max Morale.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": false,
             "techIsDefault": false,
             "cardTooltip": "This engagement gains Force equal to the difference between your current Morale and your max Morale."
@@ -521,12 +521,12 @@ virtuesJson = [
             "cardNumber": " ",
             "cardActionLetter": "E",
             "inspirationCostToBuy": "0",
-            "cardBody": "Either before or after your engagement, <strong> Hustle </strong> all foes.",
+            "cardBody": "[Clever/Courage Calling OPE] <br> <br> Either before or after your engagement, <strong> Hustle </strong> all foes.",
             "cardType": "technique",
             "techIsCalling": "Clever/Courage",
             "techissurgeable": true,
             "techIsDefault": false,
-            "cardTooltip": "Either before or after your engagement, <strong> Hustle </strong> all foes."
+            "cardTooltip": "[Clever/Courage Calling OPE] <br> <br> Either before or after your engagement, <strong> Hustle </strong> all foes."
         },
         {
             "cardTitle": "Strive",
@@ -553,7 +553,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "After engaging, Hustle the target.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": true,
             "techIsDefault": false,
             "cardTooltip": "After engaging, Hustle the target."
@@ -598,7 +598,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "This engagement gains +1 Range.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": false,
             "techIsDefault": false,
             "cardTooltip": "This engagement gains +1 Range."
@@ -613,7 +613,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "After engaging, the target has -2 Force and -2 Composure until your next turn.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": true,
             "techIsDefault": false,
             "cardTooltip": "After engaging, the target has -2 Force and -2 Composure until your next turn."
@@ -628,7 +628,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "Add your Sheer Force to this engagement if you describe how you are incorporating your surroundings in this engagement. (This description is flavor.)",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": true,
             "techIsDefault": false,
             "cardTooltip": "Add your Sheer Force to this engagement if you describe how you are incorporating your surroundings in this engagement. (This description is flavor.)"
@@ -643,7 +643,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "Choose an ally. If that ally engages your target before the start of your next turn, they gain Pure Focus equal to your Sheer Force.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": false,
             "techIsDefault": false,
             "cardTooltip": "Choose an ally. If that ally engages your target before the start of your next turn, they gain Pure Focus equal to your Sheer Force."
@@ -658,7 +658,7 @@ virtuesJson = [
             "inspirationCostToBuy": "1",
             "cardBody": "When the target's next turn ends, you choose who will act next, instead of the target.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": true,
             "techIsDefault": false,
             "cardTooltip": "When the target's next turn ends, you choose who will act next, instead of the target."
@@ -838,7 +838,7 @@ virtuesJson = [
             "inspirationCostToBuy": "0",
             "cardBody": "You choose one <strong> Outlook </strong> at the beginning of each encounter, and gain its benefits until the encounter ends. <br> <br> Each time you roll Gathering, gain 1 extra <strong> Courage </strong> focus.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": false,
             "techIsDefault": false,
             "cardTooltip": "Choose 1 Outlook each encounter. <br> You gain +1 Courage focus each Gathering."
@@ -853,7 +853,7 @@ virtuesJson = [
             "inspirationCostToBuy": "0",
             "cardBody": "You choose one <strong> Outlook </strong> at the beginning of each encounter, and gain its benefits until the encounter ends. <br> <br> Each time you roll Gathering, gain 1 extra <strong> Compassion </strong> focus.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": false,
             "techIsDefault": false,
             "cardTooltip": "Choose 1 Outlook each encounter. <br> You gain +1 Clever focus each Gathering."
@@ -868,7 +868,7 @@ virtuesJson = [
             "inspirationCostToBuy": "0",
             "cardBody": "You choose one <strong> Outlook </strong> at the beginning of each encounter, and gain its benefits until the encounter ends. <br> <br> Each time you roll Gathering, gain 1 extra <strong> Clever </strong> focus.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": false,
             "techIsDefault": false,
             "cardTooltip": "Choose 1 Outlook each encounter. <br> You gain +1 Clever focus each Gathering."
@@ -883,7 +883,7 @@ virtuesJson = [
             "inspirationCostToBuy": "0",
             "cardBody": "You choose one <strong> Outlook </strong> at the beginning of each encounter, and gain its benefits until the encounter ends. <br> <br> If you lost any Hope last encounter, then you must choose Hopeful Outlook this encounter. <br> <br> Hopeful Outlook provides no bonus.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": false,
             "techIsDefault": false,
             "cardTooltip": "Choose this Outlook if you lost Hope last encounter. <br> This outlook gives no bonus."
@@ -898,7 +898,7 @@ virtuesJson = [
             "inspirationCostToBuy": "0",
             "cardBody": "Character sheet will be updated on the printed images automatically.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": false,
             "techIsDefault": false,
             "cardTooltip": "Character sheet, populated when printing"
@@ -913,7 +913,7 @@ virtuesJson = [
             "inspirationCostToBuy": "0",
             "cardBody": "Character sheet will be updated on the printed images automatically.",
             "cardType": "technique",
-            "techIsCalling": false,
+            "techIsCalling": "null",
             "techissurgeable": false,
             "techIsDefault": false,
             "cardTooltip": "Character sheet, populated when printing"

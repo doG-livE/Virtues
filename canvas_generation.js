@@ -12,7 +12,7 @@ function createCanvases() {
 }
 
 function create3by4(cardIndex) {
-    updateCharacterSheet();
+    //updateCharacterSheet();
     let colorVar = fetchColor(virtuesJson[cardIndex].cardVirtue);
     let clearX = 30;
     let clearY = 50;
@@ -117,6 +117,7 @@ function create4by6(index, nextIndex) {
     ctx.drawImage(cardCanvas1, 20, 0);
     ctx.drawImage(cardCanvas2, 1210, 0);
 
+
     return card4by6;
 }
 function makeImages() {
@@ -140,13 +141,48 @@ function makeImages() {
             else {         //all besides ie or edge, are downloaded below using a forced anchor click
                 document.body.appendChild(a);
                 a.href = card4by6.toDataURL("image/jpeg");
-                a.download = $('#rainbowHeader').text()+".jpg";
+
+                //a.download = $('#rainbowHeader').text()+".jpg";
+                a.download = "VirtuesCards.jpg";
                 a.click();
                 document.body.removeChild(a);
             };
             
         }
     
+    }
+    else {
+        console.log("Cancel Print");
+    }
+}
+function makeImagesForSheets() {
+    // popup window with all the selected card IDs (or even better, the cards)
+    if (confirm("Press OK to print, number of cards: " + cardsForImagesArray.length+" indexes: " + cardsForImagesArray)) {
+        let canvases = document.getElementsByTagName("canvas");
+        let a = document.createElement("a");
+        for (let i = 0; i < cardsForImagesArray.length; i++) {
+            // call create4by6 to get 2 2x3 cards for printing each second card
+            // want to add default card to last one if needed, adding extra copy of card for now.
+            if (i+1<cardsForImagesArray.length) {
+                card4by6=create4by6(cardsForImagesArray[i],cardsForImagesArray[i+1]);
+                i++; // added the next card to print already
+            }
+            else {
+                card4by6=create4by6(cardsForImagesArray[i],cardsForImagesArray[i]);
+            }
+            if (window.navigator.msSaveBlob) {          //for ie or edge
+                window.navigator.msSaveBlob(card4by6.msToBlob(), "Virtues-card.png");  //edge can only do png files
+            }
+            else {         //all besides ie or edge, are downloaded below using a forced anchor click
+                document.body.appendChild(a);
+                a.href = card4by6.toDataURL("image/jpeg");
+                a.download = $("SheetsVirtuesCardExport.jpg");
+                a.click();
+                document.body.removeChild(a);
+            };
+
+        }
+
     }
     else {
         console.log("Cancel Print");

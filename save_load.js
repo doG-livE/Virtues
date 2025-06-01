@@ -1,5 +1,5 @@
 function loadURLData() {
-    // I saw this run on switching tabs, so, cehcking to be sure only runs one time.
+    // I saw this run on switching tabs, so, checking to be sure only runs one time.
     if (loadData) {
         loadData = false;
         /* check "GET" for saved values */

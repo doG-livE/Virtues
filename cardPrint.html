@@ -1,0 +1,116 @@
+<html>
+<!--
+Print card for post strings.
+Intended for google sheets webapp with post string.
+Generate and save .jpg files (chrome) from card data.
+Based on scripts form canvas_generation/js
+-->
+
+<script src="canvas_generation.js"></script>
+<script src="fetch.js"></script>
+<script>
+
+
+
+virtuesJson = [];
+virtuesJson = [{
+            "cardTitle": "",
+            "cardVirtue": "",
+            "cardPurchased": "",
+            "cardExported": "",
+            "cardNumber": "",
+            "cardActionLetter": "",
+            "bearingoption": "",
+            "inspirationCostToBuy": "",
+            "cardBody": "",
+            "cardTooltip": ""
+            }];
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+var cardsForImagesArray = [];
+var blackVar = '#000000';
+var whiteVar = "hsl(360, 100%, 100%)";
+
+
+// read the URL and create the "virtuesJson[cardIndex]" object
+if (urlParams.get('cardTitle')) {
+    cardTitle = urlParams.get('cardTitle').split(',');
+    for (i = 0; i < cardTitle.length; i++) {
+        // for first list, store the "JSON" data.
+        // and add to cards print list.
+        cardsForImagesArray[i]=i;
+        virtuesJson[i]= {
+            "cardTitle": "",
+            "cardVirtue": "",
+            "cardPurchased": "",
+            "cardExported": "",
+            "cardNumber": "",
+            "cardActionLetter": "",
+            "bearingoption": "",
+            "inspirationCostToBuy": "",
+            "cardBody": "",
+            "cardTooltip": ""};
+       if (cardTitle[i]) {
+            console.log(cardTitle[i]);
+        };
+        virtuesJson[i].cardTitle=cardTitle[i];
+    };
+}
+if (urlParams.get('cardVirtue')) {
+    cardVirtue = urlParams.get('cardVirtue').split(',');
+    for (i = 0; i < cardVirtue.length; i++) {
+        if (cardVirtue[i]) {
+            console.log(cardVirtue[i]);
+            virtuesJson[i].cardVirtue=cardVirtue[i];
+        };
+    };
+}
+if (urlParams.get('cardActionLetter')) {
+    cardActionLetter = urlParams.get('cardActionLetter').split(',');
+    for (i = 0; i < cardActionLetter.length; i++) {
+        if (cardActionLetter[i]) {
+            console.log(cardActionLetter[i]);
+            virtuesJson[i].cardActionLetter=cardActionLetter[i];
+        };
+    };
+}
+if (urlParams.get('cardBody')) {
+    // seperating by , didn't work great, using "$,$"
+    cardBody = urlParams.get('cardBody').split('$,$');
+    for (i = 0; i < cardBody.length; i++) {
+        if (cardBody[i]) {
+            console.log(cardBody[i]);
+            console.log(i);
+            virtuesJson[i].cardBody=cardBody[i];
+        };
+    };
+}
+if (urlParams.get('cardNumber')) {
+    cardNumber = urlParams.get('cardNumber').split(',');
+    for (i = 0; i < cardNumber.length; i++) {
+        if (cardNumber[i]) {
+            console.log(cardNumber[i]);
+            virtuesJson[i].cardNumber=cardNumber[i];
+        };
+    };
+}
+if (urlParams.get('fileName')) {
+    fileName = urlParams.get('fileName');
+    console.log(fileName);
+}
+
+console.log(cardsForImagesArray);
+
+</script>
+
+
+<!-- needs a body to generate a click event to print? -->
+<body>
+
+<button class="btn btn-success" onclick="makeImages()">
+    Save cards on dashboard (for photo printing)
+</button>
+
+</body>
+
+</html>
