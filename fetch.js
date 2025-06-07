@@ -21,7 +21,7 @@ function fetchColor(cardVirtue) {
             break;
         default:
             colorVar = "hsl(0, 0%, 10%)";
-            alert("fetchColor Error; Please tell Rick");
+            //alert("fetchColor Error; Please tell Rick");
     }
     return colorVar;
 }

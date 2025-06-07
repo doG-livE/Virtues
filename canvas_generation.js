@@ -141,8 +141,6 @@ function makeImages() {
             else {         //all besides ie or edge, are downloaded below using a forced anchor click
                 document.body.appendChild(a);
                 a.href = card4by6.toDataURL("image/jpeg");
-
-                //a.download = $('#rainbowHeader').text()+".jpg";
                 a.download = "VirtuesCards.jpg";
                 a.click();
                 document.body.removeChild(a);

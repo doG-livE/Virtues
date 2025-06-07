@@ -8,10 +8,12 @@ Based on scripts form canvas_generation/js
 
 <script src="canvas_generation.js"></script>
 <script src="fetch.js"></script>
-<script src="update_character_sheet.js"></script>
+
 <script>
 
-
+function updateCharacterSheet() {
+// do nothing for now, it is expecting the html form.
+};
 
 virtuesJson = [];
 virtuesJson = [{
@@ -31,7 +33,7 @@ const urlParams = new URLSearchParams(queryString);
 var cardsForImagesArray = [];
 var blackVar = '#000000';
 var whiteVar = "hsl(360, 100%, 100%)";
-
+currentCard=0;
 
 // read the URL and create the "virtuesJson[cardIndex]" object
 if (urlParams.get('cardTitle')) {
@@ -39,7 +41,11 @@ if (urlParams.get('cardTitle')) {
     for (i = 0; i < cardTitle.length; i++) {
         // for first list, store the "JSON" data.
         // and add to cards print list.
-        cardsForImagesArray[i]=i;
+        //check to see if there is a card title, if not, do not add to print list
+        if(cardTitle[i]) {
+          cardsForImagesArray[currentCard]=i;
+          currentCard++
+        }
         virtuesJson[i]= {
             "cardTitle": "",
             "cardVirtue": "",
